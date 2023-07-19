@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% import "macros/cards.html" as cards %}
+
+{% block title %}{{ section.title }}{% endblock title %}
+{% block content %}
+
+{% block secbody %}{{ section.content | safe}}{% endblock %}
+
+<hr>
+<div class="posts p-2 gap-3 vstack">
+    {% for sub in section.subsections %}
+    {% set subsect = get_section(path=sub) %}
+        {% for page in subsect.pages %}
+        <!-- Card for each page -->
+        {{ cards::news_card(page=page, sum_len=250) }}
+        {% endfor %}
+    {% endfor %}
+</div>
+
+{% endblock content%}

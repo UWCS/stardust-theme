@@ -30,7 +30,7 @@
       <div id="sponsors"> 
         <h2>Our Gold Sponsors</h2>
 
-        {% set spon_sec = get_section(path="sponsors/_index.md") %}
+        {% set spon_sec = get_section(path="sponsors/gold/_index.md") %}
         {{ spon_macros::tier(tier="Gold", sponsors=spon_sec.pages) }}
       </div>
       {% endblock %}

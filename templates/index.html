@@ -24,10 +24,11 @@
 <h1>Our Sponsors</h1>
 
 <div id="sponsors"> 
-  {% set spon_sec = get_section(path="sponsors/_index.md") %}
-
-  {{ spon_macros::tier(tier="Gold", sponsors=spon_sec.pages) }}
-  {{ spon_macros::tier(tier="Silver", sponsors=spon_sec.pages) }}
+  
+  {% set gold_spon_sec = get_section(path="sponsors/gold/_index.md") %}
+  {{ spon_macros::tier(tier="Gold", sponsors=gold_spon_sec.pages) }}
+  {% set silver_spon_sec = get_section(path="sponsors/silver/_index.md") %}
+  {{ spon_macros::tier(tier="Silver", sponsors=silver_spon_sec.pages) }}
 </div>
 </div>
 

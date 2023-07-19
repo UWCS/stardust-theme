@@ -1,11 +1,9 @@
 {% macro tier(tier, sponsors, initsize=100) %}
 <div id="{{ tier | lower }}" class="sponsors">
 {% for sponsor in sponsors %}
-{% if sponsor.extra.tier == tier %}
 <a href="{{ sponsor.extra.link }}">
 <img class="white-hover" src="{{ config.base_url | safe }}/{{ sponsor.extra.logo }}" style="height: {{ initsize }}px; max-width: 100%; object-fit: contain">
 </a>
-{% endif %}
 {% endfor %}
 </div>
 {% endmacro tier %}
