@@ -2,7 +2,7 @@
 
 // Blue region dividers
 .blue {
-    @extend .bg-primary, .text-white;
+    @extend .bg-primary, .text-white, .w-100, .vstack, .align-items-center, .px-3;
     position: relative;
     margin-top: 60px;
     margin-bottom: 60px;

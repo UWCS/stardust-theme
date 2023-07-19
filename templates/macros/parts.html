@@ -29,7 +29,7 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
 
 
 {% macro nav() %}
-<nav class="w-100 navbar sticky-top navbar-expand-lg bg-body border-bottom border-primary border-4 {% if config.base_url is containing('draft') %} border-danger {% endif %}" style="min-width: fit-content">
+<nav id="nav" class="{% if config.base_url is containing('draft') %} border-danger {% endif %}">
     <div class="container-lg align-items-center">
       
       <!-- UWCS Logo -->
@@ -94,7 +94,7 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
 
 
 {% macro footer() %}
-<footer class="w-100 container-lg d-flex flex-wrap justify-content-around gap-2 py-3 border-top bg-body">
+<footer id="foot">
     <!-- Centred aligned uwcs logo -->
     <a class="d-flex text-decoration-none" href="https://uwcs.co.uk">
       {{ logos::dots_uwcs() }}

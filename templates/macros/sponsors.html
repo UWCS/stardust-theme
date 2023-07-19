@@ -1,5 +1,5 @@
 {% macro tier(tier, sponsors, initsize=100) %}
-<div id="{{ tier | lower }}" class="col-lg-10 mx-auto gap-3 d-flex flex-wrap justify-content-evenly align-items-center p-3">
+<div id="{{ tier | lower }}" class="sponsors">
 {% for sponsor in sponsors %}
 {% if sponsor.extra.tier == tier %}
 <a href="{{ sponsor.extra.link }}">

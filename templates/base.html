@@ -19,7 +19,7 @@
   {% block breadcrumb %}
   {{ parts::bbreadcrumb() }}
   {% endblock %}
-  <div id="main" class="container-lg w-100 d-flex flex-column flex-md-row p-0 flex-grow-1 gap-3 {% block main_extra %}bg-body px-4{% endblock %}">
+  <div id="main" class="{% block main_extra %}bg-body px-4{% endblock %}">
     {% block outercontents %}
     <article id="content" class="col-md-9 py-4 flex-grow-1">
       {% block header %}<h1>{% if page %} {{ page.title | safe }} {% elif section %} {{ section.title | safe }} {% endif %} </h1>{% endblock %}

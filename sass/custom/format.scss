@@ -17,12 +17,25 @@ p:last-child {
     margin-bottom: 0px;
 }
 
-.navbar {
-    @extend .sticky-top, .navbar-expand-lg, .bg-body, .border-bottom, .border-primary, .border-4;
+#main {
+    @extend .container-lg, .w-100, .d-flex, .flex-column, .flex-md-row, .p-0, .flex-grow-1, .gap-3;
+}
+
+#nav {
+    @extend .w-100, .navbar, .sticky-top, .navbar-expand-lg, .bg-body, .border-bottom, .border-primary, .border-4;
+    min-width: fit-content;
+}
+
+#foot {
+    @extend .w-100, .container-lg, .d-flex, .flex-wrap, .justify-content-around, .gap-2, .py-3, .border-top, .bg-body;
 }
 
 .frame-content {
-    @extend .bg-body, .p-4
+    @extend .bg-body, .p-4;
+}
+
+.sponsors {
+    @extend .col-lg-10, .mx-auto, .gap-3, .d-flex, .flex-wrap, .justify-content-evenly, .align-items-center, .p-3;
 }
 
 body {
