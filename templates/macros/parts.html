@@ -49,6 +49,7 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
           {% set sect = get_section(path='_index.md') %}
           {% for sub in sect.subsections %}
           {% set subsect = get_section(path=sub) %}
+          {% if subsect.extra.hide %}{% continue %}{% endif %}
           <li><a class="nav-link" href="{{ subsect.permalink | safe }}">{{ subsect.title }}</a></li>
           {% endfor %}
 
