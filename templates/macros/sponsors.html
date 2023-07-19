@@ -2,7 +2,7 @@
 <div id="{{ tier | lower }}" class="sponsors">
 {% for sponsor in sponsors %}
 <a href="{{ sponsor.extra.link }}">
-<img class="white-hover" src="{{ config.base_url | safe }}/{{ sponsor.extra.logo }}" style="height: {{ initsize }}px; max-width: 100%; object-fit: contain">
+<img class="white-hover" src="{{ sponsor.permalink | trim_end_matches(pat="/") }}.png" style="height: {{ initsize }}px; max-width: 100%; object-fit: contain">
 </a>
 {% endfor %}
 </div>
