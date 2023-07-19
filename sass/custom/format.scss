@@ -1,0 +1,34 @@
+h1,
+h2,
+#info strong {
+    @extend .fw-semibold;
+}
+
+blockquote,
+pre {
+    @extend .bg-body-tertiary, .border-start, .ms-3, .p-2, .ps-3, .mb-2;
+}
+
+code {
+    @extend .text-body;
+}
+
+p:last-child {
+    margin-bottom: 0px;
+}
+
+.navbar {
+    @extend .sticky-top, .navbar-expand-lg, .bg-body, .border-bottom, .border-primary, .border-4;
+}
+
+.frame-content {
+    @extend .bg-body, .p-4
+}
+
+body {
+    background-image: url("assets/bg-particles.png");
+    background-repeat: repeat;
+    background-position: center top;
+    background-size: 50vmax;
+    z-index: 1;
+}
