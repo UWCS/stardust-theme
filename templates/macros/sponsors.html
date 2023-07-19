@@ -8,7 +8,7 @@
 </div>
 {% endmacro tier %}
 
-{% macro resize(gw=22500, sw=15000) %}
+{% macro resize(gw=22500, sw=15000, trigger=true) %}
 <script>
     function equalize_visual_size(elem_id, area) {
         const elem = document.getElementById(elem_id)
@@ -18,12 +18,13 @@
             s.style.height = `${Math.round(h)}px` 
         }
     }
-    
+    {% if trigger %}
     window.addEventListener('load', function () {
         equalize_visual_size("gold", {{ gw }});
         {% if sw != 0 %}
         equalize_visual_size("silver", {{ sw }});
         {% endif %}
     })
+    {% endif %}
 </script>
 {% endmacro resize %}
