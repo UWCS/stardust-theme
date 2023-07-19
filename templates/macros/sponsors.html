@@ -1,7 +1,7 @@
 {% macro tier(tier, sponsors, initsize=100) %}
 <div id="{{ tier | lower }}" class="sponsors">
 {% for sponsor in sponsors %}
-<a href="{{ sponsor.extra.link }}">
+<a href="{{ sponsor.permalink }}">
 <img class="white-hover" src="{{ sponsor.permalink | trim_end_matches(pat="/") }}.png" style="height: {{ initsize }}px; max-width: 100%; object-fit: contain">
 </a>
 {% endfor %}
