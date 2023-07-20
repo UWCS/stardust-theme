@@ -17,6 +17,10 @@ p:last-child {
     margin-bottom: 0px;
 }
 
+table {
+    @extend .table;
+}
+
 #main {
     @extend .container-lg, .w-100, .d-flex, .flex-column, .flex-md-row, .p-0, .flex-grow-1, .gap-3;
 }
@@ -36,6 +40,11 @@ p:last-child {
 
 .sponsors {
     @extend .col-lg-10, .gap-3, .d-flex, .flex-wrap, .justify-content-evenly, .align-items-center, .p-3;
+}
+
+img,
+svg {
+    max-width: 100%;
 }
 
 body {

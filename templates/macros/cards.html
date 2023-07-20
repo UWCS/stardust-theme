@@ -28,5 +28,5 @@
 {% set summ = page.content %}
 {% endif %}
 
-{{ cards::custom_card(title=page.title, date=page.date, summary=summ, link=page.permalink, sum_len=sum_len, title_weight=title_weight) }}
+{{ cards::custom_card(title=page.title, date=page.date | default(value=""), summary=summ, link=page.permalink, sum_len=sum_len, title_weight=title_weight) }}
 {% endmacro news_card %}
