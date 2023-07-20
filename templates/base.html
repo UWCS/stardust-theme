@@ -25,7 +25,7 @@
       {% block header %}<h1>{% if page %} {{ page.title | safe }} {% elif section %} {{ section.title | safe }} {% endif %} </h1>{% endblock %}
       {% block content %}{% endblock %}
     </article>
-    <aside class="col-md-3 flex-grow-1 py-4">
+    <aside id="sidebar" class="col-md-3 flex-grow-1 py-4 pe-4">
       {% block sidebar %}
       <div id="sponsors"> 
         <h2>Our Gold Sponsors</h2>

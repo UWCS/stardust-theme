@@ -23,7 +23,7 @@
 <div class="w-100 vstack align-items-center my-5 pb-5">
 <h1>Our Sponsors</h1>
 
-<div id="sponsors"> 
+<div id="sponsors" class="col-lg-10"> 
   
   {% set gold_spon_sec = get_section(path="sponsors/gold/_index.md") %}
   {{ spon_macros::tier(tier="Gold", sponsors=gold_spon_sec.pages) }}

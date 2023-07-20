@@ -39,12 +39,21 @@ table {
 }
 
 .sponsors {
-    @extend .col-lg-10, .gap-3, .d-flex, .flex-wrap, .justify-content-evenly, .align-items-center, .p-3;
+    @extend .w-100, .gap-3, .d-flex, .flex-wrap, .justify-content-evenly, .align-items-center, .p-3;
 }
 
 #content>p>img,
 #content>p>svg {
     max-width: 100%;
+}
+
+#sidebar {
+
+    & h1,
+    & h2,
+    & h3 {
+        text-align: center;
+    }
 }
 
 body {
