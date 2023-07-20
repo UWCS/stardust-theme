@@ -42,8 +42,8 @@ table {
     @extend .col-lg-10, .gap-3, .d-flex, .flex-wrap, .justify-content-evenly, .align-items-center, .p-3;
 }
 
-img,
-svg {
+#content>p>img,
+#content>p>svg {
     max-width: 100%;
 }
 
