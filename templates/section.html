@@ -17,6 +17,15 @@
 {% set pages = term.pages %}
 {% endif %}
 
+{% if section.subsections %}
+<div class="posts p-2 gap-3 vstack">
+    {% for s in section.subsections %}
+    {% set ss = get_section(path=s) %}
+      <!-- Card for each page -->
+      {{ cards::news_card(page=ss, sum_len=250) }}
+    {% endfor %}
+</div>
+{%endif%}
 {% if pages %}
 <div class="posts p-2 gap-3 vstack">
     {% for page in pages %}
