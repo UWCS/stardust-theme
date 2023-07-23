@@ -1,12 +1,18 @@
 {% import "macros/sponsors.html" as spon_macros %}
 {% import "macros/parts.html" as parts %}
 
+{% if page %}  {% set resource = page %}
+{% elif section %} {% set resource = section %}
+{% elif term %} {% set resource = term %}
+{% elif taxonomy %} {% set resource = taxonomy %}
+{% endif %}
+
 <!DOCTYPE html>
 <html>
 
 <head>
   <meta charset="utf-8"/>
-  <title>{% block title %}{% endblock %} - UWCS</title>
+  <title>{% block title %}{{ resource.title | striptags | safe }}{% endblock %} - UWCS</title>
   {% block head %}
   {{ parts::head() }}
   {% endblock %}
@@ -22,7 +28,7 @@
   <div id="main" class="{% block main_extra %}bg-body px-4{% endblock %}">
     {% block outercontents %}
     <article id="content" class="col-md-9 p-4 flex-grow-1">
-      {% block header %}<h1>{% if page %} {{ page.title | safe }} {% elif section %} {{ section.title | safe }} {% endif %} </h1>{% endblock %}
+      {% block header %}<h1>{{ resource.title | safe }}</h1>{% endblock %}
       {% block content %}{% endblock %}
     </article>
     <aside id="sidebar" class="col-md-3 flex-grow-1 py-4 pe-4">

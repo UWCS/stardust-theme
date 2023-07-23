@@ -2,19 +2,16 @@
 
 {% import "macros/cards.html" as cards %}
 
-{% block title %}{{ section.title }}{% endblock title %}
 {% block content %}
 
-{% block secbody %}{{ section.content | safe}}{% endblock %}
+{% block secbody %}{{ resource.content | safe}}{% endblock %}
 
 <hr>
 <!-- Use paginator pages if exists -->
 {% if paginator %}
 {% set pages = paginator.pages %}
-{% elif section.pages %}
-{% set pages = section.pages %}
-{% elif term.pages %}
-{% set pages = term.pages %}
+{% elif resource.pages %}
+{% set pages = resource.pages %}
 {% endif %}
 
 {% block pre_pages %}{% endblock %}
