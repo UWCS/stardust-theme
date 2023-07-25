@@ -7,12 +7,14 @@
 {% block secbody %}{{ resource.content | safe}}{% endblock %}
 
 <hr>
+{% block get_pages %}
 <!-- Use paginator pages if exists -->
 {% if paginator %}
 {% set pages = paginator.pages %}
 {% elif resource.pages %}
 {% set pages = resource.pages %}
 {% endif %}
+{% endblock %}
 
 {% block pre_pages %}{% endblock %}
 {% if pages %}
