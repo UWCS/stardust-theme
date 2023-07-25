@@ -1,0 +1,25 @@
+.event-circle {
+    @extend .m-2, .text-center, .fs-5;
+    width: 11em;
+    font-family: "Montserrat";
+    color: white;
+    aspect-ratio: 1 / 1;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    border-radius: 1000000px;
+    line-height: 110%;
+
+    & .event-icon {
+        @extend .display-1;
+    }
+
+    & .event-title {
+        @extend .fw-semibold, .mx-3, .mb-1, .mt-2, .two-line-clamp;
+    }
+
+    & .event-extras {
+        @extend .fw-medium, .mx-4, .two-line-clamp;
+        font-size: 0.85em;
+    }
+}
