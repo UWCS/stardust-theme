@@ -1,4 +1,4 @@
-{% macro custom_card(title, subtitle="", date="", summary="", link="", link_text="Read more >>", sum_len=125, add_card_classes="", add_card_style="") %}
+{% macro custom_card(title, subtitle="", date="", summary="", link="", link_text="Read more >>", sum_len=125, add_card_classes="", add_card_style="", date_format="%d %B %Y") %}
 <div class="card w-100 col-lg link-card {{ add_card_classes | safe }}" {{ add_card_style | safe }}>
   <div class="card-body">
     <h5 class="card-title two-line-clamp">{{ title | safe }}</h5>
@@ -6,7 +6,7 @@
     <h6 class="card-subtitle mb-2 text-body-secondary">{{ subtitle | safe }} </h6>
     {% endif %}
     {% if date %}
-    <h6 class="card-subtitle mb-2 text-body-secondary">{{ date | date(format="%d %B %Y") }} </h6>
+    <h6 class="card-subtitle mb-2 text-body-secondary">{{ date | date(format=date_format) }} </h6>
     {% endif %}
     {% if summary %}
     <p class="card-text four-line-clamp m-0">

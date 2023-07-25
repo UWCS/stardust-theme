@@ -11,15 +11,22 @@
     line-height: 110%;
 
     & .event-icon {
-        @extend .display-1;
+        font-size: 4em;
     }
 
     & .event-title {
-        @extend .fw-semibold, .mx-3, .mb-1, .mt-2, .two-line-clamp;
+        @extend .fw-semibold, .two-line-clamp;
+        font-size: 1.1em;
+        margin-left: 1em;
+        margin-right: 1em;
+        margin-bottom: 0.25em;
+        margin-top: 0.4em;
     }
 
     & .event-extras {
-        @extend .fw-medium, .mx-4, .two-line-clamp;
-        font-size: 0.85em;
+        @extend .fw-medium, .three-line-clamp;
+        font-size: 0.95em;
+        margin-left: 2em;
+        margin-right: 2em;
     }
 }
