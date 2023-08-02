@@ -1,6 +1,12 @@
+@import "../bootstrap/bootstrap.scss";
+
+$circle-width: 11em;
+$circle-pad: 1em;
+$circle-gap: 1em;
+
 .event-circle {
     @extend .text-center;
-    width: 11em;
+    width: $circle-width;
     font-family: "Montserrat";
     color: white;
     aspect-ratio: 1 / 1;
@@ -29,4 +35,52 @@
         margin-left: 2em;
         margin-right: 2em;
     }
+}
+
+.day {
+    gap: $circle-gap;
+}
+
+.event-outer {
+    padding: $circle-pad;
+}
+
+.events {
+    --ecols: 3;
+    display: grid;
+    gap: $circle-gap;
+    grid-template-columns: repeat(var(--ecols), max-content);
+}
+
+// Day with two elements
+.event-outer[data-event-count="2"] {
+    grid-column: span 2;
+}
+
+// Day with three elements
+.event-outer[data-event-count="3"] {
+    grid-column: span 3;
+}
+
+// Day with four elements
+.event-outer[data-event-count="4"] {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+// Good luck after four in a day
+
+
+@include media-breakpoint-down(sm) {
+    .events {
+        --ecols: 1 !important;
+    }
+
+    .event-outer {
+        grid-column: span 1 !important;
+    }
+}
+
+.event-outer:has(>div.day) {
+    background-color: red;
 }
