@@ -3,6 +3,12 @@
 $circle-width: 11em;
 $circle-pad: 1em;
 $circle-gap: 1em;
+$dist-circles: $circle-pad + $circle-gap + $circle-pad;
+
+@function day-width($num) {
+    @debug "#{$num} cw #{$num * $circle-width} dists #{max(0, $num - 1) * $dist-circles} p #{$circle-pad + $circle-pad}";
+    @return $circle-pad +($num * $circle-width)+(max(0, $num - 1) * $dist-circles)+$circle-pad;
+}
 
 .event-circle {
     @extend .text-center;
@@ -37,8 +43,12 @@ $circle-gap: 1em;
     }
 }
 
+.week {
+    container-type: inline-size;
+}
+
 .day {
-    gap: $circle-gap;
+    gap: $dist-circles;
 }
 
 .event-outer {
@@ -70,17 +80,30 @@ $circle-gap: 1em;
 
 // Good luck after four in a day
 
-
-@include media-breakpoint-down(sm) {
+@container (width < #{day-width(2)}) {
     .events {
         --ecols: 1 !important;
     }
+}
 
-    .event-outer {
-        grid-column: span 1 !important;
+@container (width < #{day-width(3)}) {
+    .events {
+        --ecols: 2 !important;
     }
 }
 
-.event-outer:has(>div.day) {
-    background-color: red;
-}
+// @container (width < #{day-width(3)}) {
+//     .events {
+//         --ecols: 3 !important;
+//     }
+// }
+
+// @include media-breakpoint-down(sm) {
+//     .events {
+//         --ecols: 1 !important;
+//     }
+
+//     .event-outer {
+//         grid-column: span 1 !important;
+//     }
+// }
