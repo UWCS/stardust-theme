@@ -49,6 +49,9 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
 
 .day {
     gap: $dist-circles;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .event-outer {
@@ -59,7 +62,7 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
     --ecols: 3;
     display: grid;
     gap: $circle-gap;
-    grid-template-columns: repeat(var(--ecols), max-content);
+    grid-template-columns: repeat(var(--ecols), day-width(1));
 }
 
 // Day with two elements
@@ -80,30 +83,23 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
 
 // Good luck after four in a day
 
-@container (width < #{day-width(2)}) {
-    .events {
-        --ecols: 1 !important;
-    }
-}
-
-@container (width < #{day-width(3)}) {
+@container (max-width: #{day-width(3)}) {
     .events {
         --ecols: 2 !important;
     }
 }
 
-// @container (width < #{day-width(3)}) {
-//     .events {
-//         --ecols: 3 !important;
-//     }
-// }
+@container (max-width: #{day-width(2)}) {
+    .events {
+        --ecols: 1 !important;
+    }
 
-// @include media-breakpoint-down(sm) {
-//     .events {
-//         --ecols: 1 !important;
-//     }
+    .event-outer {
+        grid-column: span 1 !important;
+    }
 
-//     .event-outer {
-//         grid-column: span 1 !important;
-//     }
-// }
+    .event-outer[data-event-count="3"] {
+        grid-column: span 2 !important;
+        grid-row: span 2 !important;
+    }
+}
