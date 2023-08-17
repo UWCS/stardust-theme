@@ -1,0 +1,12 @@
+{% macro date(date) %}
+{% if date | date(format="%Y") == now() | date(format="%Y") %} {{ date | date(format="%a %d %h") }}
+{% else %} {{ date | date(format="%a %d %h") }}
+{% endif %}
+{% endmacro date %}
+
+{% macro time(time) %}
+{% if time | date(format="%H:%M") == "00:00" %} 
+{% elif time | date(format="%M") == "00" %} {{ time | date(format="%I%P") }}
+{% else %} {{ time | date(format="%I:%M%P") }}
+{% endif %}
+{% endmacro time %}

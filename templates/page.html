@@ -1,9 +1,10 @@
 {% extends "base.html" %}
+{% import "macros/formatters.html" as formatters %}
 {% block title %}{{ resource.title }}{% endblock title %}
 {% block content %}
 
 {% if resource.date %}
-  <b>{{ resource.date | date(format="%d %B %Y") }}</b> 
+  {{ formatters::date(date=resource.date) }}
 {% endif %}
 {% if resource.taxonomies %}
   {% for tax, terms in resource.taxonomies %}
