@@ -1,4 +1,4 @@
-a[href^="https://"]:not([href*="uwcs.co.uk"])::after,
+a[href^="https://"]:not([href*="uwcs.co.uk"], [href*="uwcs.uk"], :has(i, img, svg, div))::after,
 a.ext::after {
     content: "";
     width: 0.6em;
