@@ -6,7 +6,6 @@ $circle-gap: 1em;
 $dist-circles: $circle-pad + $circle-gap + $circle-pad;
 
 @function day-width($num) {
-    @debug "#{$num} cw #{$num * $circle-width} dists #{max(0, $num - 1) * $dist-circles} p #{$circle-pad + $circle-pad}";
     @return $circle-pad +($num * $circle-width)+(max(0, $num - 1) * $dist-circles)+$circle-pad;
 }
 
@@ -83,23 +82,53 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
 
 // Good luck after four in a day
 
+.day-3-1x2 {
+    grid-column: span 1;
+    grid-row: span 2;
+}
+
+.day-3-2x2 {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+.day-3-1x3 {
+    grid-column: span 1;
+    grid-row: span 3;
+}
+
+.day-3-2x3 {
+    grid-column: span 2;
+    grid-row: span 3;
+}
+
 @container (max-width: #{day-width(3)}) {
     .events {
-        --ecols: 2 !important;
+        --ecols: 2;
+    }
+
+    .event-outer[data-event-count="3"] {
+        grid-column: span 1;
+        grid-row: span 3;
+    }
+
+    .day-2-1x2 {
+        grid-column: span 1;
+        grid-row: span 2;
+    }
+
+    .day-2-2x2 {
+        grid-column: span 2;
+        grid-row: span 2;
     }
 }
 
 @container (max-width: #{day-width(2)}) {
     .events {
-        --ecols: 1 !important;
+        --ecols: 1;
     }
 
     .event-outer {
         grid-column: span 1 !important;
-    }
-
-    .event-outer[data-event-count="3"] {
-        grid-column: span 2 !important;
-        grid-row: span 2 !important;
     }
 }
