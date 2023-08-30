@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% import "macros/front.html" as front %}
-{% import "macros/sponsors.html" as spon_macros %}
+{% import "macros/sponsors.html" as sponsors %}
 {% import "macros/cards.html" as cards %}
 {% import "macros/socials.html" as socials %}
 
@@ -39,9 +39,9 @@
 <div id="sponsors" class="col-lg-10"> 
   
   {% set gold_spon_sec = get_section(path="sponsors/gold/_index.md") %}
-  {{ spon_macros::tier(tier="Gold", sponsors=gold_spon_sec.pages, area=22500) }}
+  {{ sponsors::tier(tier="Gold", sponsors=gold_spon_sec.pages, area=22500) }}
   {% set silver_spon_sec = get_section(path="sponsors/silver/_index.md") %}
-  {{ spon_macros::tier(tier="Silver", sponsors=silver_spon_sec.pages, area=15000) }}
+  {{ sponsors::tier(tier="Silver", sponsors=silver_spon_sec.pages, area=15000) }}
 </div>
 </div>
 

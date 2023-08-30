@@ -1,4 +1,4 @@
-{% import "macros/sponsors.html" as spon_macros %}
+{% import "macros/sponsors.html" as sponsors %}
 {% import "macros/parts.html" as parts %}
 
 {% if page %}  {% set resource = page %}
@@ -37,7 +37,7 @@
         <h2>Our Gold Sponsors</h2>
 
         {% set spon_sec = get_section(path="sponsors/gold/_index.md") %}
-        {{ spon_macros::tier(tier="Gold", sponsors=spon_sec.pages, area=110*100) }}
+        {{ sponsors::tier(tier="Gold", sponsors=spon_sec.pages, area=110*100) }}
       </div>
       {% endblock %}
     </aside>
