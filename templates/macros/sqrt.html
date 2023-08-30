@@ -28,3 +28,14 @@
   {%- set frac = (x - integer * integer) / (2 * integer) -%}
 {{ integer + frac }}
 {%- endmacro -%}
+
+
+{%- macro equiv_vis_size(img_path, area) -%}
+  {%- set meta = get_image_metadata(path=img_path) -%}
+  {%- set currarea = meta.width * meta.height -%}
+  {%- set sqh = meta.height * meta.height * area / currarea -%}
+  {%- set height = sqrt::sqrt(x=sqh) -%}
+  {%- set sqw = meta.width * meta.width * area / currarea -%}
+  {%- set width = sqrt::sqrt(x=sqw) -%}
+  width={{ width }} height={{ height }}
+{%- endmacro -%}

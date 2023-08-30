@@ -1,8 +1,17 @@
-{% macro tier(tier, sponsors, initsize=100) %}
+{% import "macros/sqrt.html" as sqrt %}
+{% macro tier(tier, sponsors, initsize=100, area=22500) %}
+
 <div id="{{ tier | lower }}" class="sponsors">
 {% for sponsor in sponsors %}
+
+<script>
+    console.log("%j", {{ sponsor }});
+  </script>
 <a href="{{ sponsor.permalink }}">
-<img class="white-hover" src="{{ sponsor.permalink | trim_end_matches(pat="/") }}.png" style="height: {{ initsize }}px; max-width: 100%; object-fit: contain">
+{% set path = sponsor.path | trim_end_matches(pat="/") %}
+{% set path = path ~ ".png" %}
+
+<img class="white-hover" src="{{ path }}" {{ sqrt::equiv_vis_size(img_path=path, area=area) }}  style="max-width: 100%; object-fit: contain">
 </a>
 {% endfor %}
 </div>
