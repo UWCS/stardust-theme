@@ -67,11 +67,13 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
 // Day with two elements
 .event-outer[data-event-count="2"] {
     grid-column: span 2;
+    grid-row: span 1;
 }
 
 // Day with three elements
 .event-outer[data-event-count="3"] {
     grid-column: span 3;
+    grid-row: span 1;
 }
 
 // Day with four elements
@@ -82,24 +84,26 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
 
 // Good luck after four in a day
 
-.day-3-1x2 {
-    grid-column: span 1;
-    grid-row: span 2;
-}
+@container (min-width: #{day-width(3)}) {
+    .day-3-1x2 {
+        grid-column: span 1 !important;
+        grid-row: span 2 !important;
+    }
 
-.day-3-2x2 {
-    grid-column: span 2;
-    grid-row: span 2;
-}
+    .day-3-1x3 {
+        grid-column: span 1 !important;
+        grid-row: span 3 !important;
+    }
 
-.day-3-1x3 {
-    grid-column: span 1;
-    grid-row: span 3;
-}
+    .day-3-2x2 {
+        grid-column: span 2 !important;
+        grid-row: span 2 !important;
+    }
 
-.day-3-2x3 {
-    grid-column: span 2;
-    grid-row: span 3;
+    .day-3-2x3 {
+        grid-column: span 2 !important;
+        grid-row: span 3 !important;
+    }
 }
 
 @container (max-width: #{day-width(3)}) {
@@ -130,5 +134,6 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
 
     .event-outer {
         grid-column: span 1 !important;
+        grid-row: span 1 !important;
     }
 }
