@@ -19,10 +19,18 @@
 {% block pre_pages %}{% endblock %}
 {% if pages %}
 <div class="posts p-2 gap-3 vstack">
-    {% for page in pages %}
+  {% if not paginator and resource.subsections %}
+    {% for ss in resource.subsections %}
+      {% set page = get_section(path=ss) %}
       <!-- Card for each page -->
       {{ cards::news_card(page=page, sum_len=250) }}
     {% endfor %}
+  {% endif %}
+  
+  {% for page in pages %}
+    <!-- Card for each page -->
+    {{ cards::news_card(page=page, sum_len=250) }}
+  {% endfor %}
 </div>
 {%endif%}
 
