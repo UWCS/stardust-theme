@@ -2,6 +2,7 @@
 {% import "macros/front.html" as front %}
 {% import "macros/sponsors.html" as spon_macros %}
 {% import "macros/cards.html" as cards %}
+{% import "macros/socials.html" as socials %}
 
 {% block head %}
 {{ super() }}
@@ -18,6 +19,18 @@
 {{ front::hero() }}
 
 {{ section.content | safe}}
+
+{# Socials #}
+<div class="w-100 vstack align-items-center my-5 pt-5">
+  <h1>Our Socials</h1>
+  
+  <div id="socials" class="mb-5 col-md-11 gap-3 row justify-content-evenly mx-4">
+  {% set socials = get_section(path="socials/_index.md") %}
+  {% for social in socials.pages %}
+    {{ socials::block(social=social) }}
+  {% endfor %}
+  </div>
+</div>
 
 {# Sponsors #}
 <div class="w-100 vstack align-items-center my-5 pb-5">
