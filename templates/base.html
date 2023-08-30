@@ -17,6 +17,9 @@
   {{ parts::head() }}
   {% endblock %}
 </head>
+<script>
+  console.log("%j", {{ __tera_context }});
+</script>
 <body class="min-vh-100 viewport-width-100 vstack">
   {{ parts::nav() }}
   {% block breadcrumb %}
@@ -28,17 +31,16 @@
       {% block header %}<h1>{{ resource.title | safe }}</h1>{% endblock %}
       {% block content %}{% endblock %}
     </article>
-    <aside id="sidebar" class="col-md-3 flex-grow-1 py-4 pe-4">
+    <aside id="sidebar" class="col-md-3 flex-grow-1 py-4 pe-md-4">
       {% block sidebar %}
       <div id="sponsors"> 
         <h2>Our Gold Sponsors</h2>
 
         {% set spon_sec = get_section(path="sponsors/gold/_index.md") %}
-        {{ spon_macros::tier(tier="Gold", sponsors=spon_sec.pages) }}
+        {{ spon_macros::tier(tier="Gold", sponsors=spon_sec.pages, area=110*100) }}
       </div>
       {% endblock %}
     </aside>
-    {{ spon_macros::resize(gw=110*100, sw=0) }}
     {% endblock %}
   </div>
   {{ parts::footer() }}
