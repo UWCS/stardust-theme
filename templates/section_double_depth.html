@@ -9,12 +9,14 @@
 
 <hr>
 <div class="posts p-2 gap-3 vstack">
-    {% for sub in section.subsections %}
+  {% for sub in section.subsections %}
     {% set subsect = get_section(path=sub) %}
-        {% for page in subsect.pages %}
-        <!-- Card for each page -->
+    {% if subsect.pages %}
+      <h2><a class="text-decoration-none text-body" href="{{ subsect.permalink }}">{{ subsect.title }}</a></h2>
+      {% for page in subsect.pages %}
         {{ cards::news_card(page=page, sum_len=250) }}
-        {% endfor %}
+      {% endfor %}
+    {% endif %}
     {% endfor %}
 </div>
 
