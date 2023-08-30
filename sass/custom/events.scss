@@ -48,6 +48,7 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
 
 .day {
     gap: $dist-circles;
+    row-gap: $dist-circles + 2 * $circle-pad;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
