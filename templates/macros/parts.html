@@ -29,7 +29,7 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
 
 
 {% macro nav() %}
-<nav id="nav" class="{% if config.base_url is containing('draft') %} border-danger {% endif %}">
+<nav id="nav" {% if config.base_url is containing('draft') %}style="border-color: var(--bs-danger) !important"{% endif %}>
     <div class="container-lg align-items-center">
       
       <!-- UWCS Logo -->
