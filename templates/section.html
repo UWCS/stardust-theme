@@ -17,22 +17,25 @@
 {% endblock %}
 
 {% block pre_pages %}{% endblock %}
-{% if pages %}
+
 <div class="posts p-2 gap-3 vstack">
-  {% if not paginator and resource.subsections %}
-    {% for ss in resource.subsections %}
-      {% set page = get_section(path=ss) %}
-      <!-- Card for each page -->
-      {{ cards::news_card(page=page, sum_len=250) }}
-    {% endfor %}
-  {% endif %}
+{# List subsections too? #}
+{% if resource.subsections and not paginator  %}
+  {% if resource.extra.reverse_subsections %}{% set subsec = resource.subsections | reverse %}
+  {% else %}{% set subsec = resource.subsections %} {% endif %}
+  {% for ss in subsec%}
+  {% set page = get_section(path=ss) %}
+  {{ cards::news_card(page=page, sum_len=250) }}
+  {% endfor %}
+{% endif %}
   
+{% if pages %}
+  {# Main pages #}
   {% for page in pages %}
-    <!-- Card for each page -->
     {{ cards::news_card(page=page, sum_len=250) }}
   {% endfor %}
+  {%endif%}
 </div>
-{%endif%}
 
 {% if paginator %}
 {% include "parts/pagination.html" %}
