@@ -34,8 +34,7 @@
   {%- set meta = get_image_metadata(path=img_path) -%}
   {%- set currarea = meta.width * meta.height -%}
   {%- set sqh = meta.height * meta.height * area / currarea -%}
-  {%- set height = sqrt::sqrt(x=sqh) -%}
-  {%- set sqw = meta.width * meta.width * area / currarea -%}
-  {%- set width = sqrt::sqrt(x=sqw) -%}
+  {%- set height = sqrt::sqrt(x=sqh) | int -%}
+  {%- set width = currarea * height / (meta.height * meta.height) | int -%}
   width={{ width }} height={{ height }}
 {%- endmacro -%}
