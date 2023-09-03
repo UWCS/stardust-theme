@@ -9,6 +9,15 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
     @return $circle-pad +($num * $circle-width)+(max(0, $num - 1) * $dist-circles)+$circle-pad;
 }
 
+#events-block {
+    display: flex;
+    flex-direction: column;
+}
+
+#events-block.reverse {
+    flex-direction: column-reverse;
+}
+
 .event-circle {
     @extend .text-center;
     width: $circle-width;

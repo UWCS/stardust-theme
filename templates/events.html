@@ -70,8 +70,27 @@ Variables:
 {% set term_start_week = 0 %}
 {% set days_events = [] %}
 
+{% set now = now() %}
+{% set this_year = now | date(format="%Y") | int %}
+{% set this_week = now | date(format="%W") | int %}
+{% set last_week = this_week - 1 %}
+
 {# Output each event #}
-{% for e in section.pages | reverse %}
+{% set events = get_section(path="events/_index.md") %}
+<div id="events-block"{% if resource.extra.archive %} class="reverse"{% endif %}>
+{% for e in events.pages | reverse %}
+
+  {# Hide past/future events dependent on if in archive #}
+  {% set e_year =  e.date | date(format="%Y") | int %}
+  {% set e_week = e.date | date(format="%W") | int %}
+
+  {% if not resource.extra.archive %}
+    {% if e_year < this_year %} {% continue %} {% endif %}
+    {% if e_year == this_year and e_week < this_week %} {% continue %} {% endif %}
+  {% else %}
+    {% if e_year > this_year %} {% continue %} {% endif %}
+    {% if e_year == this_year and e_week > this_week %} {% continue %} {% endif %}
+  {% endif %}
 
   {% set e_day = e.date | date(format="%A") %}
   {% if e_day != prev_day %}
@@ -136,8 +155,11 @@ Variables:
 {% endfor %}
 </ul>
 
-{{ events::end_week() }}
-{{ events::end_term() }}
+{% if started %}
+  {{ events::end_week() }}
+  {{ events::end_term() }}
+{% endif %}
+</div>
 
 <script>
   combs = {
