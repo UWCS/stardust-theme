@@ -92,7 +92,7 @@ Variables:
     {% if e_year == this_year and e_week > this_week %} {% continue %} {% endif %}
   {% endif %}
 
-  {% set e_day = e.date | date(format="%A") %}
+  {% set e_day = e.date | date(format="%Y %W %A") %}
   {% if e_day != prev_day %}
     {# Output previous day's content #}
     {% if days_events %}
@@ -156,6 +156,9 @@ Variables:
 </ul>
 
 {% if started %}
+  {% if days_events %}
+    {{ events::day(events=days_events) }}
+  {% endif %}
   {{ events::end_week() }}
   {{ events::end_term() }}
 {% endif %}
