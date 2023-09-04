@@ -21,9 +21,7 @@
 
     <h4>
       <i class="bi bi-clock"></i>
-      {% if resource.extra.time %} {{ resource.extra.time }}
-      {% else %} {{ formatters::time(time=resource.date) }}
-      {% endif %}
+      {{ formatters::event_time_range(e=resource) }}
       {{ formatters::date(date=resource.date) }}
     </h4>
     <h4>

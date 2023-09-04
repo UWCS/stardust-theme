@@ -14,9 +14,7 @@
 <b class="event-title">{{ e.title }}</b>
 <span class="event-extras">
   {{ e.extra.location }}<br>
-  {% if e.extra.time %} {{ e.extra.time }}
-  {% else %} {{ formatters::time(time=e.date) }}
-  {% endif %}
+  {{ formatters::event_time(e=e) }}
 </span>
 </div>
 </a>

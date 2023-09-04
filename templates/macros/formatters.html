@@ -6,7 +6,16 @@
 
 {% macro time(time) %}
 {% if time | date(format="%H:%M") == "00:00" %} 
-{% elif time | date(format="%M") == "00" %} {{ time | date(format="%I%P") }}
-{% else %} {{ time | date(format="%I:%M%P") }}
+{% elif time | date(format="%M") == "00" %} {{ time | date(format="%l%P") }}
+{% else %} {{ time | date(format="%l:%M%P") }}
 {% endif %}
 {% endmacro time %}
+
+{% macro event_time(e) %}
+{%- if e.extra.time -%}   
+  {%- set parsed = e.date ~ " " ~ e.extra.time | parse_date -%}
+{%- else -%} {%- set parsed = e.date -%}
+{%- endif -%}
+{{ formatters::time(time=parsed) }}
+{%- endmacro event_time %}
+
