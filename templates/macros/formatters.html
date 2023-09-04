@@ -31,27 +31,55 @@
 {% endmacro event_time %}
 
 
-{% macro event_date_range(e) %}
+{%- macro event_date_range(e) -%}
 {%- set diff_date = e.extra.end_date and e.date != e.extra.end_date -%}
 {%- set diff_time = e.extra.end_time and e.extra.end_time != e.extra.time -%}
 
+{%- set start_date = formatters::event_start_date(e=e) -%}
+{%- set end_date = formatters::event_end_date(e=e) -%}
+
 {# Start of date range #}
-{{ formatters::event_time(e=e) }}
+{{ formatters::time(time=start_date) }}
 {%- if diff_date -%}
   {# Output start date if end_date is different #}
-  {{ formatters::date(date=e.date) }}
+  {{ formatters::date(date=start_date) }}
 {%- endif -%}
 
 {# Output dash if necessary #}
-{%- if diff_time or diff_date -%}-{%- endif -%}
+{%- if diff_time or diff_date -%}{{ " - " }}{%- endif -%}
 {# Output end time & date if different #}
 {%- if diff_time -%}
-  {%- set parsed = e.date ~ " " ~ e.extra.end_time | parse_date -%}
-  {{ formatters::time(time=parsed) }}
+  {{ formatters::time(time=end_date) }}
 {%- endif -%}
+{{ " " }}
 {%- if diff_date -%}
-  {{ formatters::date(date=e.extra.end_date) }}
+  {{ formatters::date(date=end_date) }}
 {%- else -%}
-  {{ formatters::date(date=e.date) }}
+  {{ formatters::date(date=start_date) }}
 {%- endif -%}
-{% endmacro event_time %}
+{%- endmacro event_time -%}
+
+
+{%- macro event_start_date(e) -%}
+{%- set date = e.date ~ " " ~ e.extra.time -%}
+{%- set parsed = date | parse_date -%}
+{{ parsed }}
+{%- endmacro event_time -%}
+
+
+{%- macro event_end_date(e) -%}
+{%- set diff_date = e.extra.end_date and e.date != e.extra.end_date -%}
+{%- set diff_time = e.extra.end_time and e.extra.end_time != e.extra.time -%}
+
+{%- if diff_date -%} {%- set date = e.extra.end_date -%}
+{%- else -%} {%- set date = e.date -%}
+{%- endif -%}
+
+{%- if diff_time -%} {%- set time = e.extra.end_time -%}
+{%- else -%} {%- set time = e.extra.time -%}
+{%- endif -%}
+
+{%- set date = date ~ " " ~ time -%}
+{%- set parsed = date | parse_date -%}
+{{ parsed }}
+{%- endmacro event_time -%}
