@@ -49,7 +49,7 @@
     <h4 class="fw-semibold">{{ date | date(format="%A") }}</h4>
   {% endif %}
   <div class="day">
-    {% for e in events %}
+    {% for e in events | sort(attribute="extra.time") %}
       {{ events::event_circle(e=e) }}
     {% endfor %}
   </div>

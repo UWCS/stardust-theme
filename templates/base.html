@@ -13,9 +13,13 @@
 <head>
   <meta charset="utf-8"/>
   <title>{% block title %}{{ resource.title | striptags | safe }}{% endblock %} - UWCS</title>
-  {% block head %}
-  {{ parts::head() }}
+  {% block rss %}
+    <link rel="alternate" type="application/atom+xml" title="RSS" href="{{ get_url(path="atom.xml", trailing_slash=false) }}">
   {% endblock %}
+  {% block head %}
+    {{ parts::head() }}
+  {% endblock %}
+  
 </head>
 <script>
   console.log("%j", {{ __tera_context }});
