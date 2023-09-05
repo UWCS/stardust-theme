@@ -8,19 +8,17 @@ METHOD:PUBLISH
 X-WR-CALDESC:Events hosted by the University of Warwick Computing Society
 X-WR-CALNAME:UWCS Events
 X-WR-TIMEZONE:GMT
-{% for page in events.pages %}
+{%- for page in events.pages %}
 BEGIN:VEVENT
 SUMMARY:{{ page.title }}
 DTSTART;VALUE=DATE-TIME:{{ formatters::event_start_date(e=page) | date(format="%Y%m%dT%H%M%S") }}
 DTEND;VALUE=DATE-TIME:{{ formatters::event_end_date(e=page) | date(format="%Y%m%dT%H%M%S") }}
 DTSTAMP;VALUE=DATE-TIME:{% if page.updated %}{{ page.updated | date(format="%Y%m%dT%H%M%S") }}{% else %}{{ page.date | date(format="%Y%m%dT%H%M%S") }}{% endif %}
 UID:{{ page.permalink }}
-CATEGORIES:
-DESCRIPTION:{% if page.summary %}{{ page.summary }}{% else %}{{ page.content | striptags | truncate(length=250) }}{% endif %}
-{% if page.extra.location -%}
-    LOCATION:{{ page.extra.location }}
-{% endif -%}
+CATEGORIES:{% if page.taxonomies %}{% for tax, terms in page.taxonomies %}{% for term in terms %}{{ term }},{% endfor %}{% endfor %}{% endif %}
+DESCRIPTION:{% if page.summary %}{{ page.summary }}{% else %}{{ page.content | striptags | truncate(length=250) | trim }}{% endif %}
+LOCATION:{% if page.extra.location %}{{ page.extra.location }}{% endif %}
 URL:{{ page.permalink }}
 END:VEVENT
-{% endfor %}
+{%- endfor -%}
 END:VCALENDAR
