@@ -20,5 +20,5 @@ DESCRIPTION:{% if page.summary %}{{ page.summary }}{% else %}{{ page.content | s
 LOCATION:{% if page.extra.location %}{{ page.extra.location }}{% endif %}
 URL:{{ page.permalink }}
 END:VEVENT
-{%- endfor -%}
+{%- endfor %}
 END:VCALENDAR
