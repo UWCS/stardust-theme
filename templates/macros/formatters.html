@@ -28,8 +28,9 @@
 
 
 {%- macro event_date_range(e) -%}
-{%- set diff_date = e.extra.end_time and e.date | date(format="%F") != e.extra.end_time | date(format="%F") -%}
-{%- set diff_time = e.extra.end_time and e.date | date(format="%T") != e.extra.end_time | date(format="%T") -%}
+{%- if e.extra.end_time -%}{%- set parsed_end = e.extra.end_time | parse_date(base=e.date) -%}{%- endif -%}
+{%- set diff_date = parsed_end and e.date | date(format="%F") != parsed_end | date(format="%F") -%}
+{%- set diff_time = parsed_end and e.date | date(format="%T") != parsed_end | date(format="%T") -%}
 
 {%- set start_date = formatters::event_start_date(e=e) -%}
 {%- set end_date = formatters::event_end_date(e=e) -%}
@@ -63,7 +64,7 @@
 
 {%- macro event_end_date(e) -%}
 {%- if e.extra.end_time -%}
-  {{ date | parse_date(base=e.date) }}
+  {{ e.extra.end_time | parse_date(base=e.date) }}
 {%- else -%} 
   {{ e.date }}
 {%- endif -%}
