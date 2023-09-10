@@ -14,26 +14,22 @@
 
 
 {%- macro event_time(e) -%}
-{%- if e.extra.time -%}   
-  {%- set parsed = e.date ~ " " ~ e.extra.time | parse_date -%}
-{%- else -%} {%- set parsed = e.date -%}
-{%- endif -%}
-{{ formatters::time(time=parsed) }}
+{{ formatters::time(time=e.date) }}
 {%- endmacro event_time -%}
 
 
 {%- macro event_time_range(e) -%}
 {{ formatters::event_time(e=e) }}
 {%- if e.extra.end_time -%}   
-  {%- set parsed = e.date ~ " " ~ e.extra.end_time | parse_date -%}
+  {%- set parsed = e.extra.end_time | parse_date(base=e.date) -%}
   -{{ formatters::time(time=parsed) }}
 {%- endif -%}
 {%- endmacro event_time -%}
 
 
 {%- macro event_date_range(e) -%}
-{%- set diff_date = e.extra.end_date and e.date != e.extra.end_date -%}
-{%- set diff_time = e.extra.time and e.extra.end_time and e.extra.end_time != e.extra.time -%}
+{%- set diff_date = e.extra.end_time and e.date | date(format="%F") != e.extra.end_time | date(format="%F") -%}
+{%- set diff_time = e.extra.end_time and e.date | date(format="%T") != e.extra.end_time | date(format="%T") -%}
 
 {%- set start_date = formatters::event_start_date(e=e) -%}
 {%- set end_date = formatters::event_end_date(e=e) -%}
@@ -61,26 +57,14 @@
 
 
 {%- macro event_start_date(e) -%}
-{%- set time = " " ~ e.extra.time | default(value=" ") -%}
-{%- set date = e.date ~ time -%}
-{%- set parsed = date | parse_date -%}
-{{ parsed }}
+{{ e.date }}
 {%- endmacro event_time -%}
 
 
 {%- macro event_end_date(e) -%}
-{%- set diff_date = e.extra.end_date and e.date != e.extra.end_date -%}
-{%- set diff_time = e.extra.time and e.extra.end_time and e.extra.end_time != e.extra.time -%}
-
-{%- if diff_date -%} {%- set date = e.extra.end_date -%}
-{%- else -%} {%- set date = e.date -%}
+{%- if e.extra.end_time -%}
+  {{ date | parse_date(base=e.date) }}
+{%- else -%} 
+  {{ e.date }}
 {%- endif -%}
-
-{%- if diff_time -%} {%- set time = e.extra.end_time -%}
-{%- else -%} {%- set time = e.extra.time -%}
-{%- endif -%}
-
-{%- if time -%}{%- set date = date ~ " " ~ time -%}{%- endif -%}
-{%- set parsed = date | parse_date -%}
-{{ parsed }}
 {%- endmacro event_time -%}
