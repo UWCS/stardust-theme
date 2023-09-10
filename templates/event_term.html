@@ -1,0 +1,6 @@
+{% extends "section.html" %}
+
+{% block get_pages %}
+  {{ super() }}
+  {% set pages = pages | sort(attribute="extra.base_date") %}
+{% endblock %}

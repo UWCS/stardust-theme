@@ -30,6 +30,7 @@
 {% endif %}
   
 {% if pages %}
+  {% if resource.extra.reverse_pages %}{% set pages = pages | reverse %}{% endif %}
   {# Main pages #}
   {% for page in pages %}
     {{ cards::news_card(page=page, sum_len=250) }}
