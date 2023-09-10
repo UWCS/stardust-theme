@@ -14,7 +14,11 @@
 
 
 {%- macro event_time(e) -%}
-{{ formatters::time(time=e.date) }}
+{%- if e.extra.display_time -%}
+  {{ e.extra.display_time }}
+{%- else -%}
+  {{ formatters::time(time=e.date) }}
+{%- endif -%}
 {%- endmacro event_time -%}
 
 

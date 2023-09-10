@@ -24,8 +24,7 @@
 {% endif %}
 {% endblock %}
 
-{% block pre_pages %}{% endblock %}
-
+{% block subsections %}
 <div class="posts p-2 gap-3 vstack">
 {# List subsections too? #}
 {% if subsec %}
@@ -35,14 +34,17 @@
     {{ cards::news_card(page=page, sum_len=250) }}
   {% endfor %}
 {% endif %}
+{% endblock %}
   
+{% block pages %}
 {% if pages %}
   {% if resource.extra.reverse_pages %}{% set pages = pages | reverse %}{% endif %}
   {# Main pages #}
   {% for page in pages %}
     {{ cards::news_card(page=page, sum_len=250) }}
   {% endfor %}
-  {%endif%}
+{%endif%}
+{% endblock %}
 </div>
 
 {% if paginator %}
