@@ -16,16 +16,23 @@
 {% endif %}
 {% endblock %}
 
+{% block get_subsections %}
+<!-- Use paginator pages if exists -->
+{% if resource.subsections and not paginator %}
+  {% if resource.extra.reverse_subsections %}{% set subsec = resource.subsections | reverse %}
+  {% else %}{% set subsec = resource.subsections %} {% endif %}
+{% endif %}
+{% endblock %}
+
 {% block pre_pages %}{% endblock %}
 
 <div class="posts p-2 gap-3 vstack">
 {# List subsections too? #}
-{% if resource.subsections and not paginator  %}
-  {% if resource.extra.reverse_subsections %}{% set subsec = resource.subsections | reverse %}
-  {% else %}{% set subsec = resource.subsections %} {% endif %}
+{% if subsec %}
   {% for ss in subsec%}
-  {% set page = get_section(path=ss) %}
-  {{ cards::news_card(page=page, sum_len=250) }}
+    {% if ss is string %}{% set page = get_section(path=ss) %}
+    {% else  %}{% set page = ss %}{% endif %}
+    {{ cards::news_card(page=page, sum_len=250) }}
   {% endfor %}
 {% endif %}
   
