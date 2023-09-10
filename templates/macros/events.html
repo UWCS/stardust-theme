@@ -37,10 +37,11 @@
 {% endmacro %}
 
 
-{% macro week(w, pages) %}
+{% macro week(w, pages, title="") %}
 {% set prev_day = "" %}
 {% set days_events = [] %}
 <div class="week w-100 text-center">
+  {% if title %} <h2>{{ title }}</h2> {% endif %}
   <div class="events d-grid justify-content-center">
     {% for e in pages %}
       {% if e.extra.display_day %}{% set e_day = e.extra.display_day %}

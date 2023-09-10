@@ -1,10 +1,33 @@
 {% extends "section.html" %}
+{% import "macros/events.html" as events %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ config.base_url | safe }}/icon-packs/phosphor-bold.css">
+{% endblock %}
+
 
 {% block get_subsections %}
-  {% set subsec = [] %}
+  {% set weeks = [] %}
   {% for ss in resource.subsections %}
-    {% set page = get_section(path=ss) %}
-    {% set_global subsec = subsec | concat(with=page) %}
+    {% set week = get_section(path=ss) %}
+    {% set_global weeks = weeks | concat(with=week) %}
   {% endfor %}
-  {% set subsec = subsec | sort(attribute="extra.base_date") %}
+  {% set weeks = weeks | sort(attribute="extra.base_date") %}
+{% endblock %}
+
+
+{% block pages %}
+{{ resource.content | safe}}
+
+<div class="term blue w-100 vstack align-items-center p-3 gap-4">
+  {% for week in weeks %}
+    {{ events::week(w=week, pages=week.pages | sort(attribute="date"), title=week.title) }}
+  {% endfor %}
+</div>
+
+{% block script %}
+  {{ events::script() }}
+{% endblock %}
+
 {% endblock %}
