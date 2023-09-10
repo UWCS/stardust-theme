@@ -20,25 +20,6 @@
 </a>
 {% endmacro %}
 
-{% macro start_term() %}
-<div class="term blue w-100 vstack align-items-center p-3 gap-4">
-{% endmacro %}
-
-{% macro term_heading(curr_week, week_term) %}
-{% if curr_week.weekNumber == 0 %}<h1>Welcome Week</h1>
-{% else %} <h2>{{ week_term | trim_end_matches(pat=" Vacation") }}</h2>
-{% endif %}
-{% endmacro %}
-
-{% macro start_week(curr_week, term_week_no) %}
-<div class="week w-100 text-center">
-{% if curr_week %}
-  {% if curr_week.weekNumber != 0 %}
-    <h4>Week {{ term_week_no }}</h4>
-  {% endif %}
-{% endif %}
-<div class="events d-grid justify-content-center">
-{% endmacro %}
 
 {% macro day(events) %}
 {% if events[0].extra.display_day %}{% set date = events[0].extra.display_day %}
@@ -55,12 +36,34 @@
 </div>
 {% endmacro %}
 
-{% macro end_week() %}
-</div>
-</div>
-{% endmacro %}
 
-{% macro end_term() %}
+{% macro week(w, pages) %}
+{% set prev_day = "" %}
+{% set days_events = [] %}
+<div class="week w-100 text-center">
+  <div class="events d-grid justify-content-center">
+    {% for e in pages %}
+      {% if e.extra.display_day %}{% set e_day = e.extra.display_day %}
+      {% else %}{% set e_day = e.date | date(format="%A") %}{% endif %}
+      {% if e_day != prev_day %}
+        {# Output previous day's content #}
+        {% if days_events %}
+          {{ events::day(events=days_events) }}
+          {% set_global days_events = [] %}
+          {% set_global started = true %}
+        {% endif %}
+        {% set_global prev_day = e_day %}
+      {% endif %}
+      {% set_global days_events = days_events | concat(with=e) %}
+    {% endfor %}
+
+      {# Clean up remaining days_events #}
+    {% if started %}
+      {% if days_events %}
+        {{ events::day(events=days_events) }}
+      {% endif %}
+    {% endif %}
+  </div>
 </div>
 {% endmacro %}
 
