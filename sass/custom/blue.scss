@@ -1,5 +1,3 @@
-@import "../bootstrap/bootstrap.scss";
-
 // Blue region dividers
 .blue {
     @extend .bg-primary, .text-white, .w-100, .vstack, .align-items-center, .px-3;

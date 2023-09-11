@@ -1,5 +1,3 @@
-@import "../bootstrap/bootstrap.scss";
-
 @include media-breakpoint-down(sm) {
     .exec-table thead {
         display: none;
