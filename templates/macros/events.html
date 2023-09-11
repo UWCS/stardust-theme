@@ -37,7 +37,11 @@
 {% endmacro %}
 
 
-{% macro week(w, pages, title="") %}
+{% macro week(w, pages="", title="") %}
+{% if not pages %}
+  {% set pages = w.pages | sort(attribute="date") %}
+{% endif %}
+
 {% set prev_day = "" %}
 {% set days_events = [] %}
 <div class="week w-100 text-center">
@@ -65,6 +69,24 @@
       {% endif %}
     {% endif %}
   </div>
+</div>
+{% endmacro %}
+
+{% macro term(t, weeks="", title="") %}
+{% if not weeks %}
+  {% set weeks = [] %}
+  {% for ss in t.subsections %}
+    {% set week = get_section(path=ss) %}
+    {% set_global weeks = weeks | concat(with=week) %}
+  {% endfor %}
+  {% set weeks = weeks | sort(attribute="extra.base_date") %}
+{% endif %}
+
+<div class="term blue w-100 vstack align-items-center p-3 gap-4">
+  {% if title %}<h1>{{ title }}</h1>{% endif %}
+  {% for week in weeks %}
+    {{ events::week(w=week, title=week.title) }}
+  {% endfor %}
 </div>
 {% endmacro %}
 
