@@ -20,3 +20,12 @@ $border-width: 3px;
 
 $card-border-width: 0;
 $card-border-radius: 1rem;
+
+// Same as bootstrap default
+$spacer: 1rem !default;
+$s0: 0;
+$s1: $spacer * .25;
+$s2: $spacer * .5;
+$s3: $spacer;
+$s4: $spacer * 1.5;
+$s5: $spacer * 3;
