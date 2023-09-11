@@ -16,6 +16,6 @@ else
         fi
         cmd="./dart-sass/sass"
     fi
-
+fi
 
 "$cmd" uwcs.scss ../static/uwcs-bootstrap.css --style compressed
