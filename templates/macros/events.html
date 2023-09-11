@@ -45,7 +45,7 @@
 {% set prev_day = "" %}
 {% set days_events = [] %}
 <div class="week w-100 text-center">
-  {% if title %} <h2>{{ title }}</h2> {% endif %}
+  {% if title %} <h2><a class="link-body-emphasis text-decoration-none" href="{{ w.permalink | safe }}">{{ title }}</a></h2> {% endif %}
   <div class="events d-grid justify-content-center">
     {% for e in pages %}
       {% if e.extra.display_day %}{% set e_day = e.extra.display_day %}
@@ -83,7 +83,7 @@
 {% endif %}
 
 <div class="term blue w-100 vstack align-items-center p-3 gap-4">
-  {% if title %}<h1>{{ title }}</h1>{% endif %}
+  {% if title %}<h1><a class="link-body-emphasis text-decoration-none" href="{{ t.permalink | safe }}">{{ title }}</a></h1>{% endif %}
   {% for week in weeks %}
     {{ events::week(w=week, title=week.title) }}
   {% endfor %}
