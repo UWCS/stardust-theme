@@ -4,7 +4,7 @@ $uwcs-grey: #202429;
 $uwcs-greyer: #2F3338;
 
 $primary: $uwcs-blue;
-$blue: $uwcs-yellow;
+$blue: $uwcs-blue;
 $yellow: $uwcs-yellow;
 
 $body-bg: #fff;
@@ -20,3 +20,5 @@ $border-width: 3px;
 
 $card-border-width: 0;
 $card-border-radius: 1rem;
+
+@import "bootstrap/bootstrap.scss";
