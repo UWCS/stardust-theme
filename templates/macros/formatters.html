@@ -86,5 +86,5 @@
 
 {%- macro to_ical(time) -%}
 {%- set utc = self::to_epoch(time=time) | int -%}
-{{ utc | date(format="%Y%m%dT%H%M%S") }}
+{{ utc | date(format="%Y%m%dT%H%M%SZ") }}
 {%- endmacro -%}
