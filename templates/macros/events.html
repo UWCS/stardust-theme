@@ -72,7 +72,7 @@
 </div>
 {% endmacro %}
 
-{% macro term(t, weeks="", title="") %}
+{% macro term(t, weeks="", title="", week_no=-1, archive=false) %}
 {% if not weeks %}
   {% set weeks = [] %}
   {% for ss in t.subsections %}
@@ -85,6 +85,17 @@
 <div class="term blue w-100 vstack align-items-center p-3 gap-4">
   {% if title %}<h1><a class="link-body-emphasis text-decoration-none" href="{{ t.permalink | safe }}">{{ title }}</a></h1>{% endif %}
   {% for week in weeks %}
+    {# Compare weeks (ignore past/future) #}
+    {% set e_year = week.extra.base_date | date(format="%Y") | int %}
+    {% set e_week = week.extra.base_date | date(format="%W") | int %}
+    {% set e_week_no = e_week + 54 * e_year %}
+
+    {% if not archive and week_no >= 0 %}
+      {% if e_week_no < week_no %} {% continue %} {% endif %}
+    {% else %}
+      {% if e_week_no > week_no %} {% continue %} {% endif %}
+    {% endif %}
+
     {{ events::week(w=week, title=week.title) }}
   {% endfor %}
 </div>
