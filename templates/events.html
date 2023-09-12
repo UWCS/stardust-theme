@@ -11,14 +11,15 @@
 {% set now = now() %}
 {% set this_year = now | date(format="%Y") | int %}
 {% set this_week = now | date(format="%W") | int %}
-{% set week_no = this_week + 54 * this_year %}
+{% set week_no = this_week + 54 * this_year + 5 %}
 {% set archive = resource.extra.archive | default(value=false) %}
 
+<div id="events-block" {% if archive %}class="reverse"{% endif %}>
 {% set events = get_section(path="events/_index.md") %}
 {% for t in events.subsections %}
   {% if t is containing("archive") %}{% continue %}{% endif %}
   {% set term = get_section(path=t) %}
   {{ events::term(t=term, title=term.title, week_no=week_no | int, archive=archive) }}
 {% endfor %}
-
+</div>
 {% endblock %}

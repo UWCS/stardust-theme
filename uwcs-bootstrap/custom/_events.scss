@@ -7,12 +7,12 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
     @return $circle-pad +($num * $circle-width)+(max(0, $num - 1) * $dist-circles)+$circle-pad;
 }
 
-#events-block {
+#events-block, .weeks {
     display: flex;
     flex-direction: column;
 }
 
-#events-block.reverse {
+#events-block.reverse, .weeks.reverse {
     flex-direction: column-reverse;
 }
 
