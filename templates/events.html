@@ -15,6 +15,7 @@
 {% set archive = resource.extra.archive | default(value=false) %}
 
 <div id="events-block" {% if archive %}class="reverse"{% endif %}>
+{# MIRROR ANY CHANGES HERE TO uwcs.ical fetching #}
 {% set events = get_section(path="events/_index.md") %}
 {% for t in events.subsections %}
   {% if t is containing("archive") %}{% continue %}{% endif %}

@@ -37,9 +37,11 @@
 {% endmacro %}
 
 
-{% macro week(w, pages="", title="") %}
-{% if not pages %}
-  {% set pages = w.pages | sort(attribute="date") %}
+{% macro week(w, events="", title="") %}
+{% if not events %}
+  {# MIRROR ANY CHANGES HERE TO uwcs.ical fetching #}
+  {# Because Tera is annoying, lists get cast to string when passing through macros, so we have to duplicate #}
+  {% set events = w.pages | sort(attribute="date") %}
 {% endif %}
 
 {% set prev_day = "" %}
@@ -47,7 +49,7 @@
 <div class="week w-100 text-center my-4">
   {% if title %} <h2><a class="link-body-emphasis text-decoration-none" href="{{ w.permalink | safe }}">{{ title }}</a></h2> {% endif %}
   <div class="events d-grid justify-content-center">
-    {% for e in pages %}
+    {% for e in events %}
       {% if e.extra.display_day %}{% set e_day = e.extra.display_day %}
       {% else %}{% set e_day = e.date | date(format="%A") %}{% endif %}
       {% if e_day != prev_day %}
@@ -74,6 +76,8 @@
 
 {% macro term(t, weeks="", title="", week_no=-1, archive=false) %}
 {% if not weeks %}
+  {# MIRROR ANY CHANGES HERE TO uwcs.ical fetching #}
+  {# Because Tera is annoying, lists get cast to string when passing through macros, so we have to duplicate #}
   {% set weeks = [] %}
   {% for ss in t.subsections %}
     {% set week = get_section(path=ss) %}
