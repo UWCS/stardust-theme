@@ -44,7 +44,7 @@
 
 {% set prev_day = "" %}
 {% set days_events = [] %}
-<div class="week w-100 text-center">
+<div class="week w-100 text-center my-4">
   {% if title %} <h2><a class="link-body-emphasis text-decoration-none" href="{{ w.permalink | safe }}">{{ title }}</a></h2> {% endif %}
   <div class="events d-grid justify-content-center">
     {% for e in pages %}
@@ -91,7 +91,7 @@
     {% set e_week = week.extra.base_date | date(format="%W") | int %}
     {% set e_week_no = e_week + 54 * e_year %}
 
-    {% if not archive and week_no >= 0 %}
+    {% if not archive and week_no > 0 %}
       {% if e_week_no < week_no %} {% continue %} {% endif %}
     {% else %}
       {% if e_week_no > week_no %} {% continue %} {% endif %}
