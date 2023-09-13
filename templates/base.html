@@ -1,7 +1,7 @@
 {% import "macros/sponsors.html" as sponsors %}
 {% import "macros/parts.html" as parts %}
 
-{% if page %}  {% set resource = page %}
+{% if page %} {% set resource = page %}
 {% elif section %} {% set resource = section %}
 {% elif term %} {% set resource = term %}
 {% elif taxonomy %} {% set resource = taxonomy %}
@@ -11,19 +11,45 @@
 <html>
 
 <head>
-  <meta charset="utf-8"/>
+  <meta charset="utf-8" />
   <title>{% block title %}{{ resource.title | striptags | safe }}{% endblock %} - UWCS</title>
   {% block rss %}
-    <link rel="alternate" type="application/atom+xml" title="RSS" href="{{ get_url(path="atom.xml", trailing_slash=false) }}">
+  <link rel="alternate" type="application/atom+xml" title="RSS" href="{{ get_url(path=" atom.xml", trailing_slash=false)
+    }}">
   {% endblock %}
-  {% block head %}
+  <meta property="og:title"
+    content="{% if resource.title %} {{ resource.title }} {% else %} {{ taxonomy.name }} {% endif %}" />
+  {% set description = "" %}
+  {% if resource.summary %}
+  {% set description = resource.summary | striptags %}
+  {% elif current_path == "/" %}
+  {% set description = "UWCS is free-to-join, and open to anyone with an interest in the field of
+  computer science. We have ties to the CS department - hosting weekly academic, social and gaming events." %}
+  {% elif resource.content %}
+  {% set description = resource.content | split(pat="</p>") | first | split(pat="<p>") | last | striptags | safe %}
+    {% endif %}
+    <meta name="description" content="{{ description }}" />
+    <meta property="og:description" content="{{ description }}" />
+    <meta property="og:url" content="{{current_url | safe }}" />
+    <meta property="og:image" content="https://new.uwcs.co.uk/assets/favicon.png" />
+    <meta property="og:locale" content="en_GB" />
+    <meta name="keywords" content="UWCS, Computing, University, Computer Science, Warwick, University of Warwick Computing Society, Programming, Gaming, Coding 
+    {%- if resource.taxonomies -%}
+      {%- for _,terms in resource.taxonomies -%}
+        {%- for term in terms -%}
+          , {{ term }}
+        {%- endfor -%}
+      {%- endfor -%}
+    {%- endif -%}">
+    {% block head %}
     {{ parts::head() }}
-  {% endblock %}
-  
+    {% endblock %}
+
 </head>
 <script>
   console.log("%j", {{ __tera_context }});
 </script>
+
 <body class="min-vh-100 viewport-width-100 vstack">
   {{ parts::nav() }}
   {% block breadcrumb %}
@@ -37,7 +63,7 @@
     </article>
     <aside id="sidebar" class="col-md-3 flex-grow-1 py-4 pe-md-4">
       {% block sidebar %}
-      <div id="sponsors"> 
+      <div id="sponsors">
         <h2>Our Gold Sponsors</h2>
 
         {% set spon_sec = get_section(path="sponsors/gold/_index.md") %}
@@ -49,4 +75,5 @@
   </div>
   {{ parts::footer() }}
 </body>
+
 </html>
