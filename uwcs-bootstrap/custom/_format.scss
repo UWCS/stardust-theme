@@ -37,7 +37,7 @@ table {
 }
 
 #nav {
-    @extend .navbar, .navbar-expand-lg, .bg-body, .sticky-top;
+    @extend .bg-body, .sticky-top;
     width: 100%;
     min-width: fit-content;
 

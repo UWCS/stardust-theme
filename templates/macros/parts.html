@@ -29,8 +29,7 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
 
 
 {% macro nav() %}
-<nav id="nav" {% if config.base_url is containing('draft') %}style="border-color: var(--bs-danger) !important" {% endif
-  %}>
+<nav id="nav" class="navbar navbar-expand-lg" {% if config.base_url is containing('draft') %}style="border-color: var(--bs-danger) !important" {% endif %}>
   <div class="container-lg align-items-center">
 
     <!-- UWCS Logo -->
@@ -54,7 +53,7 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
         <li><a class="nav-link" href="{{ subsect.permalink | safe }}">{{ subsect.title }}</a></li>
         {% endfor %}
         
-        <li class="ms-md-auto me-md-2 nav-item dropdown">
+        <li class="ms-lg-auto me-lg-2 nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Other Links
           </a>
@@ -65,6 +64,7 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
             <li><a class="dropdown-item" href="https://warwickspeed.run">warwickspeed.run</a></li>
           </ul>
         </li>
+
         <!-- Dark mode toggles -->
         <div class="vr d-none d-lg-block "></div>
         <li class="nav-item ms-lg-2">
