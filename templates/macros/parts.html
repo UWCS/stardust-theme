@@ -53,10 +53,8 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
         {% if subsect.extra.hide %}{% continue %}{% endif %}
         <li><a class="nav-link" href="{{ subsect.permalink | safe }}">{{ subsect.title }}</a></li>
         {% endfor %}
-
-        <!-- Dark mode toggles -->
-        <div class="vr ms-md-auto d-none d-lg-block "></div>
-        <li class="nav-item dropdown">
+        
+        <li class="ms-md-auto me-md-2 nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Other Links
           </a>
@@ -67,6 +65,8 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
             <li><a class="dropdown-item" href="https://warwickspeed.run">warwickspeed.run</a></li>
           </ul>
         </li>
+        <!-- Dark mode toggles -->
+        <div class="vr d-none d-lg-block "></div>
         <li class="nav-item ms-lg-2">
           <a id="dark-mode" class="nav-link ml-1" href="#">
             <i class="bi bi-moon-fill"></i>
