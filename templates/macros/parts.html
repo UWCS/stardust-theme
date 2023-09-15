@@ -21,50 +21,62 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
 <script src="{{ config.base_url | safe }}/scripts/darkmode.js"></script>
 
 {% if config.markdown.highlight_code and config.markdown.highlight_theme == "css" %}
-<link rel="stylesheet" type="text/css" href="/syntax-theme-dark.css"/>
-<link rel="stylesheet" type="text/css" href="/syntax-theme-light.css"/>
+<link rel="stylesheet" type="text/css" href="/syntax-theme-dark.css" />
+<link rel="stylesheet" type="text/css" href="/syntax-theme-light.css" />
 {% endif %}
 {% endmacro head %}
 
 
 
 {% macro nav() %}
-<nav id="nav" {% if config.base_url is containing('draft') %}style="border-color: var(--bs-danger) !important"{% endif %}>
-    <div class="container-lg align-items-center">
-      
-      <!-- UWCS Logo -->
-      <a class="navbar-brand" href="{{ config.base_url | safe }}">
-        {{ logos::dots_uwcs() }}
-      </a>
+<nav id="nav" class="navbar navbar-expand-lg" {% if config.base_url is containing('draft') %}style="border-color: var(--bs-danger) !important" {% endif %}>
+  <div class="container-lg align-items-center">
 
-      <!-- Navbar parts for mobile version -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03"
-        aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarColor03">
-        <ul class="navbar-nav d-flex w-100">
-          
-          <!-- Include links to top level sections -->
-          {% set sect = get_section(path='_index.md') %}
-          {% for sub in sect.subsections %}
-          {% set subsect = get_section(path=sub) %}
-          {% if subsect.extra.hide %}{% continue %}{% endif %}
-          <li><a class="nav-link" href="{{ subsect.permalink | safe }}">{{ subsect.title }}</a></li>
-          {% endfor %}
+    <!-- UWCS Logo -->
+    <a class="navbar-brand" href="{{ config.base_url | safe }}">
+      {{ logos::dots_uwcs() }}
+    </a>
 
-          <!-- Dark mode toggles -->
-          <div class="vr ms-md-auto d-none d-lg-block "></div>
-          <li class="nav-item ms-lg-2">
-            <a id="dark-mode" class="nav-link ml-1" href="#">
-              <i class="bi bi-moon-fill"></i>
-              <span class="d-lg-none ms-2 ms-lg-0">Toggle Dark Mode</span>
-            </a>
-          </li>
-        </ul>
-      </div>
+    <!-- Navbar parts for mobile version -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03"
+      aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor03">
+      <ul class="navbar-nav d-flex w-100">
+
+        <!-- Include links to top level sections -->
+        {% set sect = get_section(path='_index.md') %}
+        {% for sub in sect.subsections %}
+        {% set subsect = get_section(path=sub) %}
+        {% if subsect.extra.hide %}{% continue %}{% endif %}
+        <li><a class="nav-link" href="{{ subsect.permalink | safe }}">{{ subsect.title }}</a></li>
+        {% endfor %}
+        
+        <li class="ms-lg-auto me-lg-2 nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Other Links
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="https://techteam.uwcs.co.uk">Tech Team Wiki</a></li>
+            <li><a class="dropdown-item" href="https://progcomp.uwcs.co.uk/">Programming Competitions</a></li>
+            <li><a class="dropdown-item" href="https://warwickspeed.run">WASD (Warwick Speedrun)</a></li>
+            <li><a class="dropdown-item" href="https://github.com/UWCS">Our GitHub</a></li>
+          </ul>
+        </li>
+
+        <!-- Dark mode toggles -->
+        <div class="vr d-none d-lg-block "></div>
+        <li class="nav-item ms-lg-2">
+          <a id="dark-mode" class="nav-link ml-1" href="#">
+            <i class="bi bi-moon-fill"></i>
+            <span class="d-lg-none ms-2 ms-lg-0">Toggle Dark Mode</span>
+          </a>
+        </li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
 {% endmacro nav %}
 
 
@@ -81,10 +93,10 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
   <ol class="breadcrumb">
     <!-- Generate for each ancestor -->
     {% for parent in page.ancestors %}
-      {% if not loop.first %} <!-- Ignore first -->
-        {% set s = get_section(path=parent, include_pages=false) %}
-        <li class="breadcrumb-item"><a href="{{ s.permalink | safe }}">{{ s.title | truncate(length=25) }}</a></li>
-      {% endif %}
+    {% if not loop.first %} <!-- Ignore first -->
+    {% set s = get_section(path=parent, include_pages=false) %}
+    <li class="breadcrumb-item"><a href="{{ s.permalink | safe }}">{{ s.title | truncate(length=25) }}</a></li>
+    {% endif %}
     {% endfor %}
     <!-- Include actual page -->
     <li class="breadcrumb-item active" aria-current="page">{{ page.title | truncate(length=25)}}</li>
@@ -96,22 +108,21 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
 
 {% macro footer() %}
 <footer id="foot">
-    <!-- Centred aligned uwcs logo -->
-    <a class="d-flex text-decoration-none" href="https://uwcs.co.uk">
-      {{ logos::dots_uwcs() }}
-    </a>
-    <!-- Right aligned links -->
-    <ul class="nav justify-content-end list-unstyled d-flex">
-        <li class="ms-3">
-        <a class="text-muted" href="https://github.com/uwcs"><i class="bi-github"
-            aria-hidden="true"></i></a>
-        </li>
-        <li class="ms-3">
-        <a class="text-muted" href="https://discord.uwcs.co.uk"><i class="bi-discord" aria-hidden="true"></i></a>
-        </li>
-        <li class="ms-3">
-        <a class="text-muted" href="https://uwcs.co.uk"><i class="bi-globe" aria-hidden="true"></i></a>
-        </li>
-    </ul>
+  <!-- Centred aligned uwcs logo -->
+  <a class="d-flex text-decoration-none" href="https://uwcs.co.uk">
+    {{ logos::dots_uwcs() }}
+  </a>
+  <!-- Right aligned links -->
+  <ul class="nav justify-content-end list-unstyled d-flex">
+    <li class="ms-3">
+      <a class="text-muted" href="https://github.com/uwcs"><i class="bi-github" aria-hidden="true"></i></a>
+    </li>
+    <li class="ms-3">
+      <a class="text-muted" href="https://discord.uwcs.co.uk"><i class="bi-discord" aria-hidden="true"></i></a>
+    </li>
+    <li class="ms-3">
+      <a class="text-muted" href="https://uwcs.co.uk"><i class="bi-globe" aria-hidden="true"></i></a>
+    </li>
+  </ul>
 </footer>
 {% endmacro footer %}
