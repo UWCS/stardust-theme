@@ -144,4 +144,8 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
         grid-column: span 1 !important;
         grid-row: span 1 !important;
     }
+
+    .day {
+        row-gap: 2 * $circle-pad !important;
+    }
 }
