@@ -88,3 +88,11 @@
 {%- set utc = self::to_epoch(time=time) | int -%}
 {{ utc | date(format="%Y%m%dT%H%M%SZ") }}
 {%- endmacro -%}
+
+{%- macro colour(colour) -%}
+{%- if colour is starting_with("#") -%}{{ colour }}
+{%- else -%}
+  {% set colmap = load_data(path="themes/uwcs/templates/macros/colours.json", format="json") %}
+  {{ colmap[colour] | default(value=colour) }}
+{%- endif -%}
+{%- endmacro -%}

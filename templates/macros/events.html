@@ -3,7 +3,7 @@
 
 {% macro event_circle(e) %}
 <a href="{{ e.permalink }}" class="text-decoration-none">
-<div class="event-circle mt-0" style="background-color: {{ e.extra.colour }}" data-bs-theme="dark">
+<div class="event-circle mt-0" style="background-color: {{ formatters::colour(colour=e.extra.colour) }}" data-bs-theme="dark">
 {% if e.extra.icon %}
 <span class="event-icon">
   {% if e.extra.icon is starting_with("ph-") %}<i class="ph-bold {{ e.extra.icon }}"></i>
