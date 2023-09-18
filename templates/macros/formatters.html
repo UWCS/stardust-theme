@@ -76,7 +76,7 @@
 {%- if e.extra.end_time -%}
   {{ e.extra.end_time | parse_date(base=e.date) }}
 {%- else -%} 
-  {{ e.date }}
+{{ "1 hour" | parse_date(base=e.date) }}
 {%- endif -%}
 {%- endmacro event_time -%}
 
