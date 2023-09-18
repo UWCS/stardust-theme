@@ -17,7 +17,9 @@ X-WR-TIMEZONE:GMT
 BEGIN:VEVENT
 SUMMARY:{{ page.title }}
 DTSTART;VALUE=DATE-TIME:{{ formatters::to_ical(time=formatters::event_start_date(e=page)) }}
-DTEND;VALUE=DATE-TIME:{{ formatters::to_ical(time=formatters::event_end_date(e=page)) }}
+{% set end = formatters::event_end_date(e=page) -%}
+{%- if not end -%}{%- set end = "in 1 hr" | parse_date(base=page.date) -%}{%- endif -%}
+DTEND;VALUE=DATE-TIME:{{ formatters::to_ical(time=end }}
 {%- if page.updated %} {%- set ts = page.updated %}{%- else %}{%- set ts = page.date %}{% endif %}
 DTSTAMP;VALUE=DATE-TIME:{{ formatters::to_ical(time=ts) }}
 UID:{{ page.permalink }}
