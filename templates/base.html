@@ -23,8 +23,7 @@
   {% if resource.summary %}
   {% set description = resource.summary | striptags %}
   {% elif current_path == "/" %}
-  {% set description = "UWCS is free-to-join, and open to anyone with an interest in the field of
-  computer science. We have ties to the CS department - hosting weekly academic, social and gaming events." %}
+  {% set description = "UWCS is free-to-join, and open to anyone with an interest in the field of Computer Science. We have ties to the CS department - hosting weekly academic, social and gaming events." %}
   {% elif resource.content %}
   {% set description = resource.content | split(pat="</p>") | first | split(pat="<p>") | last | striptags | safe %}
     {% endif %}
@@ -46,9 +45,6 @@
     {% endblock %}
 
 </head>
-<script>
-  console.log("%j", {{ __tera_context }});
-</script>
 
 <body class="min-vh-100 viewport-width-100 vstack">
   {{ parts::nav() }}

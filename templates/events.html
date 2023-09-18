@@ -6,6 +6,14 @@
 <link rel="stylesheet" href="{{ config.base_url | safe }}/icon-packs/phosphor-bold.css">
 {% endblock head %}
 
+{% block sidebar %}<div class="alert alert-secondary" role="alert">
+  {% set link = config.base_url ~ "/uwcs.ical" %}
+  <i class="bi bi-calendar me-2"></i> <b>Add to your calendar</b><br>
+  Add <a href="{{ link }}">{{ link }}</a> as a calendar source
+</div>
+{{ super() }}
+{% endblock %}
+
 {% block subsections %}
 
 {% set now = now() %}
