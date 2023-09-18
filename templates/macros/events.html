@@ -86,7 +86,7 @@
   {% set weeks = weeks | sort(attribute="extra.base_date") %}
 {% endif %}
 
-<div class="term blue">
+<div class="term blue" data-bs-theme="dark">
   {% if title %}<h1><a class="link-body-emphasis text-decoration-none" href="{{ t.permalink | safe }}">{{ title }}</a></h1>{% endif %}
   <div class="weeks w-100 {% if archive %}reverse{% endif %}">
   {% for week in weeks %}
@@ -97,7 +97,7 @@
 
     {% if not archive and week_no > 0 %}
       {% if e_week_no < week_no %} {% continue %} {% endif %}
-    {% else %}
+    {% elif week_no > 0 %}
       {% if e_week_no > week_no %} {% continue %} {% endif %}
     {% endif %}
 

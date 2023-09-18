@@ -22,7 +22,7 @@
 {% block pages %}
 {{ resource.content | safe}}
 
-<div class="term blue">
+<div class="term blue" data-bs-theme="dark">
   {{ events::week(w=resource, pages=pages) }}
 </div>
 
