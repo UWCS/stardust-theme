@@ -1,16 +1,11 @@
 
 {% import "macros/formatters.html" as formatters %}
+{%- import "macros/shortcodes.html" as shortcodes -%}
 
 {% macro event_circle(e) %}
 <a href="{{ e.permalink }}" class="text-decoration-none">
 <div class="event-circle mt-0" style="background-color: {{ formatters::colour(colour=e.extra.colour) }}" data-bs-theme="dark">
-{% if e.extra.icon %}
-<span class="event-icon">
-  {% if e.extra.icon is starting_with("ph-") %}<i class="ph-bold {{ e.extra.icon }}"></i>
-  {% elif e.extra.icon is starting_with("bi-") %}<i class="bi {{ e.extra.icon }}"></i>
-  {% else %} <div class="icon"><img class="silhouette" src="{{ config.base_url | safe }}/{{ e.extra.icon }}" alt="event icon"></img></div>
-  {% endif %}
-</span> {% endif %}
+{% if e.extra.icon %}<span class="event-icon">{{ shortcodes::icon(icon=e.extra.icon) }}</span> {% endif %}
 <b class="event-title">{{ e.title }}</b>
 <span class="event-extras">
   {{ e.extra.location }}<br>

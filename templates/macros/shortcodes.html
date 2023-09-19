@@ -1,0 +1,6 @@
+{% macro icon(icon) %}
+    {% if icon is starting_with("ph-") %}<i class="ph-bold {{ icon }}"></i>
+    {% elif icon is starting_with("bi-") %}<i class="bi {{ icon }}"></i>
+    {% else %} <div class="icon"><img class="silhouette" src="{{ get_url(path=icon) }}"></img></div>
+    {% endif %}
+{% endmacro %}
