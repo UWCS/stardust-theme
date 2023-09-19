@@ -1,4 +1,5 @@
 {% import "macros/logos.html" as logos %}
+{% import "macros/formatters" as formatters %}
 
 {% macro preview_styles() %}
 
@@ -30,28 +31,30 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
 {% macro opengraph(resource) %}
 
 {# Open Graph #}
-<meta property="og:title" content="{%- if resource.title -%} {{ resource.title }} {%- else -%} {{ resource.name }} {%- endif -%}" />
+<meta property="og:title"
+  content="{%- if resource.title -%} {{ resource.title }} {%- else -%} {{ resource.name }} {%- endif -%}" />
 {% set description = "" %}
 {% if resource.summary %}
-  {% set description = resource.summary | striptags %}
+{% set description = resource.summary | striptags %}
 {% elif current_path == "/" %}
-  {% set description = "UWCS is free-to-join, and open to anyone with an interest in the field of Computer Science. We have ties to the CS department - hosting weekly academic, social and gaming events." %}
+{% set description = "UWCS is free-to-join, and open to anyone with an interest in the field of Computer Science. We
+have ties to the CS department - hosting weekly academic, social and gaming events." %}
 {% elif resource.content %}
-  {% set description = resource.content | split(pat="</p>") | first | split(pat="<p>") | last | striptags | safe %}
-{% endif %}
-{% if resource.date %}
+{% set description = resource.content | split(pat="</p>") | first | split(pat="<p>") | last | striptags | safe %}
+  {% endif %}
+  {% if resource.date %}
   {% set date = formatters::event_date_range(e=resource) %}
   {% set description = description ~ " " ~ date ~ ". " %}
-{% endif %}
+  {% endif %}
   {% if resource.extra.location %}
   {% set description = description ~ resource.extra.location %}
-{% endif %}
-<meta name="description" content="{{ description }}" />
-<meta property="og:description" content="{{ description }}" />
-<meta property="og:url" content="{{current_url | safe }}" />
-<meta property="og:image" content="{{ get_url(path="bg-16-9.png")}}" />
-<meta property="og:locale" content="en_GB" />
-<meta name="keywords" content="UWCS, Computing, University, Computer Science, Warwick, University of Warwick Computing Society, Programming, Gaming, Coding 
+  {% endif %}
+  <meta name="description" content="{{ description }}" />
+  <meta property="og:description" content="{{ description }}" />
+  <meta property="og:url" content="{{current_url | safe }}" />
+  <meta property="og:image" content="{{ get_url(path=" bg-16-9.png")}}" />
+  <meta property="og:locale" content="en_GB" />
+  <meta name="keywords" content="UWCS, Computing, University, Computer Science, Warwick, University of Warwick Computing Society, Programming, Gaming, Coding 
 {%- if resource.taxonomies -%}
   {%- for _,terms in resource.taxonomies -%}
     {%- for term in terms -%}
@@ -60,12 +63,13 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
   {%- endfor -%}
 {%- endif -%}">
 
-{% endmacro %}
+  {% endmacro %}
 
 
 
-{% macro nav() %}
-<nav id="nav" class="navbar navbar-expand-lg" {% if config.base_url is containing('draft') %}style="border-color: var(--bs-danger) !important" {% endif %}>
+  {% macro nav() %}
+<nav id="nav" class="navbar navbar-expand-lg" {% if config.base_url is containing('draft')
+  %}style="border-color: var(--bs-danger) !important" {% endif %}>
   <div class="container-lg align-items-center">
 
     <!-- UWCS Logo -->
@@ -88,16 +92,20 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
         {% if subsect.extra.hide %}{% continue %}{% endif %}
         <li><a class="nav-link" href="{{ subsect.permalink | safe }}">{{ subsect.title }}</a></li>
         {% endfor %}
-        
+
         <li class="ms-lg-auto me-lg-2 nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Other Links
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-            <li><a target="_blank" rel="noopener"class="dropdown-item" href="https://techteam.uwcs.co.uk">Tech Team Wiki</a></li>
-            <li><a target="_blank" rel="noopener"class="dropdown-item" href="https://progcomp.uwcs.co.uk/">Programming Competitions</a></li>
-            <li><a target="_blank" rel="noopener"class="dropdown-item" href="https://warwickspeed.run">WASD (Warwick Speedrun)</a></li>
-            <li><a target="_blank" rel="noopener"class="dropdown-item" href="https://github.com/UWCS">Our GitHub</a></li>
+            <li><a target="_blank" rel="noopener" class="dropdown-item" href="https://techteam.uwcs.co.uk">Tech Team
+                Wiki</a></li>
+            <li><a target="_blank" rel="noopener" class="dropdown-item" href="https://progcomp.uwcs.co.uk/">Programming
+                Competitions</a></li>
+            <li><a target="_blank" rel="noopener" class="dropdown-item" href="https://warwickspeed.run">WASD (Warwick
+                Speedrun)</a></li>
+            <li><a target="_blank" rel="noopener" class="dropdown-item" href="https://github.com/UWCS">Our GitHub</a>
+            </li>
           </ul>
         </li>
 
@@ -105,7 +113,7 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
         <div class="vr d-none d-lg-block "></div>
         <li class="nav-item ms-lg-2">
           <a id="dark-mode" class="nav-link ml-1" href="#">
-            
+
             {{ shortcodes::icon(icon="ph-moon") }}
             <span class="d-lg-none ms-2 ms-lg-0">Toggle Dark Mode</span>
           </a>
@@ -153,17 +161,17 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
   <ul class="nav justify-content-end list-unstyled d-flex align-items-center">
     {% set socs = get_section(path="socials/_index.md") %}
     {% for social in socs.pages %}
-      <li class="fs-4 ms-3 d-block {% if social.extra.img %}opacity-50{% endif %}">
-        <a target="_blank" rel="noopener" class="d-flex text-muted opacity-hover" href="{{ social.extra.link }}">
-          {% if social.extra.img %}{% set icon = social.extra.img %}
-          {% elif social.extra.social %}{% set icon = "bi-" ~ social.extra.social %}
-          {% else %}
-          {% set icon = social.components | last %}
-            {% set icon = "bi-" ~ icon %}
-          {% endif %}
-          {{ shortcodes::icon(icon=icon) }}
-        </a>
-      </li>
+    <li class="fs-4 ms-3 d-block {% if social.extra.img %}opacity-50{% endif %}">
+      <a target="_blank" rel="noopener" class="d-flex text-muted opacity-hover" href="{{ social.extra.link }}">
+        {% if social.extra.img %}{% set icon = social.extra.img %}
+        {% elif social.extra.social %}{% set icon = "bi-" ~ social.extra.social %}
+        {% else %}
+        {% set icon = social.components | last %}
+        {% set icon = "bi-" ~ icon %}
+        {% endif %}
+        {{ shortcodes::icon(icon=icon) }}
+      </a>
+    </li>
     {% endfor %}
   </ul>
 </footer>
