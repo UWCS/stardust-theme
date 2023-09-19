@@ -17,8 +17,7 @@
   <link rel="alternate" type="application/atom+xml" title="RSS" href="{{ get_url(path=" atom.xml", trailing_slash=false)
     }}">
   {% endblock %}
-  <meta property="og:title"
-    content="{% if resource.title %} {{ resource.title }} {% else %} {{ taxonomy.name }} {% endif %}" />
+  <meta property="og:title" content="{%- if resource.title -%} {{ resource.title }} {%- else -%} {{ taxonomy.name }} {%- endif -%}" />
   {% set description = "" %}
   {% if resource.summary %}
   {% set description = resource.summary | striptags %}
@@ -30,7 +29,7 @@
     <meta name="description" content="{{ description }}" />
     <meta property="og:description" content="{{ description }}" />
     <meta property="og:url" content="{{current_url | safe }}" />
-    <meta property="og:image" content="https://new.uwcs.co.uk/assets/favicon.png" />
+    <meta property="og:image" content="{{ get_url(path="bg-16-9.png")}}" />
     <meta property="og:locale" content="en_GB" />
     <meta name="keywords" content="UWCS, Computing, University, Computer Science, Warwick, University of Warwick Computing Society, Programming, Gaming, Coding 
     {%- if resource.taxonomies -%}
