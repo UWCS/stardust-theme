@@ -1,6 +1,6 @@
 // Icons
 .icon {
-    display: inline-flex;
+    display: inline-block;
     align-self: center;
 }
 
@@ -13,6 +13,6 @@
 
 .icon.baseline svg,
 .icon.baseline img {
-    top: .125em;
+    bottom: 0.125em;
     position: relative;
 }
