@@ -143,16 +143,21 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
     {{ logos::dots_uwcs() }}
   </a>
   <!-- Right aligned links -->
-  <ul class="nav justify-content-end list-unstyled d-flex">
-    <li class="ms-3">
-      <a target="_blank" rel="noopener"class="text-muted" href="https://github.com/uwcs"><i class="bi-github" aria-hidden="true"></i></a>
-    </li>
-    <li class="ms-3">
-      <a target="_blank" rel="noopener"class="text-muted" href="https://discord.uwcs.co.uk"><i class="bi-discord" aria-hidden="true"></i></a>
-    </li>
-    <li class="ms-3">
-      <a class="text-muted" href="https://uwcs.co.uk"><i class="bi-globe" aria-hidden="true"></i></a>
-    </li>
+  <ul class="nav justify-content-end list-unstyled d-flex align-items-center">
+    {% set socs = get_section(path="socials/_index.md") %}
+    {% for social in socs.pages %}
+      <li class="fs-4 ms-3 d-block {% if social.extra.img %}opacity-50{% endif %}">
+        <a target="_blank" rel="noopener" class="d-flex text-muted opacity-hover" href="{{ social.extra.link }}">
+          {% if social.extra.img %}{% set icon = social.extra.img %}
+          {% elif social.extra.social %}{% set icon = "bi-" ~ social.extra.social %}
+          {% else %}
+          {% set icon = social.components | last %}
+            {% set icon = "bi-" ~ icon %}
+          {% endif %}
+          {{ shortcodes::icon(icon=icon) }}
+        </a>
+      </li>
+    {% endfor %}
   </ul>
 </footer>
 {% endmacro footer %}
