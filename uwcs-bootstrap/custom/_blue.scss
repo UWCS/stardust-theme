@@ -42,3 +42,13 @@
         font-size: 1em;
     }
 }
+
+.blue-top {
+    @extend .blue;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+.blue-top::after {
+    content: "" !important;
+}
