@@ -9,7 +9,7 @@
       img: If a custom SVG is needed instead, give a link here
   **Give exactly one of social or img**
 #}
-<a class="d-table-cell block link-body-emphasis text-decoration-none col flex-grow-0 mx-lg-0" href="{{ link }}">
+<a target="_blank" rel="noopener"class="d-table-cell block link-body-emphasis text-decoration-none col flex-grow-0 mx-lg-0" href="{{ link }}">
 <div id="social" class="hstack gap-3 p-3 rounded-4 bg-body-secondary text-body-emphasis opacity-hover">
   {% if social %}<i class="display-2 lh-1 bi bi-{{ social }} mx-lg-2"></i>{% endif %}
   {% if img %}<div class="display-2 icon"><img class="silhouette mx-lg-2" src="{{ config.base_url | safe }}/{{ img }}" alt="{{ title }} icon"></img></div>{% endif %}

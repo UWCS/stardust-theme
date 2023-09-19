@@ -21,7 +21,7 @@
   {{ role.title }}: {{ role.extra.people | join(sep=", ") }}
 </h3>
 <blockquote class="contact mb-4">
-  Email: <a href="mailto:{{ role.extra.email }}">{{ role.extra.email }}</a>
+  Email: <a target="_blank" rel="noopener"href="mailto:{{ role.extra.email }}">{{ role.extra.email }}</a>
   <br>
   {% if role.extra.discords %}
   <i class="bi bi-discord"></i> Discord:

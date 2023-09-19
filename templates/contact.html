@@ -28,7 +28,7 @@
         <i>Exec</i>
       </td>
       <td><i>All Exec</i></td>
-      <td><a href="mailto:exec@uwcs.co.uk"><i>exec@uwcs.co.uk</i></a></td>
+      <td><a target="_blank" rel="noopener" href="mailto:exec@uwcs.co.uk"><i>exec@uwcs.co.uk</i></a></td>
     </tr>
     {% for role in section.pages %}
     <tr>
@@ -47,7 +47,7 @@
         </span>
         {% endif %}
       </td>
-      <td><a href="mailto:{{ role.extra.email }}">{{ role.extra.email }}</a></td>
+      <td><a target="_blank" rel="noopener" href="mailto:{{ role.extra.email }}">{{ role.extra.email }}</a></td>
     </tr>
     {% endfor %}
   </tbody>
