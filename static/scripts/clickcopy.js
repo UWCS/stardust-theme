@@ -1,5 +1,5 @@
 const tt_main = `<i class="bi bi-clipboard"></i> Copy to clipboard`;
-const tt_copied = `<i class="bi bi-clipboard-check"></i> Copy to clipboard`;
+const tt_copied = `<i class="bi bi-clipboard-check"></i> Copied to clipboard`;
 
 function copyToClipboard(e) {
     navigator.clipboard.writeText(e.target.innerText);
