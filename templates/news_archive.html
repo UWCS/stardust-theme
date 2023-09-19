@@ -7,7 +7,7 @@
 <div class="alert alert-primary" role="alert">
   {% set base = resource.components | first %}
   {% set url = "@/" ~ base ~ "/_index.md" %}
-  <i class="bi bi-bell-fill me-2"></i><b><a href="{{ get_url(path=url) }}">Current {{ base | title }}</a></b>
+  <i class="bi bi-bell-fill me-2"></i><b><a href="{{ get_url(path=url) }}">Return to Current {{ base | title }}</a></b>
 </div>
 
 {% endblock %}
