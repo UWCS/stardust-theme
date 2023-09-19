@@ -81,6 +81,7 @@
 {% endfor %}
 {% set weeks = weeks | sort(attribute="extra.base_date") %}
 {% endif %}
+{% set added_event = false %}
 
 <div class="term blue" data-bs-theme="dark">
   {% if title %}<h1><a class="link-body-emphasis text-decoration-none" href="{{ t.permalink | safe }}">{{ title }}</a>
@@ -96,11 +97,12 @@
     {% if e_week_no < week_no %} {% continue %} {% endif %} {% elif week_no> 0 %}
       {% if e_week_no > week_no %} {% continue %} {% endif %}
       {% endif %}
-
+      {% set added_event = true %}
       {{ events::week(w=week, title=week.title) }}
-      {% else %}
-      <h2 class="text-center">No events yet, please check back soon™</h2>
       {% endfor %}
+      {% if not added_event %}
+      <h2 class="text-center">No events {% if archive %}finished{% endif %} yet, please check back soon™</h2>
+      {% endif %}
   </div>
 </div>
 {% endmacro %}
