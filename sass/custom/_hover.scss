@@ -23,7 +23,7 @@
 .white-hover {
     @extend .silhouette;
     @extend .opacity-hover;
-    transition: filter 0.5s;
+    transition: all 0.25s;
 }
 
 .white-hover:hover {
