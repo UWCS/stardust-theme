@@ -15,3 +15,11 @@ a.ext::after {
 a.int::after {
     display: none !important;
 }
+
+.front-icon a {
+    color: var(--bs-heading-color);
+}
+
+.front-icon a::after {
+    background-color: white !important;
+}

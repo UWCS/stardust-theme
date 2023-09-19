@@ -7,12 +7,14 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
     @return $circle-pad +($num * $circle-width)+(max(0, $num - 1) * $dist-circles)+$circle-pad;
 }
 
-#events-block, .weeks {
+#events-block,
+.weeks {
     display: flex;
     flex-direction: column;
 }
 
-#events-block.reverse, .weeks.reverse {
+#events-block.reverse,
+.weeks.reverse {
     flex-direction: column-reverse;
 }
 
@@ -47,6 +49,14 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
         margin-left: 2em;
         margin-right: 2em;
     }
+}
+
+.event-hover {
+    transition: transform 0.2s ease-in-out;
+}
+
+.event-hover:hover {
+    transform: scale(1.1);
 }
 
 .week {

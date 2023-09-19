@@ -17,7 +17,7 @@
   {% block head %}
   {{ parts::head() }}
   {% endblock %}
-  
+
   {% block opengraph %}
   {{ parts::opengraph(resource=resource) }}
   {% endblock %}
@@ -31,7 +31,7 @@
   {% endblock %}
   <div id="main" class="{% block main_extra %}bg-body px-4{% endblock %}">
     {% block outercontents %}
-    <article id="content" class="col-md-9 p-4 flex-grow-1">
+    <article id="content" class="col-md-9 flex-grow-1">
       {% block header %}<h1>{{ resource.title | safe }}</h1>{% endblock %}
       {% block content %}{% endblock %}
     </article>
