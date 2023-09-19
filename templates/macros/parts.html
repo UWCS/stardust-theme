@@ -39,6 +39,13 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
 {% elif resource.content %}
   {% set description = resource.content | split(pat="</p>") | first | split(pat="<p>") | last | striptags | safe %}
 {% endif %}
+{% if resource.date %}
+  {% set date = formatters::event_date_range(e=resource) %}
+  {% set description = description ~ " " ~ date ~ ". " %}
+{% endif %}
+  {% if resource.extra.location %}
+  {% set description = description ~ resource.extra.location %}
+{% endif %}
 <meta name="description" content="{{ description }}" />
 <meta property="og:description" content="{{ description }}" />
 <meta property="og:url" content="{{current_url | safe }}" />
