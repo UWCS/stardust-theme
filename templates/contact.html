@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% import "macros/cards.html" as cards %}
+{% import "macros/shortcodes.html" as shortcodes %}
 
 {% block title %}{{ resource.title }}{% endblock title %}
 {% block head %}
@@ -39,7 +40,7 @@
       <td>
         {{ role.extra.people | join(sep=", ") }}
         {% if role.extra.discords %}
-        <br><i class="bi bi-discord"></i><span class="">
+        <br>{{ shortcodes::icon(icon="bi-discord") }}
           {% for dc in role.extra.discords %}
           {% if not loop.first %}, {% endif %}
           <code class="discord c2clip">{{ dc }}</code>
