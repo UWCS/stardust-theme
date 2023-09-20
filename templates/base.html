@@ -1,6 +1,7 @@
 {% import "macros/sponsors.html" as sponsors %}
 {% import "macros/parts.html" as parts %}
 {% import "macros/shortcodes.html" as shortcodes %}
+{% import "macros/formatters.html" as formatters %}
 
 {% if page %} {% set resource = page %}
 {% elif section %} {% set resource = section %}
@@ -9,7 +10,7 @@
 {% endif %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  style="background-color: {{ formatters::colour(colour="grey") }}">
 
 <head>
   <meta charset="utf-8" />
@@ -24,14 +25,14 @@
 
 </head>
 
-<body class="min-vh-100 viewport-width-100 vstack">
+<body class="min-vh-100 viewport-width-100 vstack" style="background-color: var(--bs-body-bg, {{ formatters::colour(colour="grey") }})">
   {{ parts::nav() }}
   {% block breadcrumb %}
   {{ parts::bbreadcrumb() }}
   {% endblock %}
-  <div id="main" class="{% block main_extra %}bg-body px-4{% endblock %}">
+  <div id="main" class="{% block main_extra %}bg-body px-3{% endblock %}">
     {% block outercontents %}
-    <article id="content" class="col-md-9 flex-grow-1">
+    <article id="content" class="col-md-9 py-4 flex-grow-1">
       {% block header %}<h1>{{ resource.title | safe }}</h1>{% endblock %}
       {% block content %}{% endblock %}
     </article>

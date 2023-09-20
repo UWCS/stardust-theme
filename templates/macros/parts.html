@@ -1,5 +1,4 @@
 {% import "macros/logos.html" as logos %}
-{% import "macros/formatters.html" as formatters %}
 
 {% macro preview_styles() %}
 
@@ -68,8 +67,9 @@ have ties to the CS department - hosting weekly academic, social and gaming even
 
 
   {% macro nav() %}
-<nav id="nav" class="navbar navbar-expand-lg" {% if config.base_url is containing('draft')
-  %}style="border-color: var(--bs-danger) !important" {% endif %}>
+<nav id="nav" class="navbar navbar-expand-lg" 
+    {% if config.base_url is containing('draft') %}style="border-color: var(--bs-danger) !important" {% endif %}
+>
   <div class="container-lg align-items-center">
 
     <!-- UWCS Logo -->
@@ -112,7 +112,7 @@ have ties to the CS department - hosting weekly academic, social and gaming even
         <!-- Dark mode toggles -->
         <div class="vr d-none d-lg-block "></div>
         <li class="nav-item ms-lg-2">
-          <a id="dark-mode" class="nav-link ml-1" href="#">
+          <a id="dark-mode" class="nav-link ml-1" href="javascript:void(0);">
 
             {{ shortcodes::icon(icon="ph-moon") }}
             <span class="d-lg-none ms-2 ms-lg-0">Toggle Dark Mode</span>
