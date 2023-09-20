@@ -13,58 +13,60 @@
 {% block header %}{% endblock header %}
 {% block main_extra %}{% endblock %}
 {% block outercontents %}
-<article id="content" class="w-100 mb-4 bg-transparent">
+<article id="content" class="w-100 bg-transparent">
 
-{# Main Content #}
-{{ front::hero() }}
+  {# Main Content #}
+  {{ front::hero() }}
 
-{{ section.content | safe}}
+  {{ section.content | safe}}
 
-{# Socials #}
-<div class="w-100 vstack align-items-center my-5 pt-5">
-  <h1>Our Socials</h1>
-  
-  <div id="socials" class="mb-5 col-md-11 gap-3 row justify-content-evenly mx-4">
-  {% set socials = get_section(path="socials/_index.md") %}
-  {% for social in socials.pages %}
-    {{ socials::block(social=social) }}
-  {% endfor %}
+  {# Socials #}
+  <div class="w-100 vstack align-items-center my-5 pt-5">
+    <h1>Our Socials</h1>
+
+    <div id="socials" class="mb-5 col-md-11 gap-3 row justify-content-evenly mx-4">
+      {% set socials = get_section(path="socials/_index.md") %}
+      {% for social in socials.pages %}
+      {{ socials::block(social=social) }}
+      {% endfor %}
+    </div>
   </div>
-</div>
 
-{# Sponsors #}
-<div class="w-100 vstack align-items-center my-5 pb-5">
-<h1>Our Sponsors</h1>
+  {# Sponsors #}
+  <div class="w-100 vstack align-items-center my-5 pb-5">
+    <h1>Our Sponsors</h1>
 
-<div id="sponsors" class="col-lg-10"> 
-  
-  {% set gold_spon_sec = get_section(path="sponsors/gold/_index.md") %}
-  {{ sponsors::tier(tier="Gold", sponsors=gold_spon_sec.pages, area=22500) }}
-  {% set silver_spon_sec = get_section(path="sponsors/silver/_index.md") %}
-  {{ sponsors::tier(tier="Silver", sponsors=silver_spon_sec.pages, area=15000) }}
-</div>
-</div>
+    <div id="sponsors" class="col-lg-10">
+
+      {% set gold_spon_sec = get_section(path="sponsors/gold/_index.md") %}
+      {{ sponsors::tier(tier="Gold", sponsors=gold_spon_sec.pages, area=22500) }}
+      {% set silver_spon_sec = get_section(path="sponsors/silver/_index.md") %}
+      {{ sponsors::tier(tier="Silver", sponsors=silver_spon_sec.pages, area=15000) }}
+    </div>
+  </div>
 
 
-<div class="blue-top">
+  <div class="blue-top">
 
-{# News #}
-{% set news_sec = get_section(path="news/_index.md") %}
-{% set pages = news_sec.pages %}
-{% if pages %}
-<a href="{{ get_url(path='news') }}" class="link-body-emphasis text-decoration-none"><h1>Latest News</h1></a>
+    {# News #}
+    {% set news_sec = get_section(path="news/_index.md") %}
+    {% set pages = news_sec.pages %}
+    {% if pages %}
+    <a href="{{ get_url(path='news') }}" class="link-body-emphasis text-decoration-none">
+      <h1>Latest News</h1>
+    </a>
 
-<div class="posts p-2 row gap-3 mx-3">
-    {% for page in pages %}
+    <div class="posts pt-2 row gap-3 my-3">
+      {% for page in pages %}
       {% if loop.index > 3 %} {% break %} {% endif %}
       <!-- Card for each page -->
       {{ cards::news_card(page=page) }}
-    {% endfor %}
-    
-    {# Events #}
-</div>
+      {% endfor %}
 
-{%endif%}
+      {# Events #}
+    </div>
+
+    {%endif%}
 
 </article>
 {% endblock content%}

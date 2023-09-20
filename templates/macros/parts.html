@@ -36,7 +36,8 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
 {% if resource.summary %}
 {% set description = resource.summary | striptags %}
 {% elif current_path == "/" %}
-{% set description = "UWCS is free-to-join, and open to anyone with an interest in the field of Computer Science. We have ties to the CS department - hosting weekly academic, social and gaming events." %}
+{% set description = "UWCS is free-to-join, and open to anyone with an interest in the field of Computer Science. We
+have ties to the CS department - hosting weekly academic, social and gaming events." %}
 {% elif resource.content %}
 {% set description = resource.content | split(pat="</p>") | first | split(pat="<p>") | last | striptags | safe %}
   {% endif %}
@@ -66,9 +67,8 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
 
 
   {% macro nav() %}
-<nav id="nav" class="navbar navbar-expand-lg" 
-    {% if config.base_url is containing('draft') %}style="border-color: var(--bs-danger) !important" {% endif %}
->
+<nav id="nav" class="navbar navbar-expand-lg" {% if config.base_url is containing('draft')
+  %}style="border-color: var(--bs-danger) !important" {% endif %}>
   <div class="container-lg align-items-center">
 
     <!-- UWCS Logo -->
@@ -151,17 +151,23 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
 
 
 {% macro footer() %}
-<footer id="foot">
+{% set index = current_path=="/" %}
+<footer id="foot" {% if index %} style="background-color: #3a7dff !important;" {% endif %}>
   <!-- Centred aligned uwcs logo -->
   <a class="d-flex text-decoration-none" href="https://uwcs.co.uk">
+    {% if index %}
+    {{ logos::dots_uwcs(letter="white",dot1="white",dot2="white") }}
+    {% else %}
     {{ logos::dots_uwcs() }}
+    {% endif %}
   </a>
   <!-- Right aligned links -->
   <ul class="nav justify-content-end list-unstyled d-flex align-items-center">
     {% set socs = get_section(path="socials/_index.md") %}
     {% for social in socs.pages %}
-    <li class="fs-4 ms-3 d-block {% if social.extra.img %}opacity-50{% endif %}">
-      <a target="_blank" rel="noopener" class="d-flex text-muted opacity-hover" href="{{ social.extra.link }}">
+    <li class="fs-4 ms-3 d-block {% if social.extra.img and not index %}opacity-50{% endif %}">
+      <a target="_blank" rel="noopener" class="d-flex text-{% if index %}white{% else %}muted{% endif %} opacity-hover"
+        href="{{ social.extra.link }}">
         {% if social.extra.img %}{% set icon = social.extra.img %}
         {% elif social.extra.social %}{% set icon = "bi-" ~ social.extra.social %}
         {% else %}
