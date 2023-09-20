@@ -93,7 +93,7 @@ table {
 }
 
 body {
-    background-image: url("assets/bg-particles.png");
+    background-image: $uwcs-grey url("assets/bg-particles.png") !important;
     background-repeat: repeat;
     background-position: center top;
     background-size: 50vmax;

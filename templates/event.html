@@ -4,9 +4,11 @@
 {% block header %}{% endblock %}
 {% block content %}
 
-<div class="card">
+<div class="card text-body-emphasis" {% if resource.extra.colour -%} style="background-color: {{ formatters::colour(colour=resource.extra.colour) }}80 !important" {%- endif -%}>
   <div class="card-body">
-    <h1 class="card-title two-line-clamp">{{ page.title }}</h1>
+    <h1 class="card-title two-line-clamp">
+      {%- if resource.extra.icon %}{{ shortcodes::icon(icon=resource.extra.icon, baseline=true) }} {% endif -%} 
+      {{ page.title }}</h1>
     
     {% if resource.taxonomies %}
     {% for tax, terms in resource.taxonomies %}
