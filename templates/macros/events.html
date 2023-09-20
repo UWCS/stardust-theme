@@ -95,9 +95,9 @@
 
     {% if not archive and week_no > 0 %}
     {% if e_week_no < week_no %} {% continue %} {% endif %} {% elif week_no> 0 %}
-      {% if e_week_no > week_no %} {% continue %} {% endif %}
+      {% if e_week_no > week_no %}{% continue %}{% endif %}
       {% endif %}
-      {% set added_event = true %}
+      {% set_global added_event = true %}
       {{ events::week(w=week, title=week.title) }}
       {% endfor %}
       {% if not added_event %}
