@@ -4,11 +4,6 @@
 {% import "macros/cards.html" as cards %}
 {% import "macros/socials.html" as socials %}
 
-{% block head %}
-{{ super() }}
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-{% endblock %}
-
 {% block title %}{{ section.title }}{% endblock title %}
 {% block header %}{% endblock header %}
 {% block main_extra %}{% endblock %}
