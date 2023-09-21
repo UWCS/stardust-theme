@@ -12,9 +12,6 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
 {% macro head() %}
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="icon" type="image/x-icon" href="{{ config.base_url | safe }}/assets/favicon.png">
-<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700" rel="stylesheet">
 <link rel="stylesheet" href="{{ config.base_url | safe }}/uwcs-bootstrap.css">
 <script src="{{ config.base_url | safe }}/scripts/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="{{ config.base_url | safe }}/icon-packs/bootstrap-icons.min.css">
@@ -25,6 +22,10 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
 <link rel="stylesheet" type="text/css" href="/syntax-theme-dark.css" />
 <link rel="stylesheet" type="text/css" href="/syntax-theme-light.css" />
 {% endif %}
+
+<link rel="preload" as="font" type="font/woff2" href="./fonts/mulish-v13-latin-regular.woff2" crossorigin />
+<link rel="preload" as="font" type="font/woff2" href="./fonts/montserrat-v26-latin-600.woff2" crossorigin />
+<link rel="preload" as="font" type="font/woff2" href="./fonts/montserrat-v26-latin-700.woff2" crossorigin />
 {% endmacro head %}
 
 {% macro opengraph(resource) %}
