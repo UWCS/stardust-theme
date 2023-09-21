@@ -1,6 +1,13 @@
+@include media-breakpoint-down(sm) {
+    .event-mobile {
+        font-size: 0.6em;
+    }
+}
+
 $circle-width: 11em;
 $circle-pad: 1em;
 $circle-gap: 1em;
+
 $dist-circles: $circle-pad + $circle-gap + $circle-pad;
 
 @function day-width($num) {
@@ -27,27 +34,23 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
     justify-content: center;
     display: flex;
     flex-direction: column;
-    border-radius: 1000000px;
+    border-radius: 50%;
     line-height: 110%;
 
     & .event-icon {
-        font-size: 4em;
+        font-size: calc($circle-width / (11 / 4));
     }
 
     & .event-title {
         @extend .fw-semibold, .two-line-clamp;
-        font-size: 1.1em;
-        margin-left: 1em;
-        margin-right: 1em;
-        margin-bottom: 0.25em;
-        margin-top: 0.4em;
+        font-size: calc($circle-width / 10);
+        margin: calc($circle-pad * 0.4) $circle-pad calc($circle-pad / 4)
     }
 
     & .event-extras {
         @extend .fw-medium, .three-line-clamp;
-        font-size: 0.95em;
-        margin-left: 2em;
-        margin-right: 2em;
+        font-size: calc($circle-width / 11);
+        margin: 0 calc($circle-pad * 2);
     }
 }
 
@@ -102,7 +105,7 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
 
 // Good luck after four in a day
 
-@container (width >= #{day-width(3)}) {
+@container (width >=#{day-width(3)}) {
     .day-3-1x2 {
         grid-column: span 1 !important;
         grid-row: span 2 !important;
@@ -124,7 +127,7 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
     }
 }
 
-@container (#{day-width(2)} <= width < #{day-width(3)}) {
+@container (#{day-width(2)} <=width < #{day-width(3)}) {
     .events {
         --ecols: 2;
     }

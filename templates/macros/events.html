@@ -42,7 +42,8 @@
 {% set prev_day = "" %}
 {% set days_events = [] %}
 <div class="week w-100 text-center my-4">
-  {% if title %} <h2><a class="link-body-emphasis text-decoration-none" href="{{ w.permalink | safe }}"  aria-label="See events on week {{ title }}">{{ title }}</a>
+  {% if title %} <h2><a class="link-body-emphasis text-decoration-none" href="{{ w.permalink | safe }}"
+      aria-label="See events on week {{ title }}">{{ title }}</a>
   </h2> {% endif %}
   <div class="events d-grid justify-content-center">
     {% for e in events %}
@@ -83,8 +84,9 @@
 {% endif %}
 {% set added_event = false %}
 
-<div class="term blue" data-bs-theme="dark">
-  {% if title %}<h1><a class="link-body-emphasis text-decoration-none" href="{{ t.permalink | safe }}" aria-label="See events in {{ title }}">{{ title }}</a>
+<div class="term blue event-mobile" data-bs-theme="dark">
+  {% if title %}<h1><a class="link-body-emphasis text-decoration-none" href="{{ t.permalink | safe }}"
+      aria-label="See events in {{ title }}">{{ title }}</a>
   </h1>{% endif %}
   <div class="weeks w-100 {% if archive %}reverse{% endif %}">
     {% for week in weeks %}
