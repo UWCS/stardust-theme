@@ -7,7 +7,7 @@ backend:
 media_folder: "static/images"
 public_folder: "/images"
 site_url: {{ config.base_url | safe }}
-logo_url: {{ config.base_url | safe }}/assets/logo_compact.svg
+logo_url: {{ get_url(path="assets/logo_compact.svg") }}
 
 collections:
   - name: "news" # Used in routes, e.g., /admin/collections/blog

@@ -4,6 +4,11 @@
 {% import "macros/cards.html" as cards %}
 {% import "macros/socials.html" as socials %}
 
+{% block head %}
+{{ super() }}
+<link rel="preload" as="font" type="font/woff2" href="/fonts/montserrat-700-computingsociety-only.woff2" crossorigin />
+{% endblock %}
+
 {% block title %}{{ section.title }}{% endblock title %}
 {% block header %}{% endblock header %}
 {% block main_extra %}{% endblock %}

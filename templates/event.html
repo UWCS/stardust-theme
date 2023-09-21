@@ -3,7 +3,9 @@
 {% import "macros/formatters.html" as formatters %}
 {% block header %}{% endblock %}
 {% block content %}
-
+<script>
+  console.log({{ __tera_context }})
+</script>
 <div class="card text-body-emphasis" {% if resource.extra.colour -%} style="background-color: {{ formatters::colour(colour=resource.extra.colour) }}80 !important" {%- endif -%}>
   <div class="card-body">
     <h1 class="card-title two-line-clamp">
@@ -14,7 +16,8 @@
     {% for tax, terms in resource.taxonomies %}
       {% for term in terms %}
       <a class="badge bg-secondary text-decoration-none ms-1 mb-3" 
-        href="{{ config.base_url | safe }}/{{ tax | slugify }}/{{ term | slugify }}"
+        {% set t = get_taxonomy_term(kind=tax, term=term) %}
+        href="{{ t.permalink }}"
         aria-label="View all events tagged with {{ term }}"
       >
       {{ term  }} 

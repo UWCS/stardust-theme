@@ -4,7 +4,7 @@
 {% block breadcrumb %}
 <nav aria-label="breadcrumb" class="container-lg pt-2 bg-body px-4">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{{ config.base_url | safe }}/{{ taxonomy.name | safe }}"  aria-label="See terms in {{ taxonomy.name }}">{{ taxonomy.name | capitalize | truncate(length=25) }}</a></li>
+      <li class="breadcrumb-item"><a href="{{ get_url(path=taxonomy.name) }}"  aria-label="See terms in {{ taxonomy.name }}">{{ taxonomy.name | capitalize | truncate(length=25) }}</a></li>
       <li class="breadcrumb-item active" aria-current="page">{{ term.name | truncate(length=25)}}</li>
     </ol>
   </nav>

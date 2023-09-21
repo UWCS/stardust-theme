@@ -8,14 +8,15 @@ body: Text of the block
 Examples: See content/_index.md
 #}
 
+{% set icon_url = "assets/exec-icons/" ~ role ~ ".svg" %}
 <div class="hstack gap-3 col-xl-6 py-1 px-sm-3" style="max-width: 700px">
   <img class="d-none d-sm-block {% if nth is odd %} order-xl-first order-last {%endif%}" width=150 height=150
-    src="{{ config.base_url | safe }}/assets/exec-icons/{{ role }}.svg"
+    src="{{ get_url(path=icon_url) }}"
     alt="icon for {{ role }}"
   >
   <div>
     <h2>
-      <div class="icon baseline d-sm-none"><img src="{{ config.base_url | safe }}/assets/exec-icons/{{ role }}.svg" alt="icon for {{ role }}"> 
+      <div class="icon baseline d-sm-none"><img src="{{ get_url(path=icon_url) }}" alt="icon for {{ role }}"> 
       </div> {{ title | safe }}
     </h2>
     <h5 class="front-icon">{{ body | markdown | safe }}</h5>

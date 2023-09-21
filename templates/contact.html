@@ -6,7 +6,7 @@
 {% block head %}
 {{ super() }}
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-<script src="{{ config.base_url | safe }}/scripts/clickcopy.js"></script>
+<script src="{{ get_url(path="scripts/clickcopy.js", cachebust=true) }}"></script>
 {% endblock head %}
 
 {% block content %}
@@ -24,7 +24,7 @@
   <tbody>
     <tr>
       <td>
-        <div class="icon baseline"><img src="{{ config.base_url | safe }}/assets/exec-icons/all.svg"></div>
+        <div class="icon baseline"><img src="{{ get_url(path="assets/exec-icons/all.svg") }}"></div>
         <i>Exec</i>
       </td>
       <td><i>All Exec</i></td>
@@ -33,7 +33,7 @@
     {% for role in section.pages %}
     <tr>
       <td>
-        <div class="icon baseline"><img src="{{ config.base_url | safe }}/assets/exec-icons/{{ role.slug }}.svg"></div>
+        <div class="icon baseline"><img src="{{ get_url(path="assets/exec-icons/{{ role.slug }}.svg") }}"></div>
         {{ role.title }}
       </td>
       <td>

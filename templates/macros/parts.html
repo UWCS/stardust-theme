@@ -4,28 +4,27 @@
 
 CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700");
 CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700");
-CMS.registerPreviewStyle("{{ config.base_url | safe }}/icon-packs/bootstrap-icons.min.css");
-CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
+CMS.registerPreviewStyle("{{ get_url(path="icon-packs/bootstrap-icons.min.css", cachebust=true) }}");
+CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) }}");
 
 {% endmacro preview_styles %}
 
 {% macro head() %}
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" type="image/x-icon" href="{{ config.base_url | safe }}/assets/favicon.png">
-<link rel="stylesheet" href="{{ config.base_url | safe }}/uwcs-bootstrap.css">
-<script src="{{ config.base_url | safe }}/scripts/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet" href="{{ config.base_url | safe }}/icon-packs/bootstrap-icons.min.css">
-<link rel="stylesheet" href="{{ config.base_url | safe }}/icon-packs/phosphor-bold.css">
-<script src="{{ config.base_url | safe }}/scripts/darkmode.js"></script>
+<link rel="icon" type="image/x-icon" href="{{ get_url(path="assets/favicon.png", cachebust=true) }}">
+<link rel="stylesheet" href="{{ get_url(path="uwcs-bootstrap.css", cachebust=true) }}">
+<script src="{{ get_url(path="scripts/bootstrap.bundle.min.js", cachebust=true) }}"></script>
+<link rel="stylesheet" href="{{ get_url(path="icon-packs/bootstrap-icons.min.css", cachebust=true) }}">
+<link rel="stylesheet" href="{{ get_url(path="icon-packs/phosphor-bold.css", cachebust=true) }}">
+<script src="{{ get_url(path="scripts/darkmode.js", cachebust=true) }}"></script>
 
 {% if config.markdown.highlight_code and config.markdown.highlight_theme == "css" %}
 <link rel="stylesheet" type="text/css" href="/syntax-theme-dark.css" />
 <link rel="stylesheet" type="text/css" href="/syntax-theme-light.css" />
 {% endif %}
 
-<link rel="preload" as="font" type="font/woff2" href="./fonts/mulish-v13-latin-regular.woff2" crossorigin />
-<link rel="preload" as="font" type="font/woff2" href="./fonts/montserrat-v26-latin-600.woff2" crossorigin />
-<link rel="preload" as="font" type="font/woff2" href="./fonts/montserrat-v26-latin-700.woff2" crossorigin />
+<link rel="preload" as="font" type="font/woff2" href="/fonts/mulish-v13-latin-regular.woff2" crossorigin />
+<link rel="preload" as="font" type="font/woff2" href="/fonts/montserrat-v26-latin-600.woff2" crossorigin />
 {% endmacro head %}
 
 {% macro opengraph(resource) %}
