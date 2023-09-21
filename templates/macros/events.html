@@ -21,7 +21,12 @@
 {% else %}{% set date = events[0].date | date(format="%A") %}{% endif %}
 <div class="event-outer bg-body rounded-4 text-center text-white" data-event-count="{{ events | length }}">
   {% if date %}
+  {% if date=="Wednesday"%}
+  {# if Wednesday add 0-width space to allow for break as wed #}
+  <h4 class="fw-semibold day-clamp">Wed​nesday</h4>
+  {% else %}
   <h4 class="fw-semibold">{{ date }}</h4>
+  {% endif %}
   {% endif %}
   <div class="day">
     {% for e in events | sort(attribute="date") %}

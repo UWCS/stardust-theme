@@ -2,6 +2,11 @@
     .event-mobile {
         font-size: 0.6em;
     }
+
+    .day-clamp {
+        overflow: hidden;
+        height: 1em;
+    }
 }
 
 $circle-width: 11em;
@@ -75,7 +80,10 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
 }
 
 .event-outer {
+    display: flex;
+    flex-direction: column;
     padding: $circle-pad;
+    justify-content: space-between;
 }
 
 .events {
