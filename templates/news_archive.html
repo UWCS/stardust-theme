@@ -7,7 +7,7 @@
 <div class="alert alert-primary" role="alert">
   {% set base = resource.components | first %}
   {% set url = "@/" ~ base ~ "/_index.md" %}
-  {{ shortcodes::icon(icon="ph-bell") }} <b><a href="{{ get_url(path=url) }}">Return to Current {{ base | title }}</a></b>
+  {{ shortcodes::icon(icon="ph-bell") }} <b><a href="{{ get_url(path=url) }}" aria-label="Return to current events list">Return to Current {{ base | title }}</a></b>
 </div>
 
 {% endblock %}

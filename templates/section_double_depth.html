@@ -12,7 +12,7 @@
   {% for sub in section.subsections %}
     {% set subsect = get_section(path=sub) %}
     {% if subsect.pages %}
-      <h2><a class="text-decoration-none text-body" href="{{ subsect.permalink }}">{{ subsect.title }}</a></h2>
+      <h2><a class="text-decoration-none text-body" href="{{ subsect.permalink }}" aria-label="View {{ subsect.title }}">{{ subsect.title }}</a></h2>
       {% for page in subsect.pages %}
         {{ cards::news_card(page=page, sum_len=250) }}
       {% endfor %}

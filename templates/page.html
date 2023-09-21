@@ -10,8 +10,9 @@
   {% for tax, terms in resource.taxonomies %}
     {% for term in terms %}
     <a class="badge bg-secondary text-decoration-none ms-1" 
-      href="{{ config.base_url | safe }}/{{ tax | slugify }}/{{ term | slugify }}">
-    {{ term  }} 
+      href="{{ config.base_url | safe }}/{{ tax | slugify }}/{{ term | slugify }}"
+      aria-label="See other pages with {{ tax }} {{ term }}">
+    {{ term }} 
     </a>
     {% endfor %}
   {% endfor %}

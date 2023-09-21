@@ -9,8 +9,10 @@ Examples: See content/_index.md
 #}
 
 <div class="hstack gap-3 col-xl-6 py-1 px-sm-3" style="max-width: 700px">
-  <img class="d-none d-sm-block {% if nth is odd %} order-xl-first order-last {%endif%}" width=150
-    src="{{ config.base_url | safe }}/assets/exec-icons/{{ role }}.svg">
+  <img class="d-none d-sm-block {% if nth is odd %} order-xl-first order-last {%endif%}" width=150 height=150
+    src="{{ config.base_url | safe }}/assets/exec-icons/{{ role }}.svg"
+    alt="icon for {{ role }}"
+  >
   <div>
     <h2>
       <div class="icon baseline d-sm-none"><img src="{{ config.base_url | safe }}/assets/exec-icons/{{ role }}.svg">

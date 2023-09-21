@@ -72,7 +72,7 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
   <div class="container-lg align-items-center">
 
     <!-- UWCS Logo -->
-    <a class="navbar-brand" href="{{ config.base_url | safe }}">
+    <a class="navbar-brand" href="{{ config.base_url | safe }}" aria-label="Return to homepage">
       {{ logos::dots_uwcs() }}
     </a>
 
@@ -89,33 +89,30 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
         {% for sub in sect.subsections %}
         {% set subsect = get_section(path=sub) %}
         {% if subsect.extra.hide %}{% continue %}{% endif %}
-        <li><a class="nav-link" href="{{ subsect.permalink | safe }}">{{ subsect.title }}</a></li>
+        <li><a class="nav-link" href="{{ subsect.permalink | safe }}" aria-label="Visit {{ subsect.title }}">{{ subsect.title }}</a></li>
         {% endfor %}
 
         <li class="ms-lg-auto me-lg-2 nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Links to our other projects">
             Other Links
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-            <li><a target="_blank" rel="noopener" class="dropdown-item" href="https://techteam.uwcs.co.uk">Tech Team
-                Wiki</a></li>
-            <li><a target="_blank" rel="noopener" class="dropdown-item" href="https://progcomp.uwcs.co.uk/">Programming
-                Competitions</a></li>
-            <li><a target="_blank" rel="noopener" class="dropdown-item" href="https://warwickspeed.run">WASD (Warwick
-                Speedrun)</a></li>
-            <li><a target="_blank" rel="noopener" class="dropdown-item" href="https://github.com/UWCS">Our GitHub</a>
+            <li><a target="_blank" rel="noopener" class="dropdown-item" href="https://techteam.uwcs.co.uk" aria-label="Tech Team Wiki">Tech Team Wiki</a></li>
+            <li><a target="_blank" rel="noopener" class="dropdown-item" href="https://progcomp.uwcs.co.uk/" aria-label="Our programming competitions">Programming Competitions</a></li>
+            <li><a target="_blank" rel="noopener" class="dropdown-item" href="https://warwickspeed.run" aria-label="Our speedrunning event">WASD (Warwick Speedrun)</a></li>
+            <li><a target="_blank" rel="noopener" class="dropdown-item" href="https://github.com/UWCS" aria-label="Our github">Our GitHub</a>
             </li>
           </ul>
         </li>
 
         <!-- Dark mode toggles -->
-        <div class="vr d-none d-lg-block "></div>
+        <li class="vr d-none d-lg-block "></li>
         <li class="nav-item ms-lg-2">
-          <a id="dark-mode" class="nav-link ml-1" href="javascript:void(0);">
+          <button id="dark-mode" class="nav-link ml-1" href="javascript:void(0);" aria-label="Toggle dark mode">
 
             {{ shortcodes::icon(icon="ph-moon") }}
             <span class="d-lg-none ms-2 ms-lg-0">Toggle Dark Mode</span>
-          </a>
+          </button>
         </li>
       </ul>
     </div>
@@ -139,7 +136,7 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
     {% for parent in page.ancestors %}
     {% if not loop.first %} <!-- Ignore first -->
     {% set s = get_section(path=parent, include_pages=false) %}
-    <li class="breadcrumb-item"><a href="{{ s.permalink | safe }}">{{ s.title | truncate(length=25) }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ s.permalink | safe }}" aria-label="See parent section {{ s.title }}">{{ s.title | truncate(length=25) }}</a></li>
     {% endif %}
     {% endfor %}
     <!-- Include actual page -->
@@ -154,7 +151,7 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
 {% set index = current_path=="/" %}
 <footer id="foot" {% if index %} style="background-color: #3a7dff !important;" {% endif %}>
   <!-- Centred aligned uwcs logo -->
-  <a class="d-flex text-decoration-none" href="https://uwcs.co.uk">
+  <a class="d-flex text-decoration-none" href="https://uwcs.co.uk" aria-label="Return to homepage">
     {% if index %}
     {{ logos::dots_uwcs(letter="white",dot1="white",dot2="white") }}
     {% else %}
@@ -166,8 +163,9 @@ CMS.registerPreviewStyle("{{ config.base_url | safe }}/style.css");
     {% set socs = get_section(path="socials/_index.md") %}
     {% for social in socs.pages %}
     <li class="fs-4 ms-3 d-block {% if social.extra.img and not index %}opacity-50{% endif %}">
-      <a target="_blank" rel="noopener" class="d-flex text-{% if index %}white{% else %}muted{% endif %} opacity-hover"
-        href="{{ social.extra.link }}">
+      <a target="_blank" rel="noopener" href="{{ social.extra.link }}"
+        class="d-flex text-{% if index %}white{% else %}muted{% endif %} opacity-hover"
+        aria-label="Visit our {{ social.title }}">
         {% if social.extra.img %}{% set icon = social.extra.img %}
         {% elif social.extra.social %}{% set icon = "bi-" ~ social.extra.social %}
         {% else %}

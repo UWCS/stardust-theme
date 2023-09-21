@@ -6,19 +6,19 @@
 
 {% set tier_sec = get_section(path=page.ancestors | last) %}
 
-<a target="_blank" rel="noopener"id="img" href="{{ page.extra.link }}" class="d-block m-3 mt-0 mb-5" style="max-width: 400px">
+<a target="_blank" rel="noopener" id="img" href="{{ page.extra.link }}" class="d-block m-3 mt-0 mb-5" style="max-width: 400px" aria-label="Visit {{ page.title }}">
     {{ sponsors::single(sponsor=page, area=200*150, white=false) }}
 </a>
 
 <h1>{{ page.title }}</h1>
 <a class="ms-auto badge text-decoration-none fs-5" 
     {% if tier_sec.extra.colour %}style="background-color: {{ tier_sec.extra.colour }}"{% endif %}
-    href="{{ tier_sec.permalink }}"
+    href="{{ tier_sec.permalink }}" aria-label="See all our {{ tier_sec.title }} sponsors"
 >
     {{ tier_sec.title | trim_end_matches(pat=" Sponsors")}}
 </a>
 
-<b class="ms-3 fs-5"><a target="_blank" rel="noopener"href="{{ page.extra.link }}">Visit website</a></b>
+<b class="ms-3 fs-5"><a target="_blank" rel="noopener" href="{{ page.extra.link }}"  ria-label="Visit {{ page.title }}">Visit website</a></b>
 
 <hr>
 {{ page.content | safe}}

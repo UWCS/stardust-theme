@@ -47,7 +47,7 @@
     {% set news_sec = get_section(path="news/_index.md") %}
     {% set pages = news_sec.pages %}
     {% if pages %}
-    <a href="{{ get_url(path='news') }}" class="link-body-emphasis text-decoration-none">
+    <a href="{{ get_url(path='news') }}" class="link-body-emphasis text-decoration-none" aria-label="View all news">
       <h1>Latest News</h1>
     </a>
 
