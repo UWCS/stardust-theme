@@ -10,7 +10,7 @@ Examples: See content/_index.md
 
 {% set icon_url = "assets/exec-icons/" ~ role ~ ".svg" %}
 <div class="hstack gap-3 col-xl-6 py-1 px-sm-3" style="max-width: 700px">
-  <img class="d-none d-sm-block {% if nth is odd %} order-xl-first order-last {%endif%}" width=150 height=150
+  <img class="d-none d-sm-block {% if nth is odd %} order-xl-first order-last {%endif%}" width=150 height=150 loading="lazy"
     src="{{ get_url(path=icon_url) }}"
     alt="icon for {{ role }}"
   >

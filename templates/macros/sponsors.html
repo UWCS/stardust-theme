@@ -15,7 +15,7 @@
   {% set size = sponsors::equiv_vis_size(img_path=path, area=area) %}
   <img {% if white %}class="white-hover"{% endif %} src="{{ path }}" {{ size }} 
     style="max-width: 100%; object-fit: contain" 
-    alt="Logo for {{ sponsor.title }}"
+    alt="Logo for {{ sponsor.title }}" loading="lazy"
   >
 {% endmacro %}
 
