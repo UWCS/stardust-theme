@@ -1,5 +1,6 @@
 {% import "macros/formatters.html" as formatters %}
 {%- import "macros/shortcodes.html" as shortcodes -%}
+{% import "macros/rooms.html" as rooms %}
 
 {% macro event_circle(e) %}
 <a href="{{ e.permalink }}" class="text-decoration-none event-hover" aria-label="See event {{ e.title }}">
@@ -15,12 +16,63 @@
 </a>
 {% endmacro %}
 
+{% macro event_info(resource, large, page=true)%}
+{% if page %}
+<a href="{{resource.permalink}}" class="my-2 text-decoration-none text-white card-hover">
+  {% endif %}
+  <div class="card text-body-emphasis" {% if resource.extra.colour -%}
+    style="background-color: {{ formatters::colour(colour=resource.extra.colour) }}80 !important" {%- endif -%}>
+    <div class="card-body">
+      <h1 class="card-title two-line-clamp">
+        {%- if resource.extra.icon %}{{ shortcodes::icon(icon=resource.extra.icon, baseline=true) }} {% endif -%}
+        {{ resource.title }}</h1>
 
-{% macro day(events) %}
+      {% if resource.taxonomies and large %}
+      {% for tax, terms in resource.taxonomies %}
+      {% for term in terms %}
+      <a class="badge bg-secondary text-decoration-none ms-1 mb-3" {% set t=get_taxonomy_term(kind=tax, term=term) %}
+        href="{{ t.permalink }}" aria-label="View all events tagged with {{ term }}">
+        {{ term }}
+      </a>
+      {% endfor %}
+      {% endfor %}
+      {% endif %}
+
+      <h4>
+        {{ shortcodes::icon(icon="ph-calendar-blank") }}
+        {{ formatters::event_date_range(e=resource) }}
+        {% if large %}
+      </h4>
+      <h4>
+        {% endif %}
+        {% if resource.extra.location %}
+        {{ shortcodes::icon(icon="ph-map-pin") }}
+        {% if page %}
+        {{ resource.extra.location }}
+        {% else %}
+        {% if resource.extra.location_url %}<a target="_blank" rel="noopener" href="{{ resource.extra.location_url }}"
+          aria-label="Location for {{ resource.title }}">{{ resource.extra.location }}</a>
+        {% elif resource.components is containing("archive") %} {{ resource.extra.location }}
+        {% else %} {{ rooms::room_link(name=resource.extra.location) }}
+        {% endif %}
+        {% endif %}
+        {% endif %}
+      </h4>
+    </div>
+  </div>
+  {% if page %}
+</a>
+{% endif %}
+{% endmacro %}
+
+
+{% macro day(events,grid=true) %}
 {% if events[0].extra.display_day %}{% set date = events[0].extra.display_day %}
 {% else %}{% set date = events[0].date | date(format="%A") %}{% endif %}
+{% if grid %}
 <div class="event-outer bg-body rounded-4 text-center text-white" data-event-count="{{ events | length }}">
-  {% if date %}
+  {% endif %}
+  {% if date and grid %}
   {% if date=="Wednesday"%}
   {# if Wednesday add 0-width space to allow for break as wed #}
   <h4 class="fw-semibold day-clamp">Wed​nesday</h4>
@@ -28,16 +80,22 @@
   <h4 class="fw-semibold">{{ date }}</h4>
   {% endif %}
   {% endif %}
-  <div class="day">
+  {% if grid %}<div class="day">{% endif %}
     {% for e in events | sort(attribute="date") %}
+    {% if grid %}
     {{ events::event_circle(e=e) }}
+    {% else %}
+    {{events::event_info(resource=e, large=false)}}
+    {% endif %}
     {% endfor %}
+    {% if grid %}
   </div>
 </div>
+{% endif %}
 {% endmacro %}
 
 
-{% macro week(w, events="", title="") %}
+{% macro week(w, events="", title="", grid=true) %}
 {% if not events %}
 {# MIRROR ANY CHANGES HERE TO uwcs.ical fetching #}
 {# Because Tera is annoying, lists get cast to string when passing through macros, so we have to duplicate #}
@@ -46,18 +104,22 @@
 
 {% set prev_day = "" %}
 {% set days_events = [] %}
+{% if grid %}
 <div class="week w-100 text-center my-4">
+  {% endif %}
   {% if title %} <h2><a class="link-body-emphasis text-decoration-none" href="{{ w.permalink | safe }}"
       aria-label="See events on week {{ title }}">{{ title }}</a>
   </h2> {% endif %}
+  {% if grid %}
   <div class="events d-grid justify-content-center">
+    {% endif %}
     {% for e in events %}
     {% if e.extra.display_day %}{% set e_day = e.extra.display_day %}
     {% else %}{% set e_day = e.date | date(format="%A") %}{% endif %}
     {% if e_day != prev_day %}
     {# Output previous day's content #}
     {% if days_events %}
-    {{ events::day(events=days_events) }}
+    {{ events::day(events=days_events, grid=grid) }}
     {% set_global days_events = [] %}
     {% set_global started = true %}
     {% endif %}
@@ -69,14 +131,16 @@
     {# Clean up remaining days_events #}
     {% if started %}
     {% if days_events %}
-    {{ events::day(events=days_events) }}
+    {{ events::day(events=days_events, grid=grid) }}
     {% endif %}
     {% endif %}
+    {% if grid %}
   </div>
 </div>
+{% endif %}
 {% endmacro %}
 
-{% macro term(t, weeks="", title="", week_no=-1, archive=false) %}
+{% macro term(t, weeks="", title="", week_no=-1, archive=false, grid=true) %}
 {% if not weeks %}
 {# MIRROR ANY CHANGES HERE TO uwcs.ical fetching #}
 {# Because Tera is annoying, lists get cast to string when passing through macros, so we have to duplicate #}
@@ -89,11 +153,13 @@
 {% endif %}
 {% set added_event = false %}
 
+{% if grid %}
 <div class="term blue event-mobile" data-bs-theme="dark">
   {% if title %}<h1><a class="link-body-emphasis text-decoration-none" href="{{ t.permalink | safe }}"
       aria-label="See events in {{ title }}">{{ title }}</a>
   </h1>{% endif %}
   <div class="weeks w-100 {% if archive %}reverse{% endif %}">
+    {% endif %}
     {% for week in weeks %}
     {# Compare weeks (ignore past/future) #}
     {% set e_year = week.extra.base_date | date(format="%Y") | int %}
@@ -105,15 +171,36 @@
       {% if e_week_no > week_no %}{% continue %}{% endif %}
       {% endif %}
       {% set_global added_event = true %}
-      {{ events::week(w=week, title=week.title) }}
+      {{ events::week(w=week, title=week.title, grid=grid) }}
       {% endfor %}
       {% if not added_event %}
       <h2 class="text-center">No events {% if archive %}finished{% endif %} yet, please check back soon™</h2>
       {% endif %}
+      {% if grid %}
   </div>
 </div>
+{% endif %}
 {% endmacro %}
 
+{% macro event_block(resource, grid) %}
+
+{% set now = now() %}
+{% set this_year = now | date(format="%Y") | int %}
+{% set this_week = now | date(format="%W") | int %}
+{% set week_no = this_week + 54 * this_year %}
+{% set archive = resource.extra.archive | default(value=false) %}
+
+<div id="events-block" {% if archive %}class="reverse" {% endif %}>
+  {# MIRROR ANY CHANGES HERE TO uwcs.ical fetching #}
+  {% set events = get_section(path="events/_index.md") %}
+  {% for t in events.subsections %}
+  {% if t is containing("archive") %}{% continue %}{% endif %}
+  {% set term = get_section(path=t) %}
+  {{ events::term(t=term, title=term.title, week_no=week_no, archive=archive, grid=grid) }}
+  {% endfor %}
+</div>
+
+{% endmacro %}
 
 {% macro script() %}
 <script>

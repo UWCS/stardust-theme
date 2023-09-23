@@ -1,46 +1,12 @@
 {% extends "page.html" %}
-{% import "macros/rooms.html" as rooms %}
-{% import "macros/formatters.html" as formatters %}
+{% import "macros/events.html" as events %}
 {% block header %}{% endblock %}
 {% block content %}
 <script>
   console.log({{ __tera_context }})
 </script>
-<div class="card text-body-emphasis" {% if resource.extra.colour -%} style="background-color: {{ formatters::colour(colour=resource.extra.colour) }}80 !important" {%- endif -%}>
-  <div class="card-body">
-    <h1 class="card-title two-line-clamp">
-      {%- if resource.extra.icon %}{{ shortcodes::icon(icon=resource.extra.icon, baseline=true) }} {% endif -%} 
-      {{ page.title }}</h1>
-    
-    {% if resource.taxonomies %}
-    {% for tax, terms in resource.taxonomies %}
-      {% for term in terms %}
-      <a class="badge bg-secondary text-decoration-none ms-1 mb-3" 
-        {% set t = get_taxonomy_term(kind=tax, term=term) %}
-        href="{{ t.permalink }}"
-        aria-label="View all events tagged with {{ term }}"
-      >
-      {{ term  }} 
-      </a>
-      {% endfor %}
-    {% endfor %}
-    {% endif %}
 
-    <h4>
-      {{ shortcodes::icon(icon="ph-clock") }}
-      {{ formatters::event_date_range(e=resource) }}
-    </h4>
-    <h4>
-      {{ shortcodes::icon(icon="ph-map-pin") }}
-      {% if resource.extra.location %}
-        {% if resource.extra.location_url %}<a target="_blank" rel="noopener" href="{{ resource.extra.location_url }}" aria-label="Location for {{ resource.title }}">{{ resource.extra.location }}</a>
-        {% elif resource.components is containing("archive") %}  {{ resource.extra.location }}
-        {% else %} {{ rooms::room_link(name=resource.extra.location) }}
-        {% endif %}
-      {% endif %}
-    </h4>
-  </div>
-</div>
+{{ events::event_info(resource=resource, large=true, page=false) }}
 
 <div class="m-3">
   {{ resource.content | safe}}
