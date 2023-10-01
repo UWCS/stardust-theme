@@ -96,3 +96,13 @@
   {{ colmap[colour] | default(value=colour) }}
 {%- endif -%}
 {%- endmacro -%}
+
+{%- macro event_location(resource, icon=true, link=false) -%}
+{% if resource.extra.location %}
+  {% if icon %}{{ shortcodes::icon(icon="ph-map-pin") }}{% endif %}
+  {% if link and resource.extra.location_url %}<a target="_blank" rel="noopener" href="{{ resource.extra.location_url }}" aria-label="Location for {{ resource.title }}">{{ resource.extra.location }}</a>
+  {% elif not link or resource.components is containing("archive") %}  {{ resource.extra.location }}
+  {% else %} {{ rooms::room_link(name=resource.extra.location) }}
+  {% endif %}
+{% endif %}
+{%- endmacro -%}
