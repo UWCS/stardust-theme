@@ -3,23 +3,25 @@ backend:
   name: github
   repo: {{ config.extra.repo | safe }}
   base_url: {{ config.extra.cms_auth_url | safe }}
-  cms_label_prefix: "[CMS] "
+local_backend: 
+  url: http://172.18.156.44:8081/api/v1
+
 media_folder: "static/images"
 public_folder: "/images"
 site_url: {{ config.base_url | safe }}
 logo_url: {{ get_url(path="assets/logo_compact.svg") }}
 
 collections:
-  - name: "news" # Used in routes, e.g., /admin/collections/blog
-    label: "News" # Used in the UI
-    folder: "content/news" # The path to the folder where the documents are stored
-    {% raw %}preview_path: news/{{slug}} {% endraw %}
-    create: true # Allow users to create new documents in this collection
+  - name: "news"
+    label: "News"
+    folder: "content/news"
+    preview_path: {% raw %}news/{{slug}} {% endraw %}
+    create: true
+    slug: {% raw %}"{{year}}-{{month}}-{{day}}-{{slug}}" {% endraw %}
     format: toml-frontmatter
-    {% raw %}slug: "{{year}}-{{month}}-{{day}}-{{slug}}" # Filename template, e.g., YYYY-MM-DD-title.md {% endraw %}
-    fields: # The fields for each document, usually in front matter
+    fields:
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "News Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD MMMM YYYY", time_format: false, picker_utc: true }
+      - {label: "News Date", name: "date", widget: "datetime", format: "yyyy-MM-dd", date_format: "dd MMMM yyyy", time_format: false, picker_utc: true }
 
       - {label: "Draft", name: "draft", widget: "boolean", default: false}
 
@@ -35,26 +37,58 @@ collections:
             existing: [{% for term in cats.items %} "{{ term.name | lower | safe }}", {% endfor %}]
 
       - {label: "Body", name: "body", widget: "markdown"}
-  - name: "events" # Used in routes, e.g., /admin/collections/blog
-    label: "Events" # Used in the UI
-    folder: "content/events" # The path to the folder where the documents are stored
-    {% raw %}preview_path: events/{{slug}} {% endraw %}
-    create: true # Allow users to create new documents in this collection
+
+{% set events = get_section(path="events/_index.md") %}
+{% set terms = [] %}
+{% for t in events.subsections %}
+  {% if t is containing("archive") %}{% continue %}{% endif %}
+  {% set term = get_section(path=t) %}
+  {% set_global terms = terms | concat(with=term) %}
+{% endfor %}
+
+{% set terms = terms | sort(attribute="path") %}
+{% for term in terms %}
+  {% set_global weeks = [] %}
+  {% for w in term.subsections %}
+    {% set week = get_section(path=w) %}
+    {% set_global weeks = weeks | concat(with=week) %}
+  {% endfor %}
+
+  {% set weeks = weeks | sort(attribute="path") %}
+  {% for week in weeks %}
+  - name: "{{ week.components | join(sep="-") }}"
+    label: "{{ term.title }} {{ week.title }}"
+    folder: "content/{{ week.components | join(sep="/") }}"
+    create: true
     format: toml-frontmatter
-    {% raw %}slug: "{{year}}-{{month}}-{{day}}-{{slug}}" # Filename template, e.g., YYYY-MM-DD-title.md {% endraw %}
-    fields: # The fields for each document, usually in front matter
+
+    filter:
+      pattern: '^.*[^i][^n][^d][^e][^x].md$'
+
+    fields:
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Event Time & Date", name: "date", widget: "datetime"}
-      - {label: "Location", name: "location", widget: "string"}
+      - {label: "Event Time & Date", name: "date", widget: "string"}
+      - label: Extra
+        name: extra
+        widget: "object"
+        fields:
+          - {label: "End Time", name: "end_time", widget: "string"}
+          - {label: "Location", name: "location", widget: "string"}
+          - {label: "Icon", name: "icon", widget: "string"}
+          - {label: "Colour", name: "colour", widget: "string"}
 
       - label: "Taxonomies"
         name: "taxonomies"
         widget: "object"
         fields: 
-          - label: "Categories"
-            name: "categories"
-            widget: "categories"
-            default: []
-            {% set tags = get_taxonomy(kind="tags") %}
-            existing: [{% for term in tags.items %} "{{ term.name | lower | safe }}", {% endfor %}]
+          - label: "Tags"
+            name: "tags"
+            widget: "list"
+            allow_add: true
+            collapsed: true
+            fields: 
+              - {label: "Tag", name: "tag", widget: "string"}
+
       - {label: "Body", name: "body", widget: "markdown"}
+  {% endfor %}
+{% endfor %}
