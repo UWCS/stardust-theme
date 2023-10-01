@@ -164,9 +164,11 @@
     {% set e_week_no = e_week + 54 * e_year %}
 
     {% if not archive and week_no > 0 %}
-    {% if e_week_no < week_no %} {% continue %} {% endif %} {% elif week_no> 0 %}
+      {% if e_week_no < week_no %} {% continue %} {% endif %} 
+    {% elif week_no > 0 %}
       {% if e_week_no > week_no %}{% continue %}{% endif %}
-      {% endif %}
+    {% endif %}
+
       {% set_global added_event = true %}
       {{ events::week(w=week, title=week.title, grid=grid) }}
       {% endfor %}
