@@ -6,11 +6,19 @@
   {% set orig_name = name %}
   {% set name = name | lower | replace(from=".", to="") | trim %}
   {% set name = namemap[name] | default(value=name) %}
-  {% set url = "https://hub.smartne.com/api/store/projects/warwick/live/locations/search/" ~ name ~"?limit=1&fields=name,displayName,parent,floor,extRef" %}
+  {% set url = "https://hub.smartne.com/api/store/projects/warwick/live/locations/search/" ~ name ~"?limit=5&fields=name,displayName,parent,floor,extRef" %}
   {% set data = load_data(url=url, format="json", headers=["Authorization=Token 626629bcd5c05c5269b48ccb"]) %}
 
   {% if data %}
-    {% set map_url = "https://campus.warwick.ac.uk/?slid=" ~ data[0].extRef.id %}
+    {% for r in data %}
+      {% if r.name | trim | lower == name | trim | lower %}
+        {% set_global room = r %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+
+    {% set room = room | default(value=data[0]) %}
+    {% set map_url = "https://campus.warwick.ac.uk/?slid=" ~ room.extRef.id %}
     <a target="_blank" rel="noopener" href="{{ map_url | safe }}" target="_blank" aria-label="Warwick Campus map link to {{ orig_name }}">{{ orig_name }}</a>
   {% else %}
     {{ orig_name }}
