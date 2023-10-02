@@ -6,7 +6,7 @@
 {% block head %}
 {{ super() }}
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-<script src="{{ get_url(path="scripts/clickcopy.js", cachebust=true) }}"></script>
+<script src="{{ get_url(path='scripts/clickcopy.js', cachebust=true) }}"></script>
 {% endblock head %}
 
 {% block secbody %}
@@ -17,11 +17,12 @@
 
 {% for role in exec_sec.pages %}
 <h3>
-  <div class="icon baseline"><img src="{{ get_url(path="assets/exec-icons/{{ role.slug }}.svg") }}"></div>
+  <div class="icon baseline"><img src="/assets/exec-icons/{{ role.slug }}.svg"></div>
   {{ role.title }}: {{ role.extra.people | join(sep=", ") }}
 </h3>
 <blockquote class="contact mb-4">
-  Email: <a target="_blank" rel="noopener" href="mailto:{{ role.extra.email }}" aria-label="Contact our {{ role.title }}">{{ role.extra.email }}</a>
+  Email: <a target="_blank" rel="noopener" href="mailto:{{ role.extra.email }}"
+    aria-label="Contact our {{ role.title }}">{{ role.extra.email }}</a>
   <br>
   {% if role.extra.discords %}
   <i class="bi bi-discord"></i> Discord:
