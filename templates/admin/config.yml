@@ -72,24 +72,21 @@ collections:
         name: extra
         widget: "object"
         fields:
-          - {label: "End Time", name: "end_time", widget: "string"}
-          - {label: "Location", name: "location", widget: "string"}
-          - {label: "Icon", name: "icon", widget: "string"}
-          - {label: "Colour", name: "colour", widget: "string"}
-          - {label: "Emoji", name: "emoji", widget: "string"}
+          - {label: "End Time", name: "end_time", widget: "string", required: false}
+          - {label: "Location", name: "location", widget: "string", required: false}
+          - {label: "Icon", name: "icon", widget: "string", required: false}
+          - {label: "Colour", name: "colour", widget: "string", required: false}
+          - {label: "Emoji", name: "emoji", widget: "string", required: false}
 
       - label: "Taxonomies"
         name: "taxonomies"
         widget: "object"
-        fields: 
+        fields:
           - label: "Tags"
             name: "tags"
             widget: "list"
-            allow_add: true
-            collapsed: true
-            fields: 
-              - {label: "Tag", name: "tag", widget: "string"}
-
+            deafult: []
+        
       - {label: "Body", name: "body", widget: "markdown"}
   {% endfor %}
 {% endfor %}
