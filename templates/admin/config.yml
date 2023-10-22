@@ -31,10 +31,8 @@ collections:
         fields: 
           - label: "Categories"
             name: "categories"
-            widget: "categories"
+            widget: "list"
             default: ["Newsletter"]
-            {% set cats = get_taxonomy(kind="categories") %}
-            existing: [{% for term in cats.items %} "{{ term.name | lower | safe }}", {% endfor %}]
 
       - {label: "Body", name: "body", widget: "markdown"}
 
