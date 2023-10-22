@@ -24,15 +24,6 @@
   Email: <a target="_blank" rel="noopener" href="mailto:{{ role.extra.email }}"
     aria-label="Contact our {{ role.title }}">{{ role.extra.email }}</a>
   <br>
-  {% if role.extra.discords %}
-  <i class="bi bi-discord"></i> Discord:
-  <span>
-    {% for dc in role.extra.discords %}
-    {% if not loop.first %}, {% endif %}
-    <code class="discord c2clip">{{ dc }}</a></code>
-    {% endfor %}
-  </span>
-  {% endif %}
 </blockquote>
 {{ role.content | safe }}
 <hr>
