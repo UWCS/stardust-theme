@@ -43,9 +43,18 @@ table {
 #nav {
     @extend .bg-body, .sticky-top;
     width: 100%;
-    min-width: fit-content;
-
     border-bottom: solid $blue $border-width;
+    max-height: 100vh;
+}
+
+.navbar-nav {
+    max-height: 100vh;
+}
+
+@include media-breakpoint-down(lg) {
+    .navbar-nav {
+        overflow: scroll;
+    }
 }
 
 #foot {

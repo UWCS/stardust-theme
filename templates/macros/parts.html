@@ -25,6 +25,9 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
 
 <link rel="preload" as="font" type="font/woff2" href="/fonts/mulish-v13-latin-regular.woff2" crossorigin />
 <link rel="preload" as="font" type="font/woff2" href="/fonts/montserrat-v26-latin-600.woff2" crossorigin />
+
+<script src="{{ get_url(path="scripts/elasticlunr.min.js") }}" defer></script>
+<script src="{{ get_url(path="scripts/search.js") }}" defer></script>
 {% endmacro head %}
 
 {% macro opengraph(resource) %}
@@ -76,40 +79,54 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
     </a>
 
     <!-- Navbar parts for mobile version -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03"
-      aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-main"
+      aria-controls="navbar-main" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarColor03">
+    <div class="collapse navbar-collapse w-100" id="navbar-main">
       <ul class="navbar-nav d-flex w-100">
 
-        <!-- Include links to top level sections -->
-        {% set sect = get_section(path='_index.md') %}
-        {% for sub in sect.subsections %}
+      <!-- Include links to top level sections -->
+      {% set sect = get_section(path='_index.md') %}
+      {% for sub in sect.subsections %}
         {% set subsect = get_section(path=sub) %}
         {% if subsect.extra.hide %}{% continue %}{% endif %}
         <li><a class="nav-link" href="{{ subsect.permalink | safe }}" aria-label="Visit {{ subsect.title }}">{{ subsect.title }}</a></li>
-        {% endfor %}
+      {% endfor %}
 
-        <li class="ms-lg-auto me-lg-2 nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Links to our other projects">
-            Other Links
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-            <li><a target="_blank" rel="noopener" class="dropdown-item" href="https://techteam.uwcs.co.uk" aria-label="Tech Team Wiki">Tech Team Wiki</a></li>
-            <li><a target="_blank" rel="noopener" class="dropdown-item" href="https://progcomp.uwcs.co.uk/" aria-label="Our programming competitions">Programming Competitions</a></li>
-            <li><a target="_blank" rel="noopener" class="dropdown-item" href="https://warwickspeed.run" aria-label="Our speedrunning event">WASD (Warwick Speedrun)</a></li>
-            <li><a target="_blank" rel="noopener" class="dropdown-item" href="https://github.com/UWCS" aria-label="Our github">Our GitHub</a>
-            </li>
-          </ul>
+      <li class="me-lg-2 nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Links to our other projects">
+          Other Links
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+          <li><a target="_blank" rel="noopener" class="dropdown-item" href="https://techteam.uwcs.co.uk" aria-label="Tech Team Wiki">Tech Team Wiki</a></li>
+          <li><a target="_blank" rel="noopener" class="dropdown-item" href="https://progcomp.uwcs.co.uk/" aria-label="Our programming competitions">Programming Competitions</a></li>
+          <li><a target="_blank" rel="noopener" class="dropdown-item" href="https://warwickspeed.run" aria-label="Our speedrunning event">WASD (Warwick Speedrun)</a></li>
+          <li><a target="_blank" rel="noopener" class="dropdown-item" href="https://github.com/UWCS" aria-label="Our github">Our GitHub</a>
+          </li>
+        </ul>
+      </li>
+
+        <li id="search-item" class="ms-lg-auto me-lg-2 nav-item d-flex">
+          <div id="search-float">
+            <div id="search-bar">
+              <button class="fs-4 icon pe-2 nav-link" id="search-toggle" onclick="toggleSearch(this)">{{ shortcodes::icon(icon="ph-magnifying-glass") }}</button>
+              <div id="search" class="search-container pe-2">
+                <input id="search-input" class="form-control" type="search" placeholder="Search">
+              </div>
+            </div>
+            <div class="search-results">
+              <div class="search-results__items"></div>
+            </div>
+          </div>
         </li>
-
+        
         <!-- Dark mode toggles -->
         <li class="vr d-none d-lg-block "></li>
+
         <li class="nav-item ms-lg-2">
           <button id="dark-mode" class="nav-link ml-1" href="javascript:void(0);" aria-label="Toggle dark mode">
-
-            {{ shortcodes::icon(icon="ph-moon") }}
+            <span class="fs-4 icon">{{ shortcodes::icon(icon="ph-moon") }}</span>
             <span class="d-lg-none ms-2 ms-lg-0">Toggle Dark Mode</span>
           </button>
         </li>
