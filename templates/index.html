@@ -24,7 +24,7 @@
   <div class="w-100 vstack align-items-center my-5 pt-5">
     <h1>Our Socials</h1>
 
-    <div id="socials" class="mb-5 col-md-11 gap-3 row justify-content-evenly mx-4">
+    <div id="socials" class="mb-5 col-md-11 gap-3 mx-4">
       {% set socials = get_section(path="socials/_index.md") %}
       {% for social in socials.pages %}
       {{ socials::block(social=social) }}
@@ -56,7 +56,7 @@
       <h1>Latest News</h1>
     </a>
 
-    <div class="posts pt-2 row gap-3 my-3">
+    <div class="posts pt-2 row gap-3 m-3">
       {% for page in pages %}
       {% if loop.index > 3 %} {% break %} {% endif %}
       <!-- Card for each page -->
