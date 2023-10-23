@@ -10,6 +10,35 @@
         display: block !important;
         width: 15em !important;
         opacity: 1 !important;
+        width: 100%;
+    }
+
+    #search-float {
+        width: 100%;
+    }
+
+    .search-results {
+        width: 100%;
+        overflow: visible !important;
+        max-height: none !important;
+        display: block !important;
+    }
+}
+
+#search-float {
+    display: flex;
+}
+
+@include media-breakpoint-up(lg) {
+    #search-item {
+        position: relative;
+    }
+
+    #search-float {
+        @extend .rounded, .bg-body;
+        position: absolute;
+        right: 0;
+        height: 100%;
     }
 }
 

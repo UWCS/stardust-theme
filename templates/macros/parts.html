@@ -107,13 +107,15 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
         </ul>
       </li>
 
-        <li class="ms-lg-auto me-lg-2 nav-item d-flex">
-          <button class="fs-4 pe-2 nav-link" id="search-toggle" onclick="toggleSearch(this)">{{ shortcodes::icon(icon="ph-magnifying-glass") }}</button>
-          <div id="search" class="search-container pe-2">
-            <input class="form-control" type="search" placeholder="Search">
+        <li id="search-item" class="ms-lg-auto me-lg-2 nav-item d-flex">
+          <div id="search-float">
+            <button class="fs-4 icon pe-2 nav-link" id="search-toggle" onclick="toggleSearch(this)">{{ shortcodes::icon(icon="ph-magnifying-glass") }}</button>
+            <div id="search" class="search-container pe-2">
+              <input id="search-input" class="form-control" type="search" placeholder="Search">
 
-            <div class="search-results">
-                <div class="search-results__items"></div>
+              <div class="search-results">
+                  <div class="search-results__items"></div>
+              </div>
             </div>
           </div>
         </li>
@@ -123,7 +125,7 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
 
         <li class="nav-item ms-lg-2">
           <button id="dark-mode" class="nav-link ml-1" href="javascript:void(0);" aria-label="Toggle dark mode">
-            <span class="fs-4">{{ shortcodes::icon(icon="ph-moon") }}</span>
+            <span class="fs-4 icon">{{ shortcodes::icon(icon="ph-moon") }}</span>
             <span class="d-lg-none ms-2 ms-lg-0">Toggle Dark Mode</span>
           </button>
         </li>
