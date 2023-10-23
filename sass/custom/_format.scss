@@ -43,7 +43,6 @@ table {
 #nav {
     @extend .bg-body, .sticky-top;
     width: 100%;
-    min-width: fit-content;
 
     border-bottom: solid $blue $border-width;
 }

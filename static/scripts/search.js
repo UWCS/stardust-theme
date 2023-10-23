@@ -202,15 +202,20 @@ if (document.readyState === "complete" ||
 
 function toggleSearch(e) {
     var s = document.getElementById("search");
-    if (s.style.width != "100%") {
+    if (s.style.width != "15em") {
         // s.hidden = false;
-        // setTimeout(() => s.classList.add("w-100"), 100)
-        s.style.width = "100%";
-        s.style.opacity = "1"
+        s.style.display = "block";
+        setTimeout(() => {
+            s.style.width = "15em";
+            s.style.opacity = "1"
+        }, 100)
     } else {
         s.classList.remove("w-100")
         // setTimeout(() => s.hidden = true, 100)
-        s.style.width = "0%";
-        s.style.opacity = "0"
+        s.style.width = "0";
+        s.style.opacity = "0";
+        setTimeout(() => {
+            s.style.display = "none";
+        }, 250)
     }
 }
