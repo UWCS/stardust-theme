@@ -146,7 +146,12 @@ function initSearch() {
 
     var initIndex = async function () {
         if (index === undefined) {
-            index = fetch("/search_index.en.json")
+            var url = "/search_index.en.json";
+            if (document.URL.startsWith("https://uwcs.co.uk") && !document.URL.contains("archive")) {
+                // Use draft index if not in archive
+                url = "https://draft.uwcs.co.uk/search_index.en.json"
+            }
+            index = fetch(url)
                 .then(
                     async function (response) {
                         return await elasticlunr.Index.load(await response.json());
