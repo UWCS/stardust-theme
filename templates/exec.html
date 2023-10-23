@@ -17,7 +17,7 @@
 
 {% for role in exec_sec.pages %}
 <h3>
-  <div class="icon baseline"><img src="/assets/exec-icons/{{ role.slug }}.svg"></div>
+  <div class="icon"><img src="/assets/exec-icons/{{ role.slug }}.svg"></div>
   {{ role.title }}: {{ role.extra.people | join(sep=", ") }}
 </h3>
 <blockquote class="contact mb-4">
