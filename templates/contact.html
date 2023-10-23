@@ -23,7 +23,7 @@
   <tbody>
     <tr>
       <td>
-        <div class="icon baseline"><img src="{{ get_url(path="assets/exec-icons/all.svg") }}"></div>
+        <div class="icon"><img src="{{ get_url(path='assets/exec-icons/all.svg') }}"></div>
         <i>Exec</i>
       </td>
       <td><i>All Exec</i></td>
@@ -33,7 +33,7 @@
     {% for role in section.pages %}
     <tr>
       <td>
-        <div class="icon baseline"><img src="{{ config.base_url | safe }}/assets/exec-icons/{{ role.slug }}.svg"></div>
+        <div class="icon"><img src="{{ config.base_url | safe }}/assets/exec-icons/{{ role.slug }}.svg"></div>
         {{ role.title }}
       </td>
       <td>
@@ -45,14 +45,5 @@
     {% endfor %}
   </tbody>
 </table>
-
-<script>
-
-</script>
-<style>
-  code.discord {
-    cursor: pointer;
-  }
-</style>
 
 {% endblock content%}

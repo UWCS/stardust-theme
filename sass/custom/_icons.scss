@@ -1,17 +1,13 @@
 // Icons
 .icon {
-    display: inline-flex;
+    display: inline;
+    text-align: center;
+    margin-right: 0.25em;
 }
 
 .icon svg,
 .icon img {
-    height: 1em;
-    width: 1em;
+    height: 1.5em;
+    width: auto;
     fill: currentColor;
-}
-
-.icon.baseline svg,
-.icon.baseline img {
-    bottom: 0.125em;
-    position: relative;
 }
