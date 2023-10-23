@@ -132,7 +132,7 @@ function initSearch() {
     var $searchInput = document.getElementById("search-input");
     var $searchResults = document.querySelector(".search-results");
     var $searchResultsItems = document.querySelector(".search-results__items");
-    var MAX_ITEMS = 10;
+    var MAX_ITEMS = 20;
 
     var options = {
         bool: "AND",
@@ -179,8 +179,13 @@ function initSearch() {
             $searchResults.style.display = "none";
             return;
         }
-
+        results.sort((a, b) => a.ref.includes("archive") - b.ref.includes("archive"));
         for (var i = 0; i < Math.min(results.length, MAX_ITEMS); i++) {
+            if (results[i].ref.includes("archive") && (i == 0 || !results[i - 1].ref.includes("archive"))) {
+                var item = document.createElement("h3");
+                item.innerHTML = "Archive";
+                $searchResultsItems.appendChild(item);
+            }
             var item = document.createElement("li");
             item.innerHTML = formatSearchResultItem(results[i], term.split(" "));
             $searchResultsItems.appendChild(item);
