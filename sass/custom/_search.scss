@@ -8,9 +8,9 @@
     #search {
         transition: none !important;
         display: block !important;
-        width: 15em !important;
         opacity: 1 !important;
-        width: 100%;
+        width: 100% !important;
+        position: unset !important;
     }
 
     #search-float {
@@ -18,14 +18,23 @@
     }
 
     .search-results {
-        width: 100%;
+        width: 100% !important;
         overflow: visible !important;
         max-height: none !important;
-        display: block !important;
+        display: block;
+        position: unset !important;
+    }
+
+    #search-item {
+        @extend vstack;
     }
 }
 
-#search-float {
+#search-input {
+    max-width: 15em;
+}
+
+#search-bar {
     display: flex;
 }
 
@@ -55,6 +64,7 @@
     overflow: auto;
     width: 150%;
     right: 0;
+    top: 100%;
 }
 
 .search-results__items {

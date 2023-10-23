@@ -109,13 +109,14 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
 
         <li id="search-item" class="ms-lg-auto me-lg-2 nav-item d-flex">
           <div id="search-float">
-            <button class="fs-4 icon pe-2 nav-link" id="search-toggle" onclick="toggleSearch(this)">{{ shortcodes::icon(icon="ph-magnifying-glass") }}</button>
-            <div id="search" class="search-container pe-2">
-              <input id="search-input" class="form-control" type="search" placeholder="Search">
-
-              <div class="search-results">
-                  <div class="search-results__items"></div>
+            <div id="search-bar">
+              <button class="fs-4 icon pe-2 nav-link" id="search-toggle" onclick="toggleSearch(this)">{{ shortcodes::icon(icon="ph-magnifying-glass") }}</button>
+              <div id="search" class="search-container pe-2">
+                <input id="search-input" class="form-control" type="search" placeholder="Search">
               </div>
+            </div>
+            <div class="search-results">
+              <div class="search-results__items"></div>
             </div>
           </div>
         </li>
