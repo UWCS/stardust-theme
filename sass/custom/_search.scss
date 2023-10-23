@@ -70,3 +70,14 @@
 .search-results__items {
     list-style-image: none;
 }
+
+.search-results__item {
+    @extend .card, .p-2, .mb-3;
+
+    & a {
+        @extend .text-decoration-none, .link-card;
+        color: var(--bs-body-color);
+        text-decoration-color: var(--bs-body-color);
+
+    }
+}
