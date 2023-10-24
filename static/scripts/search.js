@@ -132,7 +132,7 @@ function initSearch() {
     var $searchInput = document.getElementById("search-input");
     var $searchResults = document.querySelector(".search-results");
     var $searchResultsItems = document.querySelector(".search-results__items");
-    var MAX_ITEMS = 20;
+    var MAX_ITEMS = 10;
 
     var options = {
         bool: "AND",
@@ -147,10 +147,10 @@ function initSearch() {
     var initIndex = async function () {
         if (index === undefined) {
             var url = "/search_index.en.json";
-            if (document.URL.startsWith("https://uwcs.co.uk") && !document.URL.contains("archive")) {
-                // Use draft index if not in archive
-                url = "https://draft.uwcs.co.uk/search_index.en.json"
-            }
+            // if (document.URL.startsWith("https://uwcs.co.uk") && !document.URL.contains("archive")) {
+            //     // Use draft index if not in archive
+            //     url = "https://draft.uwcs.co.uk/search_index.en.json"
+            // }
             index = fetch(url)
                 .then(
                     async function (response) {
@@ -162,9 +162,10 @@ function initSearch() {
         return res;
     }
 
+    var lastResults = undefined;
     $searchInput.addEventListener("keyup", debounce(async function () {
         var term = $searchInput.value.trim();
-        if (term === currentTerm) {
+        if (term === currentTerm || term.length < 3) {
             return;
         }
         $searchResults.style.display = term === "" ? "none" : "block";
@@ -179,24 +180,45 @@ function initSearch() {
             $searchResults.style.display = "none";
             return;
         }
-        results.sort((a, b) => a.ref.includes("archive") - b.ref.includes("archive"));
-        for (var i = 0; i < Math.min(results.length, MAX_ITEMS); i++) {
-            if (results[i].ref.includes("archive") && (i == 0 || !results[i - 1].ref.includes("archive"))) {
-                var item = document.createElement("h3");
-                item.innerHTML = "Archive";
+
+
+        function genResults(res) {
+            $searchResultsItems.innerHTML = "";
+            res.sort((a, b) => a.ref.includes("archive") - b.ref.includes("archive"));
+            for (var i = 0; i < res.length; i++) {
+                if (res[i].ref.includes("archive") && (i == 0 || !res[i - 1].ref.includes("archive"))) {
+                    var item = document.createElement("h3");
+                    item.innerHTML = "Archive";
+                    $searchResultsItems.appendChild(item);
+                }
+                var item = document.createElement("li");
+                item.innerHTML = formatSearchResultItem(res[i], term.split(" "));
                 $searchResultsItems.appendChild(item);
             }
-            var item = document.createElement("li");
-            item.innerHTML = formatSearchResultItem(results[i], term.split(" "));
-            $searchResultsItems.appendChild(item);
+        }
+        genResults(results.slice(0, Math.min(results.length, MAX_ITEMS)))
+
+        if (results.length > MAX_ITEMS) {
+            lastResults = results;
+            var btn = document.createElement("button");
+            btn.classList.add("nav-link");
+            btn.innerHTML = `Load all ${results.length} results`;
+            btn.addEventListener("click", (e) => {
+                if (lastResults) {
+                    genResults(lastResults);
+                }
+                e.stopPropagation();
+            });
+            $searchResultsItems.appendChild(btn);
         }
     }, 150));
 
     var navelem = document.getElementsByClassName("navbar-toggler");
     window.addEventListener('click', function (e) {
         if (navelem[0].style.display != "none") {   // If not mobile
-            if ($searchResults.style.display == "block" && !$searchResults.contains(e.target)) {
+            if ($searchResults.style.display == "block" && !$searchResults.contains(e.target) && !$searchInput.contains(e.target)) {
                 $searchResults.style.display = "none";
+                currentTerm = "";
             }
         }
     });
