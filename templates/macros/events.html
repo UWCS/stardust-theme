@@ -23,14 +23,16 @@
   <div class="card text-body-emphasis" {% if resource.extra.colour -%}
     style="background-color: {{ formatters::colour(colour=resource.extra.colour) }}80 !important" {%- endif -%}>
     <div class="card-body">
-      <h1 class="card-title two-line-clamp">
+      <{%- if large -%}h1{%- else -%}h4{% endif %}
+        class="card-title two-line-clamp {% if not large %}d-inline{% endif %}">
         {%- if resource.extra.icon %}{{ shortcodes::icon(icon=resource.extra.icon, baseline=true) }} {% endif -%}
         {%- if resource.extra.emoji %}{{resource.extra.emoji}}{% endif -%}
         {{ resource.title }}
         {%- if resource.extra.emoji %}{{resource.extra.emoji}}{% endif -%}
-      </h1>
+      </{%- if large -%}h1{%- else -%}h4{%- endif -%}>
 
-      {% if resource.taxonomies and large %}
+      {% if large %}
+      {% if resource.taxonomies %}
       {% for tax, terms in resource.taxonomies %}
       {% for term in terms %}
       <a class="badge bg-secondary text-decoration-none ms-1 mb-3" {% set t=get_taxonomy_term(kind=tax, term=term) %}
@@ -44,12 +46,17 @@
       <h4>
         {{ shortcodes::icon(icon="ph-clock") }}
         {{ formatters::event_date_range(e=resource) }}
-        {% if large %}
       </h4>
       <h4>
-        {% endif %}
         {{ formatters::event_location(resource=resource, link=not page) }}
       </h4>
+      {% else %}
+      <p class="d-inline">
+        {{ shortcodes::icon(icon="ph-clock") }}
+        {{ formatters::event_time_range(e=resource) }}
+        {{ formatters::event_location(resource=resource, link=not page) }}
+      </p>
+      {% endif %}
     </div>
   </div>
   {% if page %}
@@ -77,6 +84,8 @@
   {% endif %}
 
   <div class="day">
+    {% else %}
+    <h5 class="mb-0">{{date}}</h5>
     {% endif %}
 
     {% for e in events | sort(attribute="date") %}
@@ -106,8 +115,10 @@
 {% if grid %}
 <div class="week w-100 text-center my-4">
   {% endif %}
-  {% if title %} <h2><a class="link-body-emphasis text-decoration-none" href="{{ w.permalink | safe }}"
+  {% if title %} <h2>
+    <a class="link-body-emphasis text-decoration-none" href="{{ w.permalink | safe }}"
       aria-label="See events on week {{ title }}">{{ title }}</a>
+    (w/b {{ w.extra.base_date | date(format="%d-%b") }})
   </h2> {% endif %}
   {% if grid %}
   <div class="events d-grid justify-content-center">
