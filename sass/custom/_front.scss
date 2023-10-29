@@ -7,11 +7,18 @@
         display: flex;
         align-items: stretch;
     }
+
+    @include media-breakpoint-down(sm) {
+        grid-template-columns: repeat(auto-fit, minmax(10vw, 1fr));
+
+        &>a {
+            align-items: center;
+        }
+    }
 }
 
 .social {
     @extend .hstack, .gap-3, .p-3, .rounded-4, .bg-body-secondary, .text-body-emphasis, .opacity-hover;
-    width: 20em;
     margin: 0 auto;
 
     &>i,
