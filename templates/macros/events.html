@@ -18,7 +18,7 @@
 
 {% macro event_info(resource, large, page=true)%}
 {% if page %}
-<a href="{{resource.permalink}}" class="my-2 text-decoration-none text-white card-hover">
+<a href="{{resource.permalink}}" class="my-2 text-decoration-none text-white card-hover d-block">
   {% endif %}
   <div class="card text-body-emphasis" {% if resource.extra.colour -%}
     style="background-color: {{ formatters::colour(colour=resource.extra.colour) }}80 !important" {%- endif -%}>
@@ -112,9 +112,7 @@
 
 {% set prev_day = "" %}
 {% set days_events = [] %}
-{% if grid %}
-<div class="week w-100 text-center my-4">
-  {% endif %}
+<div {% if grid %} class="week w-100 text-center my-4" {% endif %}>
   {% if title %} <h2>
     <a class="link-body-emphasis text-decoration-none" href="{{ w.permalink | safe }}"
       aria-label="See events on week {{ title }}">{{ title }}</a>
@@ -146,8 +144,8 @@
     {% endif %}
     {% if grid %}
   </div>
+  {% endif %}
 </div>
-{% endif %}
 {% endmacro %}
 
 {% macro term(t, weeks="", title="", week_no=-1, archive=false, grid=true) %}
