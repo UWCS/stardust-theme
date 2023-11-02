@@ -12,6 +12,14 @@
 <!DOCTYPE html>
 <html lang="en"  style="background-color: {{ formatters::colour(colour="grey") }}">
 
+<script>
+  function dark () {
+      const curr_light = localStorage.getItem("dark_mode") == "light";
+      document.documentElement.setAttribute('data-bs-theme', curr_light ? "light" : "dark");
+  }
+  dark();
+</script>
+
 <head>
   <meta charset="utf-8" />
   <title>{% block title %}{{ resource.title | striptags | safe }}{% endblock %} - UWCS</title>
