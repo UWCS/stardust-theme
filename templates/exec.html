@@ -26,7 +26,9 @@
   <br>
 </blockquote>
 {{ role.content | safe }}
+{% if not loop.last %}
 <hr>
+{% endif %}
 {% endfor %}
 
 </script>
