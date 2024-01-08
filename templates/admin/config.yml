@@ -72,6 +72,7 @@ collections:
         fields:
           - {label: "End Time", name: "end_time", widget: "string", required: false}
           - {label: "Location", name: "location", widget: "string", required: false}
+          - {label: "Location URL", name: "location_url", widget: "string", required: false}
           - {label: "Icon", name: "icon", widget: "string", required: false}
           - {label: "Colour", name: "colour", widget: "string", required: false}
           - {label: "Emoji", name: "emoji", widget: "string", required: false}
