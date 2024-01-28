@@ -27,7 +27,7 @@
         class="card-title two-line-clamp {% if not large %}d-inline{% endif %}">
         {%- if resource.extra.icon %}{{ shortcodes::icon(icon=resource.extra.icon, baseline=true) }} {% endif -%}
         {%- if resource.extra.emoji %}{{resource.extra.emoji}}{% endif -%}
-        {{ resource.title }}
+        <span>{{ resource.title }}</span>
         {%- if resource.extra.emoji %}{{resource.extra.emoji}}{% endif -%}
       </{%- if large -%}h1{%- else -%}h4{%- endif -%}>
 
