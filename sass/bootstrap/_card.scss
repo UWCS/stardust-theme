@@ -79,6 +79,10 @@
   color: var(--#{$prefix}card-title-color);
 }
 
+.card-title i, .card-title .icon, .card-title span {
+  vertical-align: middle;
+}
+
 .card-subtitle {
   margin-top: calc(-.5 * var(--#{$prefix}card-title-spacer-y)); // stylelint-disable-line function-disallowed-list
   margin-bottom: 0;

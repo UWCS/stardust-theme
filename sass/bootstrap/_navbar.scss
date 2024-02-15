@@ -110,6 +110,11 @@
   .dropdown-menu {
     position: static;
   }
+
+  li {
+    display: flex;
+    align-items: center;
+  }
 }
 
 
