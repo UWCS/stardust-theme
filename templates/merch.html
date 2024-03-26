@@ -6,8 +6,9 @@
 
 {% block head %}
 <script>
-  var startDate = new Date("{{ section.extra.start }}");
-  var endDate = new Date("{{ section.extra.end }}");
+  const startDate = new Date("{{ section.extra.start }}");
+  const endDate = new Date("{{ section.extra.end }}");
+  const preview = {{ section.extra.preview }};
 </script>
 
 {{ super() }}
@@ -15,7 +16,7 @@
 {% endblock head %}
 
 {% block outercontents %}
-<article id="content" class="py-4">
+<article id="content" class="py-4 flex-grow-1">
 
 <div class="alert alert-warning" id="countdown-alert" role="alert" hidden>
   This shop has <span class="countdown"></span>.
@@ -30,13 +31,14 @@
     {% for sub in section.subsections %}
       {% set subsect = get_section(path=sub) %}
       {% if subsect.pages and not subsect.extra.hide %}
-        {{ merch::cat_accordion(section=subsect, first=loop.first) }}
+        {{ merch::cat_accordion(section=subsect, first=loop.first, preview=section.extra.preview) }}
       {% endif %}
     {% endfor %}
   </div>
-  <div class="while-closed">
+  <div class="while-closed" hidden>
     <p>Thanks for ordering! UWCS Merch Shop is now closed. We'll be ordering all the items ASAP.</p>
   </div>
 </div>
 <div>
+</article>
 {% endblock outercontents%}
