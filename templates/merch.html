@@ -16,15 +16,15 @@
 
 <hr>
 <div class="posts p-2 gap-3 vstack">
+  
+  <div class="accordion while-open" id="main-accordion">
   {% for sub in section.subsections %}
     {% set subsect = get_section(path=sub) %}
-    {% if subsect.pages %}
-      {% for path in subsect.pages %}
-        {# {% set page = get_page(path=path) %} #}
-        {{ merch::merch_item(page=path) }}
-      {% endfor %}
+    {% if subsect.pages and not subsect.extra.hide %}
+      {{ merch::cat_accordion(section=subsect, first=loop.first) }}
     {% endif %}
     {% endfor %}
+  </div>
 </div>
 <div>
 {% endblock outercontents%}
