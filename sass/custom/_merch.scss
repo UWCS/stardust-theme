@@ -38,6 +38,7 @@ ul.gallery {
     z-index: 100;
     background-color: #88888844;
     border-radius: var(--bs-border-radius) !important;
+    backdrop-filter: blur(2px) saturate(50%);
 
     & .carousel-control-prev,
     & .carousel-control-next {

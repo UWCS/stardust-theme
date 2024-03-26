@@ -9,8 +9,9 @@
 <script src="{{ get_url(path='scripts/countdown.js', cachebust=true) }}"></script>
 {% endblock head %}
 
-{% block content %}
+{% block outercontents %}
 
+<article id="content" class="py-4">
 {% block secbody %}{{ section.content | safe}}{% endblock %}
 
 <hr>
@@ -25,5 +26,5 @@
     {% endif %}
     {% endfor %}
 </div>
-
-{% endblock content%}
+<div>
+{% endblock outercontents%}
