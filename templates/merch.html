@@ -5,25 +5,37 @@
 {% block title %}{{ section.title }}{% endblock title %}
 
 {% block head %}
+<script>
+  var startDate = new Date("{{ section.extra.start }}");
+  var endDate = new Date("{{ section.extra.end }}");
+</script>
+
 {{ super() }}
 <script src="{{ get_url(path='scripts/countdown.js', cachebust=true) }}"></script>
 {% endblock head %}
 
 {% block outercontents %}
-
 <article id="content" class="py-4">
+
+<div class="alert alert-warning" id="countdown-alert" role="alert" hidden>
+  This shop has <span class="countdown"></span>.
+</div>
+
 {% block secbody %}{{ section.content | safe}}{% endblock %}
 
 <hr>
 <div class="posts p-2 gap-3 vstack">
   
   <div class="accordion while-open" id="main-accordion">
-  {% for sub in section.subsections %}
-    {% set subsect = get_section(path=sub) %}
-    {% if subsect.pages and not subsect.extra.hide %}
-      {{ merch::cat_accordion(section=subsect, first=loop.first) }}
-    {% endif %}
+    {% for sub in section.subsections %}
+      {% set subsect = get_section(path=sub) %}
+      {% if subsect.pages and not subsect.extra.hide %}
+        {{ merch::cat_accordion(section=subsect, first=loop.first) }}
+      {% endif %}
     {% endfor %}
+  </div>
+  <div class="while-closed">
+    <p>Thanks for ordering! UWCS Merch Shop is now closed. We'll be ordering all the items ASAP.</p>
   </div>
 </div>
 <div>

@@ -82,14 +82,15 @@ const countdown = function () {
     }
 
     const open = startDate <= now && now < endDate;
-    if (open != prevOpen) {
+    if (open !== prevOpen) {
         for (let elem of openElems) {
             elem.hidden = (!open && !preview);
         }
         for (let elem of closedElems) {
             elem.hidden = open;
         }
-        document.getElementById("countdown-alert").innerHTML = "Shop now closed!";
+        if (!open) document.getElementById("countdown-alert").innerHTML = "Shop now closed!";
+        prevOpen = open;
     }
 
     for (let elem of alerts) {
