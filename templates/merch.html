@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% import "macros/merch.html" as merch %}
+
+{% block title %}{{ section.title }}{% endblock title %}
+
+{% block head %}
+{{ super() }}
+<script src="{{ get_url(path='scripts/countdown.js', cachebust=true) }}"></script>
+{% endblock head %}
+
+{% block content %}
+
+{% block secbody %}{{ section.content | safe}}{% endblock %}
+
+<hr>
+<div class="posts p-2 gap-3 vstack">
+  {% for sub in section.subsections %}
+    {% set subsect = get_section(path=sub) %}
+    {% if subsect.pages %}
+      {% for path in subsect.pages %}
+        {# {% set page = get_page(path=path) %} #}
+        {{ merch::merch_item(page=path) }}
+      {% endfor %}
+    {% endif %}
+    {% endfor %}
+</div>
+
+{% endblock content%}
