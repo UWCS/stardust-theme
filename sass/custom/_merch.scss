@@ -1,3 +1,5 @@
+@import "../bootstrap/mixins/breakpoints";
+
 .text-bg-primary,
 .btn-primary {
     color: var(--bs-emphasis-color) !important;
@@ -10,41 +12,44 @@ ul.gallery {
     margin-right: 3vw;
 }
 
-.zoom {
-    -webkit-transition: all 0.35s ease-in-out;
-    -moz-transition: all 0.35s ease-in-out;
-    transition: all 0.35s ease-in-out;
-    cursor: -webkit-zoom-in;
-    cursor: -moz-zoom-in;
-    cursor: zoom-in;
+@include media-breakpoint-up(sm) {
+    .zoom {
+        -webkit-transition: all 0.35s ease-in-out;
+        -moz-transition: all 0.35s ease-in-out;
+        transition: all 0.35s ease-in-out;
+        cursor: -webkit-zoom-in;
+        cursor: -moz-zoom-in;
+        cursor: zoom-in;
 
-    & .carousel-control-prev,
-    & .carousel-control-next {
-        display: none;
+        & .carousel-control-prev,
+        & .carousel-control-next {
+            display: none;
+        }
+    }
+
+    .zoom:hover,
+    .zoom:active,
+    .zoom:focus {
+        /**adjust scale to desired size, 
+        add browser prefixes**/
+        -ms-transform: scale(1.5);
+        -moz-transform: scale(1.5);
+        -webkit-transform: scale(1.5);
+        -o-transform: scale(1.5);
+        transform: scale(1.5);
+        position: relative;
+        z-index: 100;
+        background-color: #88888844;
+        border-radius: var(--bs-border-radius) !important;
+        backdrop-filter: blur(2px) saturate(50%);
+
+        & .carousel-control-prev,
+        & .carousel-control-next {
+            display: flex;
+        }
     }
 }
 
-.zoom:hover,
-.zoom:active,
-.zoom:focus {
-    /**adjust scale to desired size, 
-    add browser prefixes**/
-    -ms-transform: scale(1.5);
-    -moz-transform: scale(1.5);
-    -webkit-transform: scale(1.5);
-    -o-transform: scale(1.5);
-    transform: scale(1.5);
-    position: relative;
-    z-index: 100;
-    background-color: #88888844;
-    border-radius: var(--bs-border-radius) !important;
-    backdrop-filter: blur(2px) saturate(50%);
-
-    & .carousel-control-prev,
-    & .carousel-control-next {
-        display: flex;
-    }
-}
 
 /**To keep upscaled images visible on mobile, 
     increase left & right margins a bit**/

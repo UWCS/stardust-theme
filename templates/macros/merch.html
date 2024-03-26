@@ -27,11 +27,11 @@
 {% macro merch_item(page, preview=false) %}
 {# Single merch item card #}
 <div class="card p-0 m-3">
-  <div class="d-flex">
+  <div class="d-flex flex-column flex-sm-row">
     {% if page.assets | length > 0 %}
     {{ self::carousel(page=page) }}
 
-    <div class="col-md-8">
+    <div class="col-sm-8">
     {% else %}
     <div>
     {% endif %}
