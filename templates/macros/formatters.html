@@ -108,7 +108,7 @@
 {%- endmacro -%}
 
 
-{% macro summarize(summary, content, full=false, marker="<p>Read more >></p>", link="") %}
+{% macro summarize(summary, content, full=false, marker="<p>Read more >></p>", link="", limit=500) %}
 
 {% set summ = "" %}
 {% if full %}
@@ -118,6 +118,10 @@
 {% else %}
   {% set first_para = content | split(pat="</p>") | first | split(pat="<p>") | last %}
   {% set summ = "<p>" ~ first_para ~ "</p>" %}
+{% endif %}
+
+{% if limit > 0 and summ | length > limit %}
+    {% set summ = summ | truncate(length=limit) %}
 {% endif %}
 
 {{ summ | safe }}
