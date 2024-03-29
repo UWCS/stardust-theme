@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% import "macros/merch.html" as merch %}
+
+{% block title %}{{ resource.title }}{% endblock title %}
+
+
+{% block head %}
+{% set parent = get_section(path="merch/_index.md") %}
+<script>
+  const startDate = new Date("{{ parent.extra.start }}");
+  const endDate = new Date("{{ parent.extra.end }}");
+  const preview = {{ parent.extra.preview }};
+</script>
+
+{{ super() }}
+<script src="{{ get_url(path='scripts/countdown.js', cachebust=true) }}"></script>
+{% endblock head %}
+
+{% block outercontents %}
+<article id="content" class="py-4 flex-grow-1">
+
+<div class="alert alert-warning" id="countdown-alert" role="alert" hidden>
+  This shop has <span class="countdown"></span>.
+</div>
+
+<div class="posts p-2 gap-3 vstack">
+  <div class="while-open">
+    {% set preview = parent.extra.preview %}
+      {{ self::merch_item(page=page, preview=preview) }}
+  </div>
+
+  <div class="while-closed" hidden>
+    <p>Thanks for ordering! UWCS Merch Shop is now closed. We'll be ordering all the items ASAP.</p>
+  </div>
+</div>
+<div>
+</article>
+{% endblock outercontents%}
