@@ -27,7 +27,7 @@
 <div class="posts p-2 gap-3 vstack">
   <div class="while-open">
     {% set preview = parent.extra.preview %}
-      {{ self::merch_item(page=page, preview=preview) }}
+      {{ self::merch_item(page=page, preview=preview, full=true) }}
   </div>
 
   <div class="while-closed" hidden>

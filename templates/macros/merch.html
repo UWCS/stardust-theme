@@ -24,7 +24,7 @@
 {% endmacro %}
 
 
-{% macro merch_item(page, preview=false) %}
+{% macro merch_item(page, preview=false, full=false) %}
 {# Single merch item card #}
 <div class="card p-0 m-3">
   <div class="d-flex flex-column flex-sm-row">
@@ -37,14 +37,14 @@
     {% endif %}
       <div class="card-body p-4 d-flex flex-column h-100 justify-content-between">
         <div class="d-flex align-items-center">
-          <h5 class="card-title fs-1">{{ page.title }}</h5>
+          <a class="link-body-emphasis text-decoration-none" href="{{ page.permalink }}"><h5 class="card-title fs-1">{{ page.title }}</h5></a>
           <span class="badge rounded-pill text-bg-primary fs-4 ms-auto">£{{ page.extra.price }}</span>
         </div>
-        <div class="card-text flex-grow-1">
-          {{ page.content | safe }}
+        <div class="card-text flex-grow-1 fs-5">
+          {{ formatters::summarize(summary=page.summary, content=page.content, full=full) }}
         </div>
         {% if not preview %}
-          <a class="btn btn-primary btn-lg mt-3" href="{{ page.extra.link }}" target="_blank" rel="noopener noreferrer">
+          <a class="btn btn-primary btn-lg fs-4 mt-3" href="{{ page.extra.link }}" target="_blank" rel="noopener noreferrer">
             <i class="bi-cart-fill"></i> Buy for £{{ page.extra.price }} @ Warwick SU
           </a>
         {% endif %}

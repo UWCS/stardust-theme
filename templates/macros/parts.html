@@ -1,4 +1,5 @@
 {% import "macros/logos.html" as logos %}
+{% import "macros/formatters.html" as formatters %}
 
 {% macro preview_styles() %}
 
@@ -33,27 +34,28 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
 {% macro opengraph(resource) %}
 
 {# Open Graph #}
-<meta property="og:title"
-  content="{%- if resource.title -%} {{ resource.title }} {%- else -%} {{ resource.name }} {%- endif -%}" />
-{% set description = "" %}
-{% if resource.summary %}
-{% set description = resource.summary | striptags %}
-{% elif current_path == "/" %}
-{% set description = "UWCS is free-to-join, and open to anyone with an interest in the field of Computer Science. We have ties to the CS department - hosting weekly academic, social and gaming events." %}
-{% elif resource.content %}
-{% set description = resource.content | split(pat="</p>") | first | split(pat="<p>") | last | striptags | safe %}
+<meta property="og:title" content="{%- if resource.title -%} {{ resource.title }} {%- else -%} {{ resource.name }} {%- endif -%}" />
+  {% set description = "" %}
+  {% if current_path == "/" %}
+    {% set description = "UWCS is free-to-join, and open to anyone with an interest in the field of Computer Science. We have ties to the CS department - hosting weekly academic, social and gaming events." %}
+  {% else %}
+    {% set description = formatters::summarize(
+      summary=resource.summary | default(value=""), 
+      content=resource.content | default(value="")
+    ) | striptags | safe %}
   {% endif %}
+
   {% if resource.date %}
-  {% set date = formatters::event_date_range(e=resource) %}
-  {% set description = description ~ " " ~ date ~ ". " %}
+    {% set date = formatters::event_date_range(e=resource) %}
+    {% set description = description ~ " " ~ date ~ ". " %}
   {% endif %}
   {% if resource.extra.location %}
-  {% set description = description ~ resource.extra.location %}
+    {% set description = description ~ resource.extra.location %}
   {% endif %}
   <meta name="description" content="{{ description }}" />
   <meta property="og:description" content="{{ description }}" />
   <meta property="og:url" content="{{current_url | safe }}" />
-  <meta property="og:image" content="{{ get_url(path=" bg-16-9.png")}}" />
+  <meta property="og:image" content="{{ get_url(path="bg-16-9.png")}}" />
   <meta property="og:locale" content="en_GB" />
   <meta name="keywords" content="UWCS, Computing, University, Computer Science, Warwick, University of Warwick Computing Society, Programming, Gaming, Coding 
 {%- if resource.taxonomies -%}
@@ -64,7 +66,7 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
   {%- endfor -%}
 {%- endif -%}">
 
-  {% endmacro %}
+{% endmacro %}
 
 
 

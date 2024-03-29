@@ -106,3 +106,16 @@
   {% endif %}
 {% endif %}
 {%- endmacro -%}
+
+
+{% macro summarize(summary, content, full=false) %}
+
+{% if full %}
+  {{ content | safe }}
+{% elif summary %}
+  {{ summary | safe }}
+{% else %}
+  {{ content | split(pat="</p>") | first | split(pat="<p>") | last | striptags | safe }}
+{% endif %}
+
+{% endmacro %}
