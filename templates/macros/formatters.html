@@ -108,14 +108,22 @@
 {%- endmacro -%}
 
 
-{% macro summarize(summary, content, full=false) %}
+{% macro summarize(summary, content, full=false, marker="<p>Read more >></p>", link="") %}
 
+{% set summ = "" %}
 {% if full %}
-  {{ content | safe }}
+  {% set summ = content %}
 {% elif summary %}
-  {{ summary | safe }}
+  {% set summ = summary %}
 {% else %}
-  {{ content | split(pat="</p>") | first | split(pat="<p>") | last | striptags | safe }}
+  {% set first_para = content | split(pat="</p>") | first | split(pat="<p>") | last %}
+  {% set summ = "<p>" ~ first_para ~ "</p>" %}
+{% endif %}
+
+{{ summ | safe }}
+
+{% if link and marker and not full and summ | length < content | length - 5 %}
+  <a href="{{ link }}">{{ marker | safe }}</a>
 {% endif %}
 
 {% endmacro %}
