@@ -41,7 +41,7 @@
           <span class="badge rounded-pill text-bg-primary fs-4 ms-auto">£{{ page.extra.price }}</span>
         </div>
         <div class="card-text flex-grow-1 fs-5">
-          {{ formatters::summarize(summary=page.summary, content=page.content, full=full) }}
+          {{ formatters::summarize(summary=page.summary, content=page.content, full=full, link=page.permalink) }}
         </div>
         {% if not preview %}
           <a class="btn btn-primary btn-lg fs-4 mt-3" href="{{ page.extra.link }}" target="_blank" rel="noopener noreferrer">

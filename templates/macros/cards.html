@@ -13,7 +13,7 @@ add_card_classes="", add_card_style="", date_format="%d %B %Y") %}
       {{ formatters::time(time=date) }} {{ formatters::date(date=date)}}
     </h6>
     {% endif %}
-    {% if summary %}
+    {% if summary or content %}
     <p class="card-text four-line-clamp m-0">
       {{ formatters::summarize(summary=summary, content=content) }}
     </p>
