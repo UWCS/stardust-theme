@@ -18,9 +18,9 @@
 
 {% macro event_info(resource, large, page=true)%}
 {% if page %}
-<a href="{{resource.permalink}}" class="my-2 text-decoration-none text-white card-hover d-block"
-  {% if resource.extra.colour -%} data-event-colour="{{ resource.extra.colour }}" {%- endif -%}
-  {% if resource.taxonomies.tags -%} data-event-tags="{{ resource.taxonomies.tags }}" {%- endif -%}>
+<a href="{{resource.permalink}}" class="my-2 text-decoration-none text-white card-hover d-block" {% if
+  resource.extra.colour -%} data-event-colour="{{ resource.extra.colour }}" {%- endif -%} {% if resource.taxonomies.tags
+  -%} data-event-tags="{{ resource.taxonomies.tags }}" {%- endif -%}>
   {% endif %}
   <div class="card text-body-emphasis" {% if resource.extra.colour -%}
     style="background-color: {{ formatters::colour(colour=resource.extra.colour) }}80 !important" {%- endif -%}>
@@ -124,25 +124,26 @@
   <div class="events d-grid justify-content-center">
     {% endif %}
     {% for e in events %}
-    {% if e.extra.display_day %}{% set e_day = e.extra.display_day %}
-    {% else %}{% set e_day = e.date | date(format="%A") %}{% endif %}
-    {% if e_day != prev_day %}
-    {# Output previous day's content #}
-    {% if days_events %}
-    {{ events::day(events=days_events, grid=grid) }}
-    {% set_global days_events = [] %}
-    {% set_global started = true %}
-    {% endif %}
-    {% set_global prev_day = e_day %}
-    {% endif %}
-    {% set_global days_events = days_events | concat(with=e) %}
+      {% if e.extra.display_day %}
+        {% set e_day = e.extra.display_day %}
+      {% else %}
+        {% set e_day = e.date | date(format="%A") %}
+      {% endif %}
+      {% if e_day != prev_day %}
+        {# Output previous day's content #}
+        {% if days_events %}
+          {{ events::day(events=days_events, grid=grid) }}
+          {% set_global days_events = [] %}
+          {% set_global started = true %}
+        {% endif %}
+        {% set_global prev_day = e_day %}
+      {% endif %}
+      {% set_global days_events = days_events | concat(with=e) %}
     {% endfor %}
 
     {# Clean up remaining days_events #}
-    {% if started %}
     {% if days_events %}
-    {{ events::day(events=days_events, grid=grid) }}
-    {% endif %}
+      {{ events::day(events=days_events, grid=grid) }}
     {% endif %}
     {% if grid %}
   </div>
