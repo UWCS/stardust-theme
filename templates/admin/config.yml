@@ -65,7 +65,7 @@ collections:
 
     fields:
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Event Time & Date", name: "date", widget: "string"}
+      - {label: "Event Time & Date", name: "date", widget: "string", default: ""}
       - label: Extra
         name: extra
         widget: "object"
