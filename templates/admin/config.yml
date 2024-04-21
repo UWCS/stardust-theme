@@ -21,7 +21,7 @@ collections:
     format: toml-frontmatter
     fields:
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "News Date", name: "date", widget: "datetime", format: "yyyy-MM-dd", date_format: "dd MMMM yyyy", time_format: false, picker_utc: true }
+      - {label: "News Date", name: "date", widget: "datetime", date_format: YYYY-MM-DD, picker_utc: true }
 
       - {label: "Draft", name: "draft", widget: "boolean", default: false}
 
