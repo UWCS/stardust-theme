@@ -20,13 +20,13 @@
 {% block outercontents %}
 <article id="content" class="py-4 flex-grow-1">
 
-<div class="alert alert-warning" id="countdown-alert" role="alert" hidden>
-  This shop has <span class="countdown"></span>.
-</div>
-
-{% if parent.extra.preview %}
+{% if section.extra.preview %}
   <div class="alert alert-warning" role="alert">
     This shop is in preview, therefore all designs and prices are subject to change.
+  </div>
+{% else %}
+  <div class="alert alert-warning" id="countdown-alert" role="alert" hidden>
+    This shop has <span class="countdown"></span>.
   </div>
 {% endif %}
 
