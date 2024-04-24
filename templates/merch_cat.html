@@ -24,6 +24,12 @@
   This shop has <span class="countdown"></span>.
 </div>
 
+{% if parent.extra.preview %}
+  <div class="alert alert-warning" role="alert">
+    This shop is in preview, therefore all designs and prices are subject to change.
+  </div>
+{% endif %}
+
 {% block secbody %}{{ section.content | safe}}{% endblock %}
 
 <hr>

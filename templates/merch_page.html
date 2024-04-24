@@ -24,10 +24,16 @@
   This shop has <span class="countdown"></span>.
 </div>
 
+{% if parent.extra.preview %}
+  <div class="alert alert-warning" role="alert">
+    This shop is in preview, therefore all designs and prices are subject to change.
+  </div>
+{% endif %}
+
 <div class="posts p-2 gap-3 vstack">
   <div class="while-open">
     {% set preview = parent.extra.preview %}
-      {{ self::merch_item(page=page, preview=preview, full=true) }}
+    {{ self::merch_item(page=page, preview=preview, full=true) }}
   </div>
 
   <div class="while-closed" hidden>
