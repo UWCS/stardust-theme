@@ -81,11 +81,12 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
       {{ logos::dots_uwcs() }}
     </a>
 
-    
     {% set merch = get_section(path="merch/_index.md") %}
+    {% if not merch.extra.hide %}
     <a class="navbar-brand badge text-bg-warning mx-2 fs-6" href="{{ merch.permalink }}" aria-label="Order Merch">
       Order Merch
     </a>
+    {% endif %}
 
     <!-- Navbar parts for mobile version -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-main"
@@ -98,8 +99,8 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
       {% set sect = get_section(path='_index.md') %}
       {% for sub in sect.subsections %}
         {% set subsect = get_section(path=sub) %}
-        {% if subsect.extra.hide %}{% continue %}{% endif %}
-        <li><a {% if subsect.title == "Merch"%}style="border: 1px solid var(--bs-warning); border-radius: 15px"{% endif %} class="nav-link" href="{{ subsect.permalink | safe }}" aria-label="Visit {{ subsect.title }}">{{ subsect.title }}</a></li>
+        {% if subsect.extra.hide or subsect.title == "Merch" %}{% continue %}{% endif %}
+        <li><a class="nav-link" href="{{ subsect.permalink | safe }}" aria-label="Visit {{ subsect.title }}">{{ subsect.title }}</a></li>
       {% endfor %}
 
       <li class="me-lg-2 nav-item dropdown">
