@@ -33,7 +33,7 @@
 
     <div class="col-sm-8">
     {% else %}
-    <div>
+    <div class="col-12">
     {% endif %}
       <div class="card-body p-4 d-flex flex-column h-100 justify-content-between">
         <div class="d-flex align-items-center">
@@ -58,7 +58,7 @@
 
 {% macro carousel(page) %}
 {# Image carousel for each merch item card #}
-  <div id="carousel-{{ page.slug }}" class="carousel slide rounded-start w-100 h-100 overflow-hidden p-4" style="aspect-ratio: 1 / 1">
+  <div id="carousel-{{ page.slug }}" class="carousel zoom slide rounded-start w-100 h-100 overflow-hidden p-4" style="aspect-ratio: 1 / 1">
     <div class="carousel-inner">
       {% for asset in page.assets | sort -%}
         {%- if asset is matching("[.](jpg|png)$") -%}

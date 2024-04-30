@@ -126,7 +126,7 @@
 
 {{ summ | safe }}
 
-{% if link and marker and not full and summ | length < content | length - 5 %}
+{% if link and marker and not full and summ | length * 1.2 < content | length %}
   <a href="{{ link }}">{{ marker | safe }}</a>
 {% endif %}
 

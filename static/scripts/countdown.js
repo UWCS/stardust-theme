@@ -67,8 +67,8 @@ const countdown = function () {
         if (days >= 7) time_rem_str = daysText;
 
         for (let cd of cds) {
-            const prompt = now <= startDate ? "opening" : "closing"
-            cd.innerHTML = `${time_rem_str} until ${prompt}`;
+            const prompt = now <= startDate ? "Opening" : "Closing"
+            cd.innerHTML = `${prompt} in ${time_rem_str}`;
         }
 
         // Set update time
@@ -89,7 +89,7 @@ const countdown = function () {
         for (let elem of closedElems) {
             elem.hidden = open;
         }
-        if (!open) document.getElementById("countdown-alert").innerHTML = "Shop now closed!";
+        if (!open && endDate < now) document.getElementById("countdown-alert").innerHTML = "Shop now closed!";
         prevOpen = open;
     }
 

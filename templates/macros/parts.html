@@ -1,5 +1,6 @@
 {% import "macros/logos.html" as logos %}
 {% import "macros/formatters.html" as formatters %}
+{% import "macros/shortcodes.html" as shortcodes %}
 
 {% macro preview_styles() %}
 
@@ -80,6 +81,12 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
       {{ logos::dots_uwcs() }}
     </a>
 
+    
+    {% set merch = get_section(path="merch/_index.md") %}
+    <a class="navbar-brand badge text-bg-warning mx-2 fs-6" href="{{ merch.permalink }}" aria-label="Order Merch">
+      Order Merch
+    </a>
+
     <!-- Navbar parts for mobile version -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-main"
       aria-controls="navbar-main" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,7 +94,6 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
     </button>
     <div class="collapse navbar-collapse w-100" id="navbar-main">
       <ul class="navbar-nav d-flex w-100">
-
       <!-- Include links to top level sections -->
       {% set sect = get_section(path='_index.md') %}
       {% for sub in sect.subsections %}
