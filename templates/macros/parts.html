@@ -93,7 +93,7 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
       {% for sub in sect.subsections %}
         {% set subsect = get_section(path=sub) %}
         {% if subsect.extra.hide %}{% continue %}{% endif %}
-        <li><a class="nav-link" href="{{ subsect.permalink | safe }}" aria-label="Visit {{ subsect.title }}">{{ subsect.title }}</a></li>
+        <li><a {% if subsect.title == "Merch"%}style="border: 1px solid var(--bs-warning); border-radius: 15px"{% endif %} class="nav-link" href="{{ subsect.permalink | safe }}" aria-label="Visit {{ subsect.title }}">{{ subsect.title }}</a></li>
       {% endfor %}
 
       <li class="me-lg-2 nav-item dropdown">
