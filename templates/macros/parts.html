@@ -202,8 +202,8 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
     </li>
     {% endfor %}
   </ul>
-  <p>
-    Built: {{ now() | date(format="%Y-%m-%d %H:%M:%S") }}
+  <p style="color: white;">
+    Last built: {{ now() | date(format="%Y-%m-%d %H:%M:%S") }}
   </p>
 </footer>
 {% endmacro footer %}
