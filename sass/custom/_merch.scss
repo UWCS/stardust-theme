@@ -20,11 +20,6 @@ ul.gallery {
         cursor: -webkit-zoom-in;
         cursor: -moz-zoom-in;
         cursor: zoom-in;
-
-        & .carousel-control-prev,
-        & .carousel-control-next {
-            display: none;
-        }
     }
 
     .zoom:hover,

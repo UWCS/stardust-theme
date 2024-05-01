@@ -59,8 +59,18 @@
 {% macro carousel(page) %}
 {# Image carousel for each merch item card #}
   <div id="carousel-{{ page.slug }}" class="carousel zoom slide rounded-start w-100 h-100 overflow-hidden p-4" style="aspect-ratio: 1 / 1">
+    {% if page.assets | length > 1 %}
+      {# for some reason bootstrap doesnt remove list styling #}
+      <ol class="carousel-indicators" style="list-style-type: none;">
+        {%- for asset in page.assets | sort -%}
+          {%- if asset is matching("[.](jpg|png)$") -%}
+            <li data-bs-target="#carousel-{{ page.slug }}" data-bs-slide-to="{{ loop.index0 }}" {% if loop.first %} class="active"{% endif %}></li>
+          {%- endif %}
+        {%- endfor %}
+      </ol>
+    {% endif %}
     <div class="carousel-inner">
-      {% for asset in page.assets | sort -%}
+      {%- for asset in page.assets | sort -%}
         {%- if asset is matching("[.](jpg|png)$") -%}
           <div class="carousel-item {% if loop.first %} active{% endif %}" {% if not loop.first %} loading="lazy"{% endif %}>
             <img class="d-block w-100" style="aspect-ratio: 1 / 1; object-fit: contain;" src=" {{ asset }}">
