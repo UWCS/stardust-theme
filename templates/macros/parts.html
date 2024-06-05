@@ -13,11 +13,11 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
 
 {% macro head() %}
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="stylesheet" href="{{ get_url(path="uwcs-bootstrap.css", cachebust=true) }}">
 
 <link type="font/woff2" href="/fonts/mulish-v13-latin-regular.woff2" />
 <link type="font/woff2" href="/fonts/montserrat-v26-latin-600.woff2" />
 
+<link rel="stylesheet" href="{{ get_url(path="uwcs-bootstrap.css", cachebust=true) }}">
 <script src="{{ get_url(path="scripts/bootstrap.bundle.min.js", cachebust=true) }}" defer></script>
 <link rel="stylesheet" href="{{ get_url(path="icon-packs/bootstrap-icons.min.css", cachebust=true) }}" defer>
 <link rel="stylesheet" href="{{ get_url(path="icon-packs/phosphor-bold.css", cachebust=true) }}" defer>
