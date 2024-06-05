@@ -5,8 +5,27 @@
 {% import "macros/socials.html" as socials %}
 
 {% block head %}
-{{ super() }}
+<link rel="preload" as="font" type="font/woff2" href="/fonts/montserrat-600-universityofwarwick-only.woff2" crossorigin />
 <link rel="preload" as="font" type="font/woff2" href="/fonts/montserrat-700-computingsociety-only.woff2" crossorigin />
+<style>
+  @font-face {
+    font-display: swap;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    src: url('/fonts/montserrat-700-computingsociety-only.woff2') format('woff2');
+  }
+  
+  @font-face {
+    font-display: swap;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    src: url('/fonts/montserrat-600-universityofwarwick-only.woff2') format('woff2');
+  }
+</style>
+
+{{ super() }}
 {% endblock %}
 
 {% block title %}{{ section.title }}{% endblock title %}

@@ -13,23 +13,25 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
 
 {% macro head() %}
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" type="image/x-icon" href="{{ get_url(path="assets/favicon.png", cachebust=true) }}">
 <link rel="stylesheet" href="{{ get_url(path="uwcs-bootstrap.css", cachebust=true) }}">
+
+<link type="font/woff2" href="/fonts/mulish-v13-latin-regular.woff2" />
+<link type="font/woff2" href="/fonts/montserrat-v26-latin-600.woff2" />
+
 <script src="{{ get_url(path="scripts/bootstrap.bundle.min.js", cachebust=true) }}" defer></script>
 <link rel="stylesheet" href="{{ get_url(path="icon-packs/bootstrap-icons.min.css", cachebust=true) }}" defer>
 <link rel="stylesheet" href="{{ get_url(path="icon-packs/phosphor-bold.css", cachebust=true) }}" defer>
 <script src="{{ get_url(path="scripts/darkmode.js", cachebust=true) }}" defer></script>
 
 {% if config.markdown.highlight_code and config.markdown.highlight_theme == "css" %}
-<link rel="stylesheet" type="text/css" href="/syntax-theme-dark.css" defer />
-<link rel="stylesheet" type="text/css" href="/syntax-theme-light.css" defer />
+<link rel="stylesheet" type="text/css" href="{{ get_url(path="syntax-theme-dark.css") }}" defer />
+<link rel="stylesheet" type="text/css" href="{{ get_url(path="syntax-theme-light.css") }}" defer />
 {% endif %}
-
-<link rel="preload" as="font" type="font/woff2" href="/fonts/mulish-v13-latin-regular.woff2" crossorigin />
-<link rel="preload" as="font" type="font/woff2" href="/fonts/montserrat-v26-latin-600.woff2" crossorigin />
 
 <script src="{{ get_url(path="scripts/elasticlunr.min.js") }}" defer></script>
 <script src="{{ get_url(path="scripts/search.js") }}" defer></script>
+
+<link rel="icon" type="image/x-icon" href="{{ get_url(path="assets/favicon.png", cachebust=true) }}">
 {% endmacro head %}
 
 {% macro opengraph(resource) %}
