@@ -100,8 +100,7 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
     padding: .25rem;
     margin: .25rem;
     color: var(--bs-emphasis-color);
-    border: var(--bs-border-width) solid 
-        color-mix(in srgb, var(--highlight-colour) 50%, transparent); // actual value is 128/255, close enough to 50% though
+    border: var(--bs-border-width) solid color-mix(in srgb, var(--highlight-colour) 50%, transparent); // actual value is 128/255, close enough to 50% though
     border-radius: var(--bs-border-radius);
 }
 
@@ -109,6 +108,7 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
     background-color: color-mix(in srgb, var(--highlight-colour) 50%, transparent);
     border-color: transparent;
 }
+
 .event-tag.event-tag-selected {
     background-color: color-mix(in srgb, var(--highlight-colour) 80%, transparent);
     border-color: transparent;
@@ -119,6 +119,25 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
     display: grid;
     gap: $circle-gap;
     grid-template-columns: repeat(var(--ecols), day-width(1));
+
+    // Reduce columns if only one column
+    &[data-event-total="1"] {
+        --ecols: 1;
+    }
+
+    // Reduce columns if only two columns needed
+    &[data-event-total="2"],
+    &[data-event-total="4"]:not(:has(> div[data-event-count="3"])) {
+        --ecols: 2;
+
+        & .day-3-show {
+            display: none !important;
+        }
+        
+        & .day-2-show {
+            display: flex !important;
+        }
+    }
 }
 
 // Day with two elements
@@ -137,6 +156,11 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
 .event-outer[data-event-count="4"] {
     grid-column: span 2;
     grid-row: span 2;
+}
+
+.day-3-show,
+.day-2-show {
+    display: none;
 }
 
 // Good luck after four in a day
@@ -161,6 +185,10 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
         grid-column: span 2 !important;
         grid-row: span 3 !important;
     }
+
+    .day-3-show {
+        display: flex !important;
+    }
 }
 
 @container (#{day-width(2)} <=width < #{day-width(3)}) {
@@ -181,6 +209,10 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
     .day-2-2x2 {
         grid-column: span 2 !important;
         grid-row: span 2 !important;
+    }
+
+    .day-2-show {
+        display: flex !important;
     }
 }
 

@@ -1,11 +1,10 @@
 {% extends "section.html" %}
 {% import "macros/events.html" as events %}
+{% import "macros/logos.html" as logos %}
 
 {% block header %}
-{{ super() }}
-
 {% set term = get_section(path=resource.ancestors | last) %}
-<h3>{{ term.title }}</h3>
+<h1>{{ term.title }}: {{ resource.title | safe }}</h1>
 {% endblock %}
 
 {% block get_pages %}
@@ -15,11 +14,20 @@
 
 
 {% block pages %}
-{{ resource.content | safe}}
+<div class="vstack schedule" style="background-image: url(&quot;/assets/bg-particles.png&quot;); background-size: contain">
+  <style>
+    .schedule .dots-uwcs {
+      height: 4em;
+      margin-top: 1em;
+    }
+  </style>
 
-<div class="term blue" data-bs-theme="dark">
-  {{ events::week(w=resource, pages=pages) }}
-</div>
+  {{ logos::dots_uwcs(letter="white") }}
+  <div class="term blue-top pb-5" data-bs-theme="dark">
+    <h1 style="margin-top: -0.5em">{{ resource.title | safe }}</h1>
+    {{ events::week(w=resource, pages=pages) }}
+  </div>
+<div>
 
 {% block script %}
   {{ events::script() }}

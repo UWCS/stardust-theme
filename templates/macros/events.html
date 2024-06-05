@@ -1,6 +1,7 @@
 {% import "macros/formatters.html" as formatters %}
 {%- import "macros/shortcodes.html" as shortcodes -%}
 {% import "macros/rooms.html" as rooms %}
+{% import "macros/socials.html" as socials %}
 
 {% macro event_circle(e) %}
 <a href="{{ e.permalink }}" class="text-decoration-none event-hover" aria-label="See event {{ e.title }}">
@@ -79,9 +80,9 @@
   {% if date %}
   {# if Wednesday add 0-width space to allow for break as wed #}
   {% if date == "Wednesday"%}
-  <h4 class="fw-semibold day-clamp">Wed​nesday</h4>
+  <h3 class="fw-semibold day-clamp">Wed​nesday</h3>
   {% else %}
-  <h4 class="fw-semibold">{{ date }}</h4>
+  <h3 class="fw-semibold">{{ date }}</h3>
   {% endif %}
   {% endif %}
 
@@ -104,6 +105,19 @@
 {% endif %}
 {% endmacro %}
 
+{% macro filler(cols=3) %}
+<div class="filler day-{{cols}}-show event-outer bg-body rounded-4 text-center text-white" data-event-count="1">
+  <h3 class="fw-semibold">Join Us</h3>
+  <ul class="nav list-unstyled d-flex align-items-center">
+    {% set socs = get_section(path="socials/_index.md") %}
+    {% for social in socs.pages %}
+    {% if social.extra.schedule_skip %}{% continue %}{% endif %}
+      {{ socials::filler_social(social=social) }}
+    {% endfor %}
+  </ul>
+  <h5 class="mb-0">go.uwcs.uk/links</h5>
+</div>
+{% endmacro %}
 
 {% macro week(w, events="", title="", grid=true) %}
 {% if not events %}
@@ -114,15 +128,15 @@
 
 {% set prev_day = "" %}
 {% set days_events = [] %}
-<div {% if grid %} class="week w-100 text-center my-4" {% endif %}>
+<div {% if grid %} class="week w-100 text-center" {% endif %}>
   {% if title %} <h2>
     <a class="link-body-emphasis text-decoration-none" href="{{ w.permalink | safe }}"
       aria-label="See events on week {{ title }}">{{ title }}</a>
     (w/b {{ w.extra.base_date | date(format="%d-%b") }})
   </h2> {% endif %}
   {% if grid %}
-  <div class="events d-grid justify-content-center">
-    {% endif %}
+  <div class="events d-grid justify-content-center" data-event-total={{ events | length }}>
+  {% endif %}
     {% for e in events %}
       {% if e.extra.display_day %}
         {% set e_day = e.extra.display_day %}
@@ -172,6 +186,7 @@
   <div class="weeks w-100 {% if archive %}reverse{% endif %}">
     {% endif %}
     {% for week in weeks %}
+    <div class="my-4">
     {# Compare weeks (ignore past/future) #}
     {% set e_year = week.extra.base_date | date(format="%Y") | int %}
     {% set e_week = week.extra.base_date | date(format="%W") | int %}
@@ -277,9 +292,8 @@
     for (var cols of [2, 3]) {
       var grid = Array.from({ length: 3 }, () => Array.from({ length: cols }, () => -1));
       var pos = [0, 0];
-      // console.log(`ecols ${cols}`);
       for (const [i, day] of Array.prototype.entries.call(week.children)) {
-        // console.log(i, day.dataset.eventCount);
+        if (day.classList.contains("filler")) continue;
         while (true) {
           let p = pack(i, grid, day, pos, cols);
           if (!p) next_cell(pos);
@@ -288,7 +302,14 @@
             break
           }
         }
-        // console.log(grid);
+      }
+      // Calculate position of filler item
+      grid = grid.filter(r => r.some(c => c != -1));
+      const flattened = grid.flat();
+      const emptyInd = flattened.indexOf(-1);
+      if (emptyInd > 0) {
+        const prec = flattened[emptyInd - 1];
+        week.children[prec].insertAdjacentHTML("afterend", cols == 3 ? `{{ events::filler(cols=3) }}` : `{{ events::filler(cols=2) }}`)
       }
     }
   }

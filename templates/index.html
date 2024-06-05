@@ -27,7 +27,8 @@
     <div id="socials" class="mb-5 col-md-11 gap-3 mx-4">
       {% set socials = get_section(path="socials/_index.md") %}
       {% for social in socials.pages %}
-      {{ socials::block(social=social) }}
+        {% if social.extra.main_skip %}{% continue %}{% endif %}
+        {{ socials::block(social=social) }}
       {% endfor %}
     </div>
   </div>

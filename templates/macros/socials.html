@@ -32,3 +32,20 @@ img: If a custom SVG is needed instead, give a link here
 last) }}
 {% endif %}
 {% endmacro %}
+
+
+{% macro filler_social(social) %}
+<div class="filler-social d-flex fs-4 align-items-center" style="line-height: 1.4">
+  {% if social.extra.img %}
+    <div class="icon"><img class="silhouette me-2" src="{{ get_url(path=social.extra.img) }}"></div>
+  {% elif social.extra.social %}
+    <i class="bi bi-{{ social.extra.social }} me-2"></i>
+  {% else %}
+  <i class="bi bi-{{ social.components | last }} me-2"></i>
+  {% endif %}
+  
+  <div class="fs-6">
+    <p class="h6 m-0">{{ social.extra.short | safe }}</p>
+  </div>
+</div>
+{% endmacro %}

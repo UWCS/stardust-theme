@@ -8,7 +8,7 @@
         align-items: stretch;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include media-breakpoint-down(lg) {
         width: 80%;
         grid-template-columns: repeat(auto-fit, minmax(20vw, 1fr));
     }
