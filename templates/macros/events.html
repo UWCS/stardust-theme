@@ -132,7 +132,7 @@
   {% if title %} <h2>
     <a class="link-body-emphasis text-decoration-none" href="{{ w.permalink | safe }}"
       aria-label="See events on week {{ title }}">{{ title }}</a>
-    (w/b {{ w.extra.base_date | date(format="%d-%b") }})
+    <span class="fs-5">(w/b {{ w.extra.base_date | date(format="%d %b") }})</span>
   </h2> {% endif %}
   {% if grid %}
   <div class="events d-grid justify-content-center" data-event-total={{ events | length }}>
