@@ -26,7 +26,7 @@
   </style>
 
   {{ logos::dots_uwcs(letter="white") }}
-  <div class="term blue-top pb-5" data-bs-theme="dark">
+  <div class="term blue-top pb-3" data-bs-theme="dark">
     <h1 style="margin-top: -0.5em">{{ resource.title | safe }}</h1>
     {{ events::week(w=resource, pages=pages) }}
   </div>
@@ -34,18 +34,46 @@
 
 {% block script %}
 <script>
+  function capture() {    
+    const options = {
+      method: 'POST',
+      body: JSON.stringify({
+        html: document.children[0].outerHTML.replaceAll("http://127.0.0.1:1111", "https://uwcs.co.uk"),
+        css: "",
+        selector: "#image"
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + btoa("{{ config.extra.htmltoimg_userid }}:{{ config.extra.htmltoimg_apikey }}")
+      }
+    }
+    
+    fetch('https://hcti.io/v1/image', options)
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return Promise.reject(res.status);
+        }
+      }).then(data => {
+        console.log(data.url)
+      }).catch(err => console.error(err));
+  }
+
   addEventListener("load", (event) => {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has("image")) {
       const sch = document.getElementsByClassName("schedule")[0];
       const b = document.getElementsByTagName("body")[0];
       const newsch = b.insertAdjacentElement("afterbegin", sch);
-      newsch.width = 700;
+      newsch.width = 690;
       newsch.id = "image";
 
       while (b.children.length > 1) {
         b.removeChild(b.lastChild);
       }
+
+      capture();
     }
   })
 </script>
