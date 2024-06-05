@@ -14,7 +14,7 @@
 
 
 {% block pages %}
-<div class="vstack schedule" style="background-image: url(&quot;/assets/bg-particles.png&quot;); background-size: contain">
+<div class="vstack schedule" style="background-color: var(--bs-body-bg, {{ formatters::colour(colour="grey") }}); background-image: url(&quot;{{ get_url(path="assets/bg-particles.png") }}&quot;); background-size: contain; width: 700px" data-bs-theme="dark">
   <style>
     .schedule .dots-uwcs {
       height: 4em;
@@ -27,10 +27,28 @@
     <h1 style="margin-top: -0.5em">{{ resource.title | safe }}</h1>
     {{ events::week(w=resource, pages=pages) }}
   </div>
-<div>
+</div>
 
 {% block script %}
-  {{ events::script() }}
+<script>
+  addEventListener("load", (event) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("image")) {
+      const sch = document.getElementsByClassName("schedule")[0];
+      const b = document.getElementsByTagName("body")[0];
+      const newsch = b.insertAdjacentElement("afterbegin", sch);
+      newsch.width = 700;
+      newsch.id = "image";
+
+      while (b.children.length > 1) {
+        b.removeChild(b.lastChild);
+      }
+    }
+  })
+</script>
+{{ events::script() }}
+  
+<button class="btn btn-secondary" onClick="capture()">Save Image</button>
 {% endblock %}
 
 {% endblock %}
