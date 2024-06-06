@@ -75,14 +75,14 @@
 {% set date = events[0].date | date(format="%A") %}
 {% endif %}
 {% if grid %}
-<div class="event-outer bg-body rounded-4 text-center text-white" data-event-count="{{ events | length }}">
+<div class="event-outer" data-event-count="{{ events | length }}">
 
   {% if date %}
   {# if Wednesday add 0-width space to allow for break as wed #}
   {% if date == "Wednesday"%}
-  <h3 class="fw-semibold day-clamp">Wed​nesday</h3>
+  <h3 class="fw-semibold day-clamp lh-1">Wed​nesday</h3>
   {% else %}
-  <h3 class="fw-semibold">{{ date }}</h3>
+  <h3 class="fw-semibold lh-1">{{ date }}</h3>
   {% endif %}
   {% endif %}
 

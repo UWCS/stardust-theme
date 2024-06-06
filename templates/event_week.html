@@ -14,19 +14,40 @@
 
 
 {% block pages %}
-<div class="schedule" style="background-color: var(--bs-body-bg, {{ formatters::colour(colour="grey") }}); background-image: url(&quot;{{ get_url(path="assets/bg-particles.png") }}&quot;); background-size: contain; width: 700px" data-bs-theme="dark">
+<div class="schedule" data-bs-theme="dark">
   <style>
+    .schedule {
+      display: flex;
+      flex-direction: column;
+    }
+
     .schedule .dots-uwcs {
+      display: none;
+    }
+
+    #image .dots-uwcs {
+      flex: 1;
       height: 4em;
-      margin-top: 1em;
+      margin: 1em 0;
       display: block;
-      margin-left: auto;
-      margin-right: auto;
+    }
+
+    #image {
+      aspect-ratio: 1 / 1;
+      width: 690px;
+      height: 690px;
+      background-color: var(--bs-body-bg, {{ formatters::colour(colour="grey") }}); 
+      background-image: url('{{ get_url(path="assets/bg-particles.png") }}'); 
+      background-size: contain;
+    }
+
+    #image .term {
+      min-height: 550px;
     }
   </style>
 
   {{ logos::dots_uwcs(letter="white") }}
-  <div class="term blue-top pb-3" data-bs-theme="dark">
+  <div class="term blue-top pb-3" data-bs-theme="dark" style="margin-top: 40px">
     <h1 style="margin-top: -0.5em">{{ resource.title | safe }}</h1>
     {{ events::week(w=resource, pages=pages) }}
   </div>
@@ -56,7 +77,8 @@
           return Promise.reject(res.status);
         }
       }).then(data => {
-        console.log(data.url)
+        console.log(data.url);
+        window.location.replace(data.url);
       }).catch(err => console.error(err));
   }
 
@@ -66,20 +88,19 @@
       const sch = document.getElementsByClassName("schedule")[0];
       const b = document.getElementsByTagName("body")[0];
       const newsch = b.insertAdjacentElement("afterbegin", sch);
-      newsch.width = 690;
       newsch.id = "image";
 
       while (b.children.length > 1) {
         b.removeChild(b.lastChild);
       }
 
-      capture();
+      if (urlParams.has("capture")) {
+        capture();
+      }
     }
   })
 </script>
 {{ events::script() }}
-  
-<button class="btn btn-secondary" onClick="capture()">Save Image</button>
 {% endblock %}
 
 {% endblock %}
