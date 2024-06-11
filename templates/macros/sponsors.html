@@ -1,30 +1,32 @@
-{% macro tier(tier, sponsors, area=22500) %}
-
+{% macro tier(tier, sponsors, area=22500) -%}
 <div id="{{ tier | lower }}" class="sponsors">
-  {% for sponsor in sponsors %}
+  {% for sponsor in sponsors -%}
     <a href="{{ sponsor.permalink }}" aria-label="More info about {{ sponsor.title }}">
       {{ sponsors::single(sponsor=sponsor, area=area) }}
     </a>
-  {% endfor %}
+  {% endfor -%}
 </div>
 {% endmacro tier %}
 
-{% macro single(sponsor, area=22500, white=true) %}
-  {% set path = sponsor.path | trim_end_matches(pat="/") %}
-  {% set path = path ~ ".png" %}
-  {% set size = sponsors::equiv_vis_size(img_path=path, area=area) %}
-  <img {% if white %}class="white-hover"{% endif %} src="{{ path }}" {{ size }} 
+
+{% macro single(sponsor, area=22500, white=true) -%}
+  {% set path = sponsor.path | trim_end_matches(pat="/") -%}
+  {% set path = path ~ ".png" -%}
+  {% set size = sponsors::equiv_vis_size(img_path=path, area=area) -%}
+
+  <img {% if white %}class="white-hover"{% endif %} 
+    src="{{ path }}" {{ size }} 
     style="max-width: 100%; object-fit: contain" 
-    alt="Logo for {{ sponsor.title }}" loading="lazy"
+    alt="Logo for {{ sponsor.title }}" loading="lazy" 
   >
 {% endmacro %}
 
 
-{%- macro equiv_vis_size(img_path, area) -%}
-  {%- set meta = get_image_metadata(path=img_path) -%}
-  {%- set currarea = meta.width * meta.height -%}
-  {%- set sqh = meta.height * meta.height * area / currarea -%}
-  {%- set height = sqh | sqrt -%}
-  {%- set width = currarea * height / (meta.height * meta.height) | int -%}
+{% macro equiv_vis_size(img_path, area) -%}
+  {% set meta = get_image_metadata(path=img_path) -%}
+  {% set currarea = meta.width * meta.height -%}
+  {% set sqh = meta.height * meta.height * area / currarea -%}
+  {% set height = sqh | sqrt -%}
+  {% set width = currarea * height / (meta.height * meta.height) | int -%}
   width={{ width }} height={{ height }}
-{%- endmacro -%}
+{%- endmacro %}
