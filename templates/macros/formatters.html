@@ -1,3 +1,5 @@
+{% import "macros/rooms.html" as rooms %}
+
 {%- macro date(date) -%}
 {%- if date | date(format="%Y") == now() | date(format="%Y") -%} {{ date | date(format="%a %d %h") }}
 {%- else -%} {{ date | date(format="%a %d %h") }}

@@ -1,0 +1,11 @@
+{% extends "page.html" %}
+{% import "events/macros/event.html" as event %}
+{% block header %}{% endblock %}
+{% block content %}
+
+{{ event::event_info(resource=resource, large=true, page=false) }}
+
+<div class="m-3">
+  {{ resource.content | safe}}
+</div>
+{% endblock content%}

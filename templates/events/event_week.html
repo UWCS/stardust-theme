@@ -1,5 +1,6 @@
 {% extends "section.html" %}
-{% import "macros/events.html" as events %}
+{% import "events/macros/events.html" as events %}
+{% import "events/macros/week.html" as week %}
 {% import "macros/logos.html" as logos %}
 
 {% block header %}
@@ -49,7 +50,7 @@
   {{ logos::dots_uwcs(letter="white") }}
   <div class="term blue-top pb-3" data-bs-theme="dark" style="margin-top: 40px">
     <h1 style="margin-top: -0.5em">{{ resource.title | safe }}</h1>
-    {{ events::week(w=resource, pages=pages) }}
+    {{ week::week(w=resource, pages=pages) }}
   </div>
 </div>
 

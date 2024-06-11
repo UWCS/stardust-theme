@@ -1,0 +1,158 @@
+{% import "events/macros/event.html" as event %}
+{% import "events/macros/week.html" as week %}
+{% import "events/macros/filler.html" as filler %}
+
+{% macro term(t, weeks="", title="", week_no=-1, archive=false, grid=true) %}
+{% if not weeks %}
+{# MIRROR ANY CHANGES HERE TO uwcs.ical fetching #}
+{# Because Tera is annoying, lists get cast to string when passing through macros, so we have to duplicate #}
+{% set weeks = [] %}
+{% for ss in t.subsections %}
+{% set week = get_section(path=ss) %}
+{% set_global weeks = weeks | concat(with=week) %}
+{% endfor %}
+{% set weeks = weeks | sort(attribute="extra.base_date") %}
+{% endif %}
+{% set added_event = false %}
+
+{% if grid %}
+<div class="term blue event-mobile" data-bs-theme="dark">
+  {% if title %}
+    <h1><a class="link-body-emphasis text-decoration-none" href="{{ t.permalink | safe }}"
+        aria-label="See events in {{ title }}">{{ title }}</a>
+    </h1>
+  {% endif %}
+  <div class="weeks w-100 {% if archive %}reverse{% endif %}">
+{% endif %}
+    {% for week in weeks %}
+      {% if week.permalink is containing("/repeat") %}{% continue %}{% endif %}
+      <div class="my-4">
+      {# Compare weeks (ignore past/future) #}
+      {% set e_year = week.extra.base_date | date(format="%Y") | int %}
+      {% set e_week = week.extra.base_date | date(format="%W") | int %}
+      {% set e_week_no = e_week + 54 * e_year %}
+
+      {% if not archive and week_no > 0 %}
+        {% if e_week_no < week_no %}{% continue %}{% endif %} 
+        {% elif week_no> 0 and e_week_no > week_no %}{% continue %}{% endif %}
+
+        {% set_global added_event = true %}
+        {{ week::week(w=week, title=week.title, grid=grid) }}
+    {% endfor %}
+      {% if not added_event %}
+      <h2 class="text-center">No events {% if archive %}finished{% endif %} yet, please check back soon™</h2>
+      {% endif %}
+      {% if grid %}
+  </div>
+</div>
+{% endif %}
+{% endmacro %}
+
+
+{% macro event_block(resource, grid) %}
+
+{% set now = now() %}
+{% set this_year = now | date(format="%Y") | int %}
+{% set this_week = now | date(format="%W") | int %}
+{% set week_no = this_week + 54 * this_year %}
+{% set archive = resource.extra.archive | default(value=false) %}
+
+<div id="events-block" {% if archive %}class="reverse" {% endif %}>
+  {# MIRROR ANY CHANGES HERE TO uwcs.ical fetching #}
+  {% set events = get_section(path="events/_index.md") %}
+  {% for t in events.subsections %}
+  {% if t is containing("archive") %}{% continue %}{% endif %}
+  {% set term = get_section(path=t) %}
+  {{ events::term(t=term, title=term.title, week_no=week_no, archive=archive, grid=grid) }}
+  {% endfor %}
+</div>
+
+{% endmacro %}
+
+
+{% macro script() %}
+<script>
+  combs = {
+    1: [[1, 1]],
+    2: [[2, 1], [1, 2]],
+    3: [[3, 1], [2, 2], [1, 3]],
+    4: [[2, 2]],
+    5: [[3, 2], [2, 3]],
+    6: [[3, 2], [2, 3]],
+  }
+
+  function next_cell(loc, shift = 1) {
+    loc[0] += shift;
+    if (loc[0] >= cols) {
+      loc[0] = 0;
+      loc[1] += 1;
+    }
+  }
+
+  function pack(i, grid, day, loc, cols) {
+    if (day.dataset.eventCount > 6) return `day-${cols}-1x${cols}`;
+    layouts = combs[day.dataset.eventCount];
+    for (var dim of layouts) {
+      // console.log(`Trying ${dim}, ${loc}`);
+      if (fits(dim, loc, grid, cols)) {
+        set_region(i, dim, loc, grid);
+        return `day-${cols}-${dim[0]}x${dim[1]}`;
+      }
+    }
+    return undefined;
+  }
+
+  function fits(dim, loc, grid, cols) {
+    if (loc[0] + dim[0] > cols) return false;
+
+    for (let y = loc[1]; y < loc[1] + dim[1]; y++) {
+      if (y >= grid.length) continue;
+      for (let x = loc[0]; x < loc[0] + dim[0]; x++) {
+        if (grid[y][x] != -1) return false;
+      }
+    }
+    // console.log("Fits");
+    return true;
+  }
+
+  function set_region(i, dim, loc, grid) {
+    // console.log("Filling");
+    for (let y = loc[1]; y < loc[1] + dim[1]; y++) {
+      if (y >= grid.length) grid.push(Array.from({ length: cols }, () => -1));
+      for (let x = loc[0]; x < loc[0] + dim[0]; x++) {
+
+        // console.log("Filling", x, y, i);
+        grid[y][x] = i;
+      }
+    }
+    next_cell(loc, dim[0]);
+  }
+
+  var week_events = document.getElementsByClassName("events");
+  for (var week of week_events) {
+    for (var cols of [2, 3]) {
+      var grid = Array.from({ length: 3 }, () => Array.from({ length: cols }, () => -1));
+      var pos = [0, 0];
+      for (const [i, day] of Array.prototype.entries.call(week.children)) {
+        if (day.classList.contains("filler")) continue;
+        while (true) {
+          let p = pack(i, grid, day, pos, cols);
+          if (!p) next_cell(pos);
+          else {
+            day.classList.add(p);
+            break
+          }
+        }
+      }
+      // Calculate position of filler item
+      grid = grid.filter(r => r.some(c => c != -1));
+      const flattened = grid.flat();
+      const emptyInd = flattened.indexOf(-1);
+      if (emptyInd > 0) {
+        const prec = flattened[emptyInd - 1];
+        week.children[prec].insertAdjacentHTML("afterend", cols == 3 ? `{{ filler::filler(cols=3) }}` : `{{ filler::filler(cols=2) }}`)
+      }
+    }
+  }
+</script>
+{% endmacro %}

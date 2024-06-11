@@ -1,0 +1,137 @@
+{% import "events/macros/event.html" as event %}
+
+{% macro week(w, title="", grid=true) -%}
+{# MIRROR ANY CHANGES HERE TO uwcs.ical fetching #}
+{# Because Tera is annoying, lists get cast to string when passing through macros, so we have to duplicate #}
+
+{# Fetch each set of events #}
+{%- set week_events = w.pages | sort(attribute="date") -%}
+
+{# Check repeat path is child of term #}
+{% set rep_path = w.components[0] ~ "/" ~ w.components[1] ~ "/repeat/_index.md" -%}
+{% set term = get_section(path=w.ancestors[2], metadata_only=true) -%}
+{% if term.subsections is containing(rep_path) -%}
+  {# Get repeating events #}
+  {% set repeating = get_section(path=rep_path) -%}
+  {% set rep_base = repeating.extra.base_date | date(format="%s") | int %}
+  {% set all_rep_events = repeating.pages | sort(attribute="date") -%}
+
+  {# Filter events by the current week number #}
+  {% set week_no = w.components | last | trim_start_matches(pat="w") | int -%}
+  {% set rep_events = [] -%}
+  {% for e in all_rep_events -%}
+    {% if not e.extra.weeks or e.extra.weeks is containing(week_no) -%}
+      {% set_global rep_events = rep_events | concat(with=e) -%}
+    {% endif -%}
+  {% endfor -%}
+{% else -%}
+  {% set rep_events = [] -%}
+{% endif -%}
+
+{# Combined list is only needed to iterate over to get correct length (no while loops) #}
+{% set events = week_events | concat(with=rep_events) -%}
+
+{# Initialize variables for two pointers method #}
+{% set week_base = w.extra.base_date | date(format="%s") | int %}
+{% set wi = 0 -%}
+{% set ri = 0 -%}
+
+{% set prev_day = "" -%}
+{% set days_events = [] -%}
+{# Week formatting preamble #}
+<div {% if grid -%} class="week w-100 text-center" {% endif %}>
+  {%- if title %}
+    <h2>
+      <a class="link-body-emphasis text-decoration-none" href="{{ w.permalink | safe }}"
+        aria-label="See events on week {{ title }}">{{ title }}</a>
+      <span class="fs-5">(w/b {{ w.extra.base_date | date(format="%d %b") }})</span>
+    </h2> 
+  {% endif -%}
+  {% if grid -%}
+    <div class="events d-grid justify-content-center" data-event-total={{ events | length }}>
+  {% endif -%}
+
+  {% for ev in events -%}
+    
+    {# Use the two pointers method to iterate over the repeating and week event lists in order #}
+    {# Sort by difference between event dates and base_date #}
+
+    {% if wi >= week_events | length %}{% set e = rep_events[ri] %}{% set_global ri = ri + 1 -%}     {# Clear out weeks if either list empty #}
+    {% elif ri >= rep_events | length %}{% set e = week_events[wi] %}{% set_global wi = wi + 1 -%}
+    {% else -%}
+      {% set w_date = week_events[wi].date | date(format="%s") | int -%}
+      {% set r_date = rep_events[ri].date | date(format="%s") | int -%}
+      
+      {% if w_date - week_base < r_date - rep_base -%}
+        {% set e = week_events[wi] %}{% set_global wi = wi + 1 -%}
+      {% else -%}
+        {% set e = rep_events[ri] %}{% set_global ri = ri + 1 -%}
+      {% endif -%}
+    {% endif -%}
+
+    {# Store list of events while days are the same, when different, output previous day's events #}
+    {% if e.extra.display_day -%}
+      {% set e_day = e.extra.display_day -%}
+    {% else -%}
+      {% set e_day = e.date | date(format="%A") -%}
+    {% endif -%}
+    {% if e_day != prev_day -%}
+      {# Output previous day's content #}
+      {% if days_events -%}
+        {{ week::day(events=days_events, grid=grid) }}
+        {% set_global days_events = [] -%}
+        {% set_global started = true -%}
+      {% endif -%}
+      {% set_global prev_day = e_day -%}
+    {% endif -%}
+    {% set_global days_events = days_events | concat(with=e) -%}
+  {% endfor -%}
+
+    {# Clean up remaining days_events #}
+    {% if days_events -%}
+      {{ week::day(events=days_events, grid=grid) }}
+    {% endif -%}
+    {% if grid -%}
+  </div>
+  {% endif -%}
+</div>
+{% endmacro %}
+
+
+{% macro day(events,grid=true) %}
+{% if events[0].extra.display_day -%}
+  {% set date = events[0].extra.display_day -%}
+{% else -%}
+  {% set date = events[0].date | date(format="%A") %}
+{% endif -%}
+
+{% if grid -%}
+  <div class="event-outer" data-event-count="{{ events | length }}">
+
+  {% if date -%}
+    {# if Wednesday add 0-width space to allow for break as wed #}
+    {% if date == "Wednesday" -%}
+      <h3 class="fw-semibold day-clamp lh-1">Wed​nesday</h3>
+    {% else -%}
+      <h3 class="fw-semibold lh-1">{{ date }}</h3>
+    {% endif -%}
+  {% endif -%}
+
+  <div class="day">
+{% else -%}
+    <h5 class="mb-0">{{date}}</h5>
+{% endif -%}
+
+    {% for e in events | sort(attribute="date") -%}
+      {% if grid -%}
+        {{ event::event_circle(e=e) }}
+      {% else -%}
+        {{event::event_info(resource=e, large=false)}}
+      {% endif %}
+    {% endfor -%}
+
+{% if grid %}
+  </div>
+</div>
+{% endif %}
+{% endmacro %}
