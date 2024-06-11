@@ -134,7 +134,16 @@
   {# Get repeating events #}
   {% set repeating = get_section(path=rep_path) %}
   {% set rep_base = repeating.extra.base_date | date(format="%s") | int %}
-  {% set rep_events = repeating.pages | sort(attribute="date") %}
+  {% set all_rep_events = repeating.pages | sort(attribute="date") %}
+
+  {# Filter events by the current week number #}
+  {% set week_no = w.components | last | trim_start_matches(pat="w") | int %}
+  {% set rep_events = [] %}
+  {% for e in all_rep_events %}
+    {% if not e.extra.weeks or e.extra.weeks is containing(week_no) %}
+      {% set_global rep_events = rep_events | concat(with=e) %}
+    {% endif %}
+  {% endfor %}
 {% else %}
   {% set rep_events = [] %}
 {% endif %}
