@@ -119,25 +119,67 @@
 </div>
 {% endmacro %}
 
-{% macro week(w, events="", title="", grid=true) %}
-{% if not events %}
+
+{% macro week(w, title="", grid=true) %}
 {# MIRROR ANY CHANGES HERE TO uwcs.ical fetching #}
 {# Because Tera is annoying, lists get cast to string when passing through macros, so we have to duplicate #}
-{% set events = w.pages | sort(attribute="date") %}
+
+{# Fetch each set of events #}
+{% set week_events = w.pages | sort(attribute="date") %}
+
+{# Check repeat path is child of term #}
+{% set rep_path = w.components[0] ~ "/" ~ w.components[1] ~ "/repeat/_index.md" %}
+{% set term = get_section(path=w.ancestors[2], metadata_only=true) %}
+{% if term.subsections is containing(rep_path) %}
+  {# Get repeating events #}
+  {% set repeating = get_section(path=rep_path) %}
+  {% set rep_base = repeating.extra.base_date | date(format="%s") | int %}
+  {% set rep_events = repeating.pages | sort(attribute="date") %}
+{% else %}
+  {% set rep_events = [] %}
 {% endif %}
+
+{# Combined list is only needed to iterate over to get correct length (no while loops) #}
+{% set events = week_events | concat(with=rep_events) %}
+
+{# Initialize variables for two pointers method #}
+{% set week_base = w.extra.base_date | date(format="%s") | int %}
+{% set wi = 0 %}
+{% set ri = 0 %}
 
 {% set prev_day = "" %}
 {% set days_events = [] %}
+{# Week formatting preamble #}
 <div {% if grid %} class="week w-100 text-center" {% endif %}>
-  {% if title %} <h2>
-    <a class="link-body-emphasis text-decoration-none" href="{{ w.permalink | safe }}"
-      aria-label="See events on week {{ title }}">{{ title }}</a>
-    <span class="fs-5">(w/b {{ w.extra.base_date | date(format="%d %b") }})</span>
-  </h2> {% endif %}
+  {% if title %}
+    <h2>
+      <a class="link-body-emphasis text-decoration-none" href="{{ w.permalink | safe }}"
+        aria-label="See events on week {{ title }}">{{ title }}</a>
+      <span class="fs-5">(w/b {{ w.extra.base_date | date(format="%d %b") }})</span>
+    </h2> 
+  {% endif %}
   {% if grid %}
   <div class="events d-grid justify-content-center" data-event-total={{ events | length }}>
   {% endif %}
-    {% for e in events %}
+    {% for ev in events %}
+    
+      {# Use the two pointers method to iterate over the repeating and week event lists in order #}
+      {# Sort by difference between event dates and base_date #}
+
+      {% if wi >= week_events | length %}{% set e = rep_events[ri] %}{% set_global ri = ri + 1 %}     {# Clear out weeks if either list empty #}
+      {% elif ri >= rep_events | length %}{% set e = week_events[wi] %}{% set_global wi = wi + 1 %}
+      {% else %}
+        {% set w_date = week_events[wi].date | date(format="%s") | int %}
+        {% set r_date = rep_events[ri].date | date(format="%s") | int %}
+        
+        {% if w_date - week_base < r_date - rep_base %}
+          {% set e = week_events[wi] %}{% set_global wi = wi + 1 %}
+        {% else %}
+          {% set e = rep_events[ri] %}{% set_global ri = ri + 1 %}
+        {% endif %}
+      {% endif %}
+
+      {# Store list of events while days are the same, when different, output previous day's events #}
       {% if e.extra.display_day %}
         {% set e_day = e.extra.display_day %}
       {% else %}
