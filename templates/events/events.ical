@@ -1,4 +1,6 @@
 {%- import "macros/formatters.html" as formatters -%}
+{% import "events/macros/event_format.html" as event_format -%}
+
 BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//uwcs.co.uk//Events//EN
@@ -16,8 +18,8 @@ X-WR-TIMEZONE:GMT
     {%- for page in week.pages %}
 BEGIN:VEVENT
 SUMMARY:{{ page.title }}
-DTSTART;VALUE=DATE-TIME:{{ formatters::to_ical(time=formatters::event_start_date(e=page)) }}
-{% set end = formatters::event_end_date(e=page) -%}
+DTSTART;VALUE=DATE-TIME:{{ formatters::to_ical(time=event_format::event_start_date(e=page)) }}
+{% set end = event_format::event_end_date(e=page) -%}
 DTEND;VALUE=DATE-TIME:{{ formatters::to_ical(time=end) }}
 {%- if page.updated %} {%- set ts = page.updated %}{%- else %}{%- set ts = page.date %}{% endif %}
 DTSTAMP;VALUE=DATE-TIME:{{ formatters::to_ical(time=ts) }}
