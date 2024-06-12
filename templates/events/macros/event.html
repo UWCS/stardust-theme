@@ -18,10 +18,11 @@
 
 {% macro event_info(resource, large, page=true) %}
 {% if page -%}
-  <a href="{{resource.permalink}}" class="my-2 text-decoration-none text-white card-hover d-block" 
+<a href="{{resource.permalink}}" class="my-2 text-decoration-none text-white card-hover d-block" 
   {%- if resource.extra.colour %} data-event-colour="{{ resource.extra.colour }}" {% endif -%} 
   {% if resource.taxonomies.tags-%} data-event-tags="{{ resource.taxonomies.tags }}" {%- endif %}>
 {% endif -%}
+
   <div class="card text-body-emphasis" {% if resource.extra.colour -%}
     style="background-color: {{ formatters::colour(colour=resource.extra.colour) }}80 !important" {%- endif -%}>
     <div class="card-body">
@@ -46,9 +47,13 @@
       {% endif %}
 
       <{% if large %}h4{% else %}p{% endif %}>
+        {% set repeat = resource.permalink is containing("repeat") -%}
         {{ shortcodes::icon(icon="ph-clock") }}
-        {{ event_format::event_date_range(e=resource) }}
-      {% if large %}
+        {{ event_format::event_date_range(e=resource, day=repeat) }}
+        {% if large and repeat -%}
+            on weeks {{ resource.extra.weeks | default(value=[]) | join(sep=", ") }}
+        {% endif -%}
+      {% if large -%}
         </h4>
         <h4>
       {% endif %}
