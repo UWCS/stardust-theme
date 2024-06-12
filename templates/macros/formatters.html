@@ -1,9 +1,15 @@
 {% import "macros/rooms.html" as rooms %}
 
-{%- macro date(date) -%}
-{%- if date | date(format="%Y") == now() | date(format="%Y") -%} {{ date | date(format="%a %d %h") }}
-{%- else -%} {{ date | date(format="%a %d %h") }}
-{%- endif -%}
+{%- macro date(date, day=false) -%}
+{% set format = "%a" -%}
+{% if not day -%}
+  {% set format = format ~ " %d %h" -%}
+  {% if date | date(format="%Y") != now() | date(format="%Y") -%}
+    {% set format = format ~ " %Y" -%}
+  {% endif -%}
+{% endif -%}
+
+{{ date | date(format=format) }}
 {%- endmacro date -%}
 
 

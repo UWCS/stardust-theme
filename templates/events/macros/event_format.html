@@ -32,7 +32,7 @@
 {%- endmacro event_time -%}
 
 
-{%- macro event_date_range(e) -%}
+{%- macro event_date_range(e, day=false) -%}
 {%- if e.extra.end_time -%}{%- set parsed_end = e.extra.end_time | parse_date(base=e.date) -%}{%- endif -%}
 {%- set diff_date = not e.extra.display_date and parsed_end and e.date | date(format="%F") != parsed_end | date(format="%F") -%}
 {%- set diff_time = not e.extra.display_time and parsed_end and e.date | date(format="%T") != parsed_end | date(format="%T") -%}
@@ -48,7 +48,7 @@
 {%- endif -%}
 {%- if diff_date -%}
   {# Output start date if end_date is different #}
-  {{ formatters::date(date=start_date) }}
+  {{ formatters::date(date=start_date, day=day) }}
 {%- endif -%}
 
 {# Output dash if necessary #}
@@ -59,11 +59,11 @@
 {%- endif -%}
 {{ " " }}
 {%- if diff_date -%}
-  {{ formatters::date(date=end_date) }}
+  {{ formatters::date(date=end_date, day=day) }}
 {%- elif e.extra.display_date -%}
   {{ e.extra.display_date }}
 {%- else -%}
-  {{ formatters::date(date=start_date) }}
+  {{ formatters::date(date=start_date, day=day) }}
 {%- endif -%}
 {%- endmacro event_time -%}
 
