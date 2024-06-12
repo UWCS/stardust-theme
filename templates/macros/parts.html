@@ -1,5 +1,6 @@
 {% import "macros/logos.html" as logos %}
 {% import "macros/formatters.html" as formatters %}
+{% import "events/macros/event_format.html" as event_format %}
 {% import "macros/shortcodes.html" as shortcodes %}
 
 {% macro preview_styles() %}
@@ -109,27 +110,27 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
 </style>
 {% endmacro head %}
 
-{% macro opengraph(resource) %}
+{% macro opengraph(resource) -%}
 
 {# Open Graph #}
 <meta property="og:title" content="{%- if resource.title -%} {{ resource.title }} {%- else -%} {{ resource.name }} {%- endif -%}" />
-  {% set description = "" %}
-  {% if current_path == "/" %}
-    {% set description = "UWCS is free-to-join, and open to anyone with an interest in the field of Computer Science. We have ties to the CS department - hosting weekly academic, social and gaming events." %}
-  {% else %}
+  {% set description = "" -%}
+  {% if current_path == "/" -%}
+    {% set description = "UWCS is free-to-join, and open to anyone with an interest in the field of Computer Science. We have ties to the CS department - hosting weekly academic, social and gaming events." -%}
+  {% else -%}
     {% set description = formatters::summarize(
       summary=resource.summary | default(value=""), 
       content=resource.content | default(value="")
-    ) | striptags | safe %}
-  {% endif %}
+    ) | striptags | safe -%}
+  {% endif -%}
 
-  {% if resource.date %}
-    {% set date = formatters::event_date_range(e=resource) %}
-    {% set description = description ~ " " ~ date ~ ". " %}
-  {% endif %}
-  {% if resource.extra.location %}
-    {% set description = description ~ resource.extra.location %}
-  {% endif %}
+  {% if resource.date -%}
+    {% set date = event_format::event_date_range(e=resource) -%}
+    {% set description = description ~ " " ~ date ~ ". " -%}
+  {% endif -%}
+  {% if resource.extra.location -%}
+    {% set description = description ~ resource.extra.location -%}
+  {% endif -%}
   <meta name="description" content="{{ description }}" />
   <meta property="og:description" content="{{ description }}" />
   <meta property="og:url" content="{{current_url | safe }}" />
