@@ -5,7 +5,6 @@
 {# Because Tera is annoying, lists get cast to string when passing through macros, so we have to duplicate #}
 
 {# Fetch each set of events #}
-{%- set week_events = w.pages | sort(attribute="date") -%}
 
 {# Check repeat path is child of term #}
 {% set rep_path = w.components[0] ~ "/" ~ w.components[1] ~ "/repeat/_index.md" -%}
@@ -28,6 +27,7 @@
   {% set rep_events = [] -%}
 {% endif -%}
 
+{%- set week_events = w.pages | sort(attribute="date") -%}
 {# Combined list is only needed to iterate over to get correct length (no while loops) #}
 {% set events = week_events | concat(with=rep_events) -%}
 
