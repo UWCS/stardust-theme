@@ -10,22 +10,56 @@ X-WR-CALDESC:Events hosted by the University of Warwick Computing Society
 X-WR-CALNAME:UWCS Events
 X-WR-TIMEZONE:GMT
 {%- set events = get_section(path="events/_index.md") -%}
-{%- for t in events.subsections -%}
-  {%- if t is containing("archive") -%}{%- continue -%}{%- endif -%}
-  {%- set term = get_section(path=t) -%}
-  {%- for week in term.subsections -%}
-    {%- set week = get_section(path=week) -%}
-    {%- for page in week.pages %}
+{% for t in events.subsections -%}
+  {% if t is containing("archive") -%}{%- continue -%}{%- endif -%}
+  {% set term = get_section(path=t) -%}
+  {% for week in term.subsections | sort -%}
+    {% if week is containing("repeat") -%}{%- continue -%}{%- endif -%}
+    {% set w = get_section(path=week) -%}
+    {% set week_base = w.extra.base_date -%}
+    
+    {% set rep_path = w.components[0] ~ "/" ~ w.components[1] ~ "/repeat/_index.md" -%}
+    {% if term.subsections is containing(rep_path) -%}
+      {# Get repeating events -#}
+      {% set repeating = get_section(path=rep_path) -%}
+      {% set all_rep_events = repeating.pages | sort(attribute="date") -%}
+
+      {# Filter events by the current week number -#}
+      {% set week_no = w.components | last | trim_start_matches(pat="w") | int -%}
+      {% set_global rep_events = [] -%}
+      {% for e in all_rep_events -%}
+        {% if not e.extra.weeks or e.extra.weeks is containing(week_no) -%}
+          {% set_global rep_events = rep_events | concat(with=e) -%}
+        {% endif -%}
+      {% endfor -%}
+    {% else -%}
+      {% set_global rep_events = [] -%}
+    {% endif -%}
+
+    {% set events = w.pages | concat(with=rep_events) -%}
+
+    {% for page in events -%}
+
+{% set repeat = page.permalink is containing("/repeat/") %}
 BEGIN:VEVENT
-SUMMARY:{{ page.title }}
-DTSTART;VALUE=DATE-TIME:{{ formatters::to_ical(time=event_format::event_start_date(e=page)) }}
+SUMMARY:{{ page.title | striptags }}
+{% set date = event_format::event_start_date(e=page) -%}
+{% if repeat -%}
+  {% set date = date | date(format="%A %T") -%}
+  {% set date = date | parse_date(base=week_base) -%}
+{% endif -%}
+DTSTART;VALUE=DATE-TIME:{{ formatters::to_ical(time=date) }}
 {% set end = event_format::event_end_date(e=page) -%}
+{% if repeat -%}
+  {% set end = page.extra.end_time | default(value="1 hour") -%}
+  {% set end = end | parse_date(base=date) -%}
+{% endif -%}
 DTEND;VALUE=DATE-TIME:{{ formatters::to_ical(time=end) }}
-{%- if page.updated %} {%- set ts = page.updated %}{%- else %}{%- set ts = page.date %}{% endif %}
+{% if page.updated %} {%- set ts = page.updated %}{%- else %}{%- set ts = date %}{% endif -%}
 DTSTAMP;VALUE=DATE-TIME:{{ formatters::to_ical(time=ts) }}
-UID:{{ page.permalink }}
-CATEGORIES:{% if page.taxonomies %}{% for tax, terms in page.taxonomies %}{% for term in terms %}{{ term }},{% endfor %}{% endfor %}{% endif %}
-DESCRIPTION:{% if page.summary %}{{ page.summary }}{% else %}{{ page.content | striptags | truncate(length=250) | trim }}{% endif %}
+UID:{{ page.permalink }}{% if repeat %}?w={{ week_no }}{% endif %}
+CATEGORIES:{% if page.taxonomies %}{% for tax, terms in page.taxonomies %}{{ terms | join(sep=",") }}{% endfor %}{% endif %}
+DESCRIPTION:{{ page.content | striptags | trim }}
 LOCATION:{% if page.extra.location %}{{ page.extra.location }}{% endif %}
 URL:{{ page.permalink }}
 END:VEVENT
