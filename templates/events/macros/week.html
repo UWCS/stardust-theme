@@ -13,7 +13,7 @@
   {# Get repeating events #}
   {% set repeating = get_section(path=rep_path) -%}
   {% set rep_base = repeating.extra.base_date | date(format="%s") | int %}
-  {% set all_rep_events = repeating.pages | sort(attribute="date") -%}
+  {% set all_rep_events = repeating.pages | default(value=[]) | sort(attribute="date") -%}
 
   {# Filter events by the current week number #}
   {% set week_no = w.components | last | trim_start_matches(pat="w") | int -%}
@@ -27,7 +27,7 @@
   {% set rep_events = [] -%}
 {% endif -%}
 
-{%- set week_events = w.pages | sort(attribute="date") -%}
+{% set week_events = w.pages | default(value=[]) | sort(attribute="date") -%}
 {# Combined list is only needed to iterate over to get correct length (no while loops) #}
 {% set events = week_events | concat(with=rep_events) -%}
 

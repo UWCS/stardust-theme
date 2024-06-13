@@ -10,7 +10,7 @@
 
 {% block get_pages %}
   {{ super() }}
-  {% set pages = pages | sort(attribute="date") %}
+  {% set pages = pages | default(value=[]) | sort(attribute="date") %}
 {% endblock %}
 
 
