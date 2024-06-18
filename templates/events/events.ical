@@ -59,7 +59,8 @@ DTEND;VALUE=DATE-TIME:{{ formatters::to_ical(time=end) }}
 DTSTAMP;VALUE=DATE-TIME:{{ formatters::to_ical(time=ts) }}
 UID:{{ page.permalink }}{% if repeat %}?w={{ week_no }}{% endif %}
 CATEGORIES:{% if page.taxonomies %}{% for tax, terms in page.taxonomies %}{{ terms | join(sep=",") }}{% endfor %}{% endif %}
-DESCRIPTION:{{ page.content | striptags | trim }}
+DESCRIPTION:{{ page.content | striptags | trim | replace(from="
+", to="\n\n") }}
 LOCATION:{% if page.extra.location %}{{ page.extra.location }}{% endif %}
 URL:{{ page.permalink }}
 END:VEVENT
