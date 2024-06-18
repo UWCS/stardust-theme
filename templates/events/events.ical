@@ -1,5 +1,8 @@
+{# THIS FILE MUST BE SAVED WITH LF ENDINGS ONLY, NO CRLF FOR YOU -#}
+
 {%- import "macros/formatters.html" as formatters -%}
 {% import "events/macros/event_format.html" as event_format -%}
+{% import "events/macros/event_lists.html" as event_lists -%}
 
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -9,6 +12,7 @@ METHOD:PUBLISH
 X-WR-CALDESC:Events hosted by the University of Warwick Computing Society
 X-WR-CALNAME:UWCS Events
 X-WR-TIMEZONE:GMT
+
 {%- set events = get_section(path="events/_index.md") -%}
 {% for t in events.subsections -%}
   {% if t is containing("archive") -%}{%- continue -%}{%- endif -%}
@@ -25,7 +29,7 @@ X-WR-TIMEZONE:GMT
       {% set all_rep_events = repeating.pages | sort(attribute="date") -%}
 
       {# Filter events by the current week number -#}
-      {% set week_no = w.components | last | trim_start_matches(pat="w") | int -%}
+      {% set week_no = w.components | last -%}
       {% set_global rep_events = [] -%}
       {% for e in all_rep_events -%}
         {% if not e.extra.weeks or e.extra.weeks is containing(week_no) -%}
@@ -50,13 +54,16 @@ DTEND;VALUE=DATE-TIME:{{ formatters::to_ical(time=end) }}
 {% if page.updated %} {%- set ts = page.updated %}{%- else %}{%- set ts = start %}{% endif -%}
 DTSTAMP;VALUE=DATE-TIME:{{ formatters::to_ical(time=ts) }}
 UID:{{ page.permalink }}{% if repeat %}?w={{ week_no }}{% endif %}
-CATEGORIES:{% if page.taxonomies %}{% for tax, terms in page.taxonomies %}{{ terms | join(sep=",") }}{% endfor %}{% endif %}
-DESCRIPTION:{{ page.content | striptags | trim | replace(from="
-", to="\n\n") }}
+CATEGORIES:{% if page.taxonomies %}{% for tax, terms in page.taxonomies %}{{ terms | join(sep=",") }},{% endfor %}{% endif %}
+{# THIS FILE MUST BE SAVED WITH LF ENDINGS ONLY, NO CRLF FOR YOU -#}
+{% set description = page.content | striptags | replace(from="
+", to="\n\n") -%}
+DESCRIPTION:{{ description }}
 LOCATION:{% if page.extra.location %}{{ page.extra.location }}{% endif %}
 URL:{{ page.permalink }}
 END:VEVENT
     {%- endfor -%}
   {%- endfor -%}
 {%- endfor %}
+
 END:VCALENDAR

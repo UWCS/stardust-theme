@@ -16,7 +16,7 @@
   {% set all_rep_events = repeating.pages | default(value=[]) | sort(attribute="date") -%}
 
   {# Filter events by the current week number #}
-  {% set week_no = w.components | last | trim_start_matches(pat="w") | int -%}
+  {% set week_no = w.components | last -%}
   {% set rep_events = [] -%}
   {% for e in all_rep_events -%}
     {% if not e.extra.weeks or e.extra.weeks is containing(week_no) -%}
