@@ -68,15 +68,28 @@
 {%- endmacro event_time -%}
 
 
-{%- macro event_start_date(e) -%}
-{{ e.date }}
-{%- endmacro event_time -%}
+{% macro event_start_date(e, week_base="") -%}
+{% set start = e.date -%}
+{% if week_base -%}
+  {% set start = start | date(format="%A %T") -%}
+  {{ start | parse_date(base=week_base) -}}
+{% else -%}
+  {{ start -}}
+{% endif -%}
+{% endmacro event_time -%}
 
 
-{%- macro event_end_date(e) -%}
+{% macro event_end_date(e, week_base="") -%}
+
+{% set start = e.date -%}
+{% if week_base -%}
+  {% set start = start | date(format="%A %T") -%}
+  {% set start = start | parse_date(base=week_base) -%}
+{% endif -%}
+
 {%- if e.extra.end_time -%}
-  {{ e.extra.end_time | parse_date(base=e.date) }}
-{%- else -%} 
-{{ "1 hour" | parse_date(base=e.date) }}
-{%- endif -%}
-{%- endmacro event_time -%}
+  {{ e.extra.end_time | parse_date(base=start) -}}
+{% else -%} 
+{{ "1 hour" | parse_date(base=start) -}}
+{% endif -%}
+{% endmacro event_time -%}

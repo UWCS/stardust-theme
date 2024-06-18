@@ -51,7 +51,11 @@
         {{ shortcodes::icon(icon="ph-clock") }}
         {{ event_format::event_date_range(e=resource, day=repeat) }}
         {% if large and repeat -%}
-            on weeks {{ resource.extra.weeks | default(value=[]) | join(sep=", ") }}
+            {% if resource.extra.weeks -%}
+              in weeks {{ resource.extra.weeks | join(sep=", ") }}
+            {% else -%}
+              every week
+            {% endif -%}
         {% endif -%}
       {% if large -%}
         </h4>

@@ -43,19 +43,11 @@ X-WR-TIMEZONE:GMT
 {% set repeat = page.permalink is containing("/repeat/") %}
 BEGIN:VEVENT
 SUMMARY:{{ page.title | striptags }}
-{% set date = event_format::event_start_date(e=page) -%}
-{% if repeat -%}
-  {% set date = date | date(format="%A %T") -%}
-  {% set date = date | parse_date(base=week_base) -%}
-{% endif -%}
-DTSTART;VALUE=DATE-TIME:{{ formatters::to_ical(time=date) }}
-{% set end = event_format::event_end_date(e=page) -%}
-{% if repeat -%}
-  {% set end = page.extra.end_time | default(value="1 hour") -%}
-  {% set end = end | parse_date(base=date) -%}
-{% endif -%}
+{% set start = event_format::event_start_date(e=page, week_base=week_base) -%}
+DTSTART;VALUE=DATE-TIME:{{ formatters::to_ical(time=start) }}
+{% set end = event_format::event_end_date(e=page, week_base=week_base) -%}
 DTEND;VALUE=DATE-TIME:{{ formatters::to_ical(time=end) }}
-{% if page.updated %} {%- set ts = page.updated %}{%- else %}{%- set ts = date %}{% endif -%}
+{% if page.updated %} {%- set ts = page.updated %}{%- else %}{%- set ts = start %}{% endif -%}
 DTSTAMP;VALUE=DATE-TIME:{{ formatters::to_ical(time=ts) }}
 UID:{{ page.permalink }}{% if repeat %}?w={{ week_no }}{% endif %}
 CATEGORIES:{% if page.taxonomies %}{% for tax, terms in page.taxonomies %}{{ terms | join(sep=",") }}{% endfor %}{% endif %}
