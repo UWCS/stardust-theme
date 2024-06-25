@@ -186,20 +186,23 @@
   <div class="weeks w-100 {% if archive %}reverse{% endif %}">
     {% endif %}
     {% for week in weeks %}
-    <div class="my-4">
     {# Compare weeks (ignore past/future) #}
     {% set e_year = week.extra.base_date | date(format="%Y") | int %}
     {% set e_week = week.extra.base_date | date(format="%W") | int %}
     {% set e_week_no = e_week + 54 * e_year %}
 
     {% if not archive and week_no > 0 %}
-    {% if e_week_no < week_no %} {% continue %} {% endif %} {% elif week_no> 0 %}
+      {% if e_week_no < week_no %}{% continue %}{% endif %}
+    {% elif week_no > 0 %}
       {% if e_week_no > week_no %}{% continue %}{% endif %}
-      {% endif %}
+    {% endif %}
 
       {% set_global added_event = true %}
+      {% if grid %}<div class="my-4">{% endif %}
       {{ events::week(w=week, title=week.title, grid=grid) }}
+      {% if grid %}</div>{% endif %}
       {% endfor %}
+
       {% if not added_event %}
       <h2 class="text-center">No events {% if archive %}finished{% endif %} yet, please check back soon™</h2>
       {% endif %}
@@ -229,7 +232,7 @@
 
 {% endmacro %}
 
-{% macro script() %}
+{% macro calendar_script() %}
 <script>
   combs = {
     1: [[1, 1]],
@@ -312,6 +315,267 @@
         week.children[prec].insertAdjacentHTML("afterend", cols == 3 ? `{{ events::filler(cols=3) }}` : `{{ events::filler(cols=2) }}`)
       }
     }
+  }
+</script>
+{% endmacro %}
+
+{% macro filter_controls() %}
+<div class="vstack d-none" id="filter-controls">
+  <h2>Filter Events</h2>
+  <h4  id="category-title" class="d-none">Category</h4>
+  <div id="category-filters" class="d-none"></div>
+  <h4  id="tag-title" class="d-none mt-2">Tags</h4>
+  <div id="tag-filters" class="d-none"></div>
+  <hr>
+</div>
+{% endmacro %}
+
+{% macro filter_script() %}
+<script>
+  // these 'categories' are actually specified by the 'colour'
+  // property, but they fit well enough to categorise events
+  // and are probably more useful than the tags
+  // taken from colours.json
+  const ALLOWED_CATEGORIES = [
+      "gaming", "academic", "tech", "social", "inclusivity",
+      "publicity", "compcafe", "milk", "other"
+  ];
+  const CATEGORY_COLOURS = {
+      "academic":   '{{- formatters::colour(colour="academic")    -}}',
+      "gaming":     '{{- formatters::colour(colour="gaming")      -}}',
+      "social":     '{{- formatters::colour(colour="social")      -}}',
+      "tech":       '{{- formatters::colour(colour="tech")        -}}',
+      "milk":       '{{- formatters::colour(colour="milk")        -}}',
+      "publicity":  '{{- formatters::colour(colour="publicity")   -}}',
+      "inclusivity":'{{- formatters::colour(colour="inclusivity") -}}',
+      "compcafe":   '{{- formatters::colour(colour="compcafe")    -}}',
+      "other":      '{{- formatters::colour(colour="secretary")   -}}',
+  };
+  const CATEGORY_DISPLAY_NAMES = {
+      "gaming":     'Gaming',
+      "academic":   'Academic',
+      "tech":       'Tech',
+      "social":     'Social',
+      "inclusivity":'Inclusivity',
+      "publicity":  'Publicity',
+      "compcafe":   'CompCafe',
+      "milk":       'Milk',
+      "other":      'Other',
+  }
+
+  var used_categories = new Set();
+  var used_tags = new Set();
+  // mapping from a tag to a set of categories that tag appears in
+  var tag_categories = new Map();
+  function load_single_event_data(elem) {
+      let category = elem.getAttribute("data-event-colour") || "";
+      if (!ALLOWED_CATEGORIES.includes(category)) {
+          category = "other"; // default to 'other' category
+          used_categories.add(category);
+      } else {
+          used_categories.add(category);
+      }
+
+      const data_tags = elem.getAttribute("data-event-tags") || "";
+      let tags = [];
+      // data tags will be empty if no tags provided
+      if (data_tags !== "") {
+          tags = data_tags.slice(1,-1).split(", ");
+          tags.forEach(tag => {
+              if (!used_tags.has(tag)) {
+                  tag_categories.set(tag, new Set());
+              }
+              used_tags.add(tag);
+              tag_categories.get(tag).add(category);
+          });
+      }
+
+      return {
+          elem: elem,
+          category: category,
+          tags: tags
+      }
+  }
+
+  const event_holder = document.getElementById("events-block");
+
+  const event_elms = event_holder.querySelectorAll("a.card-hover");
+  const events = Array.from(event_elms).map(load_single_event_data);
+
+  const category_title = document.getElementById("category-title");
+  const category_filter_holder = document.getElementById("category-filters");
+  const tag_title = document.getElementById("tag-title");
+  const tag_filter_holder = document.getElementById("tag-filters");
+
+  // Unhide the filter controls if we have categories or tags to filter by
+  if (used_categories.size > 0 || used_tags.size > 0) {
+      document.getElementById("filter-controls").classList.remove("d-none");
+  }
+  if (used_categories.size > 0) {
+      category_title.classList.remove("d-none");
+      category_filter_holder.classList.remove("d-none");
+  }
+  if (used_tags.size > 0) {
+      tag_title.classList.remove("d-none");
+      tag_filter_holder.classList.remove("d-none");
+  }
+
+  // Populate the categories control
+  for (const cat of Array.from(used_categories).sort()) {
+      let e = document.createElement("button");
+      e.innerText = CATEGORY_DISPLAY_NAMES[cat];
+      e.classList.add("btn");
+      e.classList.add("event-tag");
+      e.classList.add("m-1");
+      e.style.setProperty("--highlight-colour", CATEGORY_COLOURS[cat]);
+      e.onclick = () => { toggle_filter_category(cat) };
+      
+      category_filter_holder.appendChild(e);
+  }
+  
+  // Populate the tags control
+  for (const tag of Array.from(used_tags).sort()) {
+      let e = document.createElement("button");
+      e.innerText = tag;
+      e.classList.add("btn");
+      e.classList.add("event-tag");
+      e.classList.add("m-1");
+      e.onclick = () => { toggle_filter_tag(tag) };
+
+      tag_filter_holder.appendChild(e);
+  }
+
+  var filter_categories = new Set();
+  var selected_tags = new Set();
+  var enabled_tags = used_tags;
+  function toggle_filter_category(category_name) {
+      // update the display
+      // clicked one has it's state toggled
+      for (const child of category_filter_holder.children) {
+          if (child.innerText === CATEGORY_DISPLAY_NAMES[category_name]) {
+              if (filter_categories.has(category_name)) {
+                  // we are deselecting the category
+                  child.classList.remove("event-tag-selected")
+                  filter_categories.delete(category_name);
+              } else {
+                  // select the category
+                  child.classList.add("event-tag-selected")
+                  filter_categories.add(category_name);
+              }
+          }
+      }
+
+      // hide and deselect tags that don't have any events in this category
+      for (const tag of tag_filter_holder.children) {
+          if (filter_categories.size === 0 ||
+              intersect(tag_categories.get(tag.innerText), filter_categories).size !== 0) {
+              // keep showing this tag
+              tag.classList.remove("d-none");
+              enabled_tags.add(tag.innerText);
+          } else {
+              // hide this tag
+              tag.classList.add("d-none");
+              enabled_tags.delete(tag.innerText);
+          }
+      }
+      // hide tag selector if there are no visible tags
+      if (enabled_tags.size == 0) {
+          tag_title.classList.add("d-none");
+          tag_filter_holder.classList.add("d-none");
+      } else {
+          tag_title.classList.remove("d-none");
+          tag_filter_holder.classList.remove("d-none");
+      }
+
+      update_event_view()
+  }
+
+  function toggle_filter_tag(tag_name) {
+      // Toggle the display state of this tag, and add/remove it from the filter
+      for (const child of tag_filter_holder.children) {
+          if (child.innerText === tag_name) {
+              if (selected_tags.has(tag_name)) {
+                  // we are deselecting the tag
+                  child.classList.remove("event-tag-selected")
+                  selected_tags.delete(tag_name);
+              } else {
+                  // select the tag
+                  child.classList.add("event-tag-selected")
+                  selected_tags.add(tag_name);
+              }
+              break;
+          }
+      }
+
+      update_event_view()
+  }
+
+  function update_event_view() {
+      let filter_tags = intersect(enabled_tags, selected_tags);
+      // hide/show the individual events
+      for (const event of events) {
+          let hide_cat = false;
+          if (filter_categories.size !== 0 && !filter_categories.has(event.category)) {
+              hide_cat = true;
+          }
+
+          // Don't hide for tags if there are no selected tags
+          let hide_tag = filter_tags.size > 0;
+          for (const event_tag of event.tags) {
+              if (filter_tags.has(event_tag)) {
+                  hide_tag = false;
+                  break;
+              }
+          }
+
+          if (hide_cat || hide_tag) {
+              event.elem.classList.remove("d-block");
+              event.elem.classList.add("d-none");
+          } else {
+              event.elem.classList.remove("d-none");
+              event.elem.classList.add("d-block");
+          }
+      }
+
+      // hide/show the day of the week headings
+      for (const day_name of event_holder.querySelectorAll("h5")) {
+          let sib = day_name;
+          while (true) {
+              sib = sib.nextElementSibling;
+              if (sib === null || sib.tagName === "H5") {
+                  // found (next day)/(end of week) and no events, so hide this day
+                  day_name.classList.add("d-none");
+                  break;
+              } else if (sib.tagName === "A" && sib.classList.contains("d-block")) {
+                  // found an event for this day, so show this day
+                  day_name.classList.remove("d-none");
+                  break;
+              }
+          }
+      }
+
+      // hide/show the week headings
+      for (const week_name of event_holder.querySelectorAll("h2")) {
+          week_name.classList.remove("d-none");
+          let parent = week_name.parentElement;
+          if (parent.childElementCount === 1+parent.querySelectorAll(".d-none").length) {
+              // all elements other than the heading are hidden
+              // so no visible events, so hide heading
+              week_name.classList.add("d-none");
+          }
+      }
+  }
+
+  // set intersection, unfortunately the default js
+  // set intersection operation is not widely supported
+  function intersect(a, b) {
+      let res = new Set();
+      for (const val of a) {
+          if (b.has(val)) {
+              res.add(val)
+          }
+      }
+      return res;
   }
 </script>
 {% endmacro %}
