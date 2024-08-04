@@ -102,21 +102,23 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
 .event-tag {
     --highlight-colour: var(--bs-border-color);
 
-    padding: .25rem;
-    margin: .25rem;
-    color: var(--bs-emphasis-color);
-    border: var(--bs-border-width) solid color-mix(in srgb, var(--highlight-colour) 50%, transparent); // actual value is 128/255, close enough to 50% though
-    border-radius: var(--bs-border-radius);
-}
+    --bs-btn-color: var(--bs-emphasis-color);
+    --bs-btn-border-color: color-mix(in srgb, var(--highlight-colour) 50%, transparent); // actual value is 128/255, close enough to 50% though
 
-.event-tag:hover {
-    background-color: color-mix(in srgb, var(--highlight-colour) 50%, transparent);
-    border-color: transparent;
+    --bs-btn-hover-color: var(--bs-emphasis-color);
+    --bs-btn-hover-bg: var(--bs-btn-border-color);
+    --bs-btn-hover-border-color: transparent;
+    
+    --bs-btn-active-color: var(--bs-emphasis-color);
+    --bs-btn-active-bg: var(--bs-btn-border-color);
+    --bs-btn-active-border-color: transparent;
 }
 
 .event-tag.event-tag-selected {
-    background-color: color-mix(in srgb, var(--highlight-colour) 80%, transparent);
-    border-color: transparent;
+    --bs-btn-bg: color-mix(in srgb, var(--highlight-colour) 80%, transparent);
+    --bs-btn-hover-bg: var(--bs-btn-bg);
+    --bs-btn-active-bg: var(--bs-btn-bg);
+    --bs-btn-border-color: transparent;
 }
 
 .events {
