@@ -2,7 +2,6 @@
 
 {%- import "macros/formatters.html" as formatters -%}
 {% import "events/macros/event_format.html" as event_format -%}
-{% import "events/macros/event_lists.html" as event_lists -%}
 
 {
   "events": [
