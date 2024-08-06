@@ -9,7 +9,7 @@
 {# Check repeat path is child of term #}
 {% set rep_path = w.components[0] ~ "/" ~ w.components[1] ~ "/repeat/_index.md" -%}
 {% set term = get_section(path=w.ancestors[2], metadata_only=true) -%}
-{% if term.subsections is containing(rep_path) -%}
+{% if term.subsections is containing(rep_path) and w.components[2] != "w0" -%}
   {# Get repeating events #}
   {% set repeating = get_section(path=rep_path) -%}
   {% set rep_base = repeating.extra.base_date | date(format="%s") | int %}
