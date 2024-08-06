@@ -1,169 +1,6 @@
-{% import "macros/formatters.html" as formatters %}
-{%- import "macros/shortcodes.html" as shortcodes -%}
-{% import "macros/rooms.html" as rooms %}
-{% import "macros/socials.html" as socials %}
-
-{% macro event_circle(e) %}
-<a href="{{ e.permalink }}" class="text-decoration-none event-hover" aria-label="See event {{ e.title }}">
-  <div class="event-circle mt-0" style="background-color: {{ formatters::colour(colour=e.extra.colour) }}"
-    data-bs-theme="dark">
-    {% if e.extra.icon %}<span class="event-icon">{{ shortcodes::icon(icon=e.extra.icon) }}</span> {% endif %}
-    <b class="event-title">{{ e.title }}</b>
-    <span class="event-extras">
-      {{ formatters::event_location(resource=e, icon=false, link=false) }}<br>
-      {{ formatters::event_time(e=e) }}
-    </span>
-  </div>
-</a>
-{% endmacro %}
-
-{% macro event_info(resource, large, page=true)%}
-{% if page %}
-<a href="{{resource.permalink}}" class="my-2 text-decoration-none text-white card-hover d-block" {% if
-  resource.extra.colour -%} data-event-colour="{{ resource.extra.colour }}" {%- endif -%} {% if resource.taxonomies.tags
-  -%} data-event-tags="{{ resource.taxonomies.tags }}" {%- endif -%}>
-  {% endif %}
-  <div class="card text-body-emphasis" {% if resource.extra.colour -%}
-    style="background-color: {{ formatters::colour(colour=resource.extra.colour) }}80 !important" {%- endif -%}>
-    <div class="card-body">
-      <{%- if large -%}h1{%- else -%}h4{% endif %}
-        class="card-title two-line-clamp {% if not large %}d-inline{% endif %}">
-        {%- if resource.extra.icon %}{{ shortcodes::icon(icon=resource.extra.icon, baseline=true) }} {% endif -%}
-        {%- if resource.extra.emoji %}{{resource.extra.emoji}}{% endif -%}
-        <span>{{ resource.title }}</span>
-        {%- if resource.extra.emoji %}{{resource.extra.emoji}}{% endif -%}
-      </{%- if large -%}h1{%- else -%}h4{%- endif -%}>
-
-      {% if large %}
-      {% if resource.taxonomies %}
-      {% for tax, terms in resource.taxonomies %}
-      {% for term in terms %}
-      <a class="badge bg-secondary text-decoration-none ms-1 mb-3" {% set t=get_taxonomy_term(kind=tax, term=term) %}
-        href="{{ t.permalink }}" aria-label="View all events tagged with {{ term }}">
-        {{ term }}
-      </a>
-      {% endfor %}
-      {% endfor %}
-      {% endif %}
-
-      <h4>
-        {{ shortcodes::icon(icon="ph-clock") }}
-        {{ formatters::event_date_range(e=resource) }}
-      </h4>
-      <h4>
-        {{ formatters::event_location(resource=resource, link=not page) }}
-      </h4>
-      {% else %}
-      <p class="d-inline">
-        {{ shortcodes::icon(icon="ph-clock") }}
-        {{ formatters::event_time_range(e=resource) }}
-        {{ formatters::event_location(resource=resource, link=not page) }}
-      </p>
-      {% endif %}
-    </div>
-  </div>
-  {% if page %}
-</a>
-{% endif %}
-{% endmacro %}
-
-
-{% macro day(events,grid=true) %}
-{% if events[0].extra.display_day %}
-{% set date = events[0].extra.display_day %}
-{% else %}
-{% set date = events[0].date | date(format="%A") %}
-{% endif %}
-{% if grid %}
-<div class="event-outer" data-event-count="{{ events | length }}">
-
-  {% if date %}
-  {# if Wednesday add 0-width space to allow for break as wed #}
-  {% if date == "Wednesday"%}
-  <h3 class="fw-semibold day-clamp lh-1">Wed​nesday</h3>
-  {% else %}
-  <h3 class="fw-semibold lh-1">{{ date }}</h3>
-  {% endif %}
-  {% endif %}
-
-  <div class="day">
-    {% else %}
-    <h5 class="mb-0">{{date}}</h5>
-    {% endif %}
-
-    {% for e in events | sort(attribute="date") %}
-    {% if grid %}
-    {{ events::event_circle(e=e) }}
-    {% else %}
-    {{events::event_info(resource=e, large=false)}}
-    {% endif %}
-    {% endfor %}
-
-    {% if grid %}
-  </div>
-</div>
-{% endif %}
-{% endmacro %}
-
-{% macro filler(cols=3) %}
-<div class="filler day-{{cols}}-show event-outer bg-body rounded-4 text-center text-white" data-event-count="1">
-  <h3 class="fw-semibold">Join Us</h3>
-  <ul class="nav list-unstyled d-flex align-items-center">
-    {% set socs = get_section(path="socials/_index.md") %}
-    {% for social in socs.pages %}
-    {% if social.extra.schedule_skip %}{% continue %}{% endif %}
-      {{ socials::filler_social(social=social) }}
-    {% endfor %}
-  </ul>
-  <h5 class="mb-0">go.uwcs.uk/links</h5>
-</div>
-{% endmacro %}
-
-{% macro week(w, events="", title="", grid=true) %}
-{% if not events %}
-{# MIRROR ANY CHANGES HERE TO uwcs.ical fetching #}
-{# Because Tera is annoying, lists get cast to string when passing through macros, so we have to duplicate #}
-{% set events = w.pages | sort(attribute="date") %}
-{% endif %}
-
-{% set prev_day = "" %}
-{% set days_events = [] %}
-<div {% if grid %} class="week w-100 text-center" {% endif %}>
-  {% if title %} <h2>
-    <a class="link-body-emphasis text-decoration-none" href="{{ w.permalink | safe }}"
-      aria-label="See events on week {{ title }}">{{ title }}</a>
-    <span class="fs-5">(w/b {{ w.extra.base_date | date(format="%d %b") }})</span>
-  </h2> {% endif %}
-  {% if grid %}
-  <div class="events d-grid justify-content-center" data-event-total={{ events | length }}>
-  {% endif %}
-    {% for e in events %}
-      {% if e.extra.display_day %}
-        {% set e_day = e.extra.display_day %}
-      {% else %}
-        {% set e_day = e.date | date(format="%A") %}
-      {% endif %}
-      {% if e_day != prev_day %}
-        {# Output previous day's content #}
-        {% if days_events %}
-          {{ events::day(events=days_events, grid=grid) }}
-          {% set_global days_events = [] %}
-          {% set_global started = true %}
-        {% endif %}
-        {% set_global prev_day = e_day %}
-      {% endif %}
-      {% set_global days_events = days_events | concat(with=e) %}
-    {% endfor %}
-
-    {# Clean up remaining days_events #}
-    {% if days_events %}
-      {{ events::day(events=days_events, grid=grid) }}
-    {% endif %}
-    {% if grid %}
-  </div>
-  {% endif %}
-</div>
-{% endmacro %}
+{% import "events/macros/event.html" as event %}
+{% import "events/macros/week.html" as week %}
+{% import "events/macros/filler.html" as filler %}
 
 {% macro term(t, weeks="", title="", week_no=-1, archive=false, grid=true) %}
 {% if not weeks %}
@@ -180,29 +17,29 @@
 
 {% if grid %}
 <div class="term blue event-mobile" data-bs-theme="dark">
-  {% if title %}<h1><a class="link-body-emphasis text-decoration-none" href="{{ t.permalink | safe }}"
-      aria-label="See events in {{ title }}">{{ title }}</a>
-  </h1>{% endif %}
+  {% if title %}
+    <h1><a class="link-body-emphasis text-decoration-none" href="{{ t.permalink | safe }}"
+        aria-label="See events in {{ title }}">{{ title }}</a>
+    </h1>
+  {% endif %}
   <div class="weeks w-100 {% if archive %}reverse{% endif %}">
-    {% endif %}
+{% endif %}
     {% for week in weeks %}
-    {# Compare weeks (ignore past/future) #}
-    {% set e_year = week.extra.base_date | date(format="%Y") | int %}
-    {% set e_week = week.extra.base_date | date(format="%W") | int %}
-    {% set e_week_no = e_week + 54 * e_year %}
+      {% if week.permalink is containing("/repeat") %}{% continue %}{% endif %}
+      {# Compare weeks (ignore past/future) #}
+      {% set e_year = week.extra.base_date | date(format="%Y") | int %}
+      {% set e_week = week.extra.base_date | date(format="%W") | int %}
+      {% set e_week_no = e_week + 54 * e_year %}
 
-    {% if not archive and week_no > 0 %}
-      {% if e_week_no < week_no %}{% continue %}{% endif %}
-    {% elif week_no > 0 %}
-      {% if e_week_no > week_no %}{% continue %}{% endif %}
-    {% endif %}
+      {% if not archive and week_no > 0 %}
+        {% if e_week_no < week_no %}{% continue %}{% endif %} 
+      {% elif week_no > 0 and e_week_no > week_no %}{% continue %}{% endif %}
 
       {% set_global added_event = true %}
       {% if grid %}<div class="my-4">{% endif %}
-      {{ events::week(w=week, title=week.title, grid=grid) }}
+      {{ week::week(w=week, title=week.title, grid=grid) }}
       {% if grid %}</div>{% endif %}
-      {% endfor %}
-
+    {% endfor %}
       {% if not added_event %}
       <h2 class="text-center">No events {% if archive %}finished{% endif %} yet, please check back soon™</h2>
       {% endif %}
@@ -211,6 +48,7 @@
 </div>
 {% endif %}
 {% endmacro %}
+
 
 {% macro event_block(resource, grid) %}
 
@@ -231,6 +69,7 @@
 </div>
 
 {% endmacro %}
+
 
 {% macro calendar_script() %}
 <script>
@@ -312,7 +151,7 @@
       const emptyInd = flattened.indexOf(-1);
       if (emptyInd > 0) {
         const prec = flattened[emptyInd - 1];
-        week.children[prec].insertAdjacentHTML("afterend", cols == 3 ? `{{ events::filler(cols=3) }}` : `{{ events::filler(cols=2) }}`)
+        week.children[prec].insertAdjacentHTML("afterend", cols == 3 ? `{{ filler::filler(cols=3) }}` : `{{ filler::filler(cols=2) }}`)
       }
     }
   }

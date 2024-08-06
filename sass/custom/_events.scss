@@ -47,7 +47,7 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
     }
 
     & .event-title {
-        @extend .fw-semibold, .two-line-clamp;
+        @extend .fw-semibold;
         font-size: calc($circle-width / 10);
         margin: calc($circle-pad * 0.4) $circle-pad calc($circle-pad / 4)
     }

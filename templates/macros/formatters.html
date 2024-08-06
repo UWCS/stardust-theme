@@ -1,7 +1,15 @@
-{%- macro date(date) -%}
-{%- if date | date(format="%Y") == now() | date(format="%Y") -%} {{ date | date(format="%a %d %h") }}
-{%- else -%} {{ date | date(format="%a %d %h") }}
-{%- endif -%}
+{% import "macros/rooms.html" as rooms %}
+
+{%- macro date(date, day=false) -%}
+{% set format = "%a" -%}
+{% if not day -%}
+  {% set format = format ~ " %d %h" -%}
+  {% if date | date(format="%Y") != now() | date(format="%Y") -%}
+    {% set format = format ~ " %Y" -%}
+  {% endif -%}
+{% endif -%}
+
+{{ date | date(format=format) }}
 {%- endmacro date -%}
 
 
@@ -13,81 +21,16 @@
 {%- endmacro time -%}
 
 
-{%- macro event_time(e) -%}
-{%- if e.extra.display_time -%}
-  {{ e.extra.display_time }}
-{%- else -%}
-  {{ formatters::time(time=e.date) }}
-{%- endif -%}
-{%- endmacro event_time -%}
-
-
-{%- macro event_time_range(e) -%}
-{{ formatters::event_time(e=e) }}
-{%- if e.extra.end_time -%}   
-  {%- set parsed = e.extra.end_time | parse_date(base=e.date) -%}
-  -{{ formatters::time(time=parsed) }}
-{%- endif -%}
-{%- endmacro event_time -%}
-
-
-{%- macro event_date_range(e) -%}
-{%- if e.extra.end_time -%}{%- set parsed_end = e.extra.end_time | parse_date(base=e.date) -%}{%- endif -%}
-{%- set diff_date = not e.extra.display_date and parsed_end and e.date | date(format="%F") != parsed_end | date(format="%F") -%}
-{%- set diff_time = not e.extra.display_time and parsed_end and e.date | date(format="%T") != parsed_end | date(format="%T") -%}
-
-{%- set start_date = formatters::event_start_date(e=e) -%}
-{%- set end_date = formatters::event_end_date(e=e) -%}
-
-{# Start of date range, use display time if present #}
-{%- if e.extra.display_time -%}
-  {{ e.extra.display_time }}
-{%- else -%}
-  {{ formatters::time(time=start_date) }}
-{%- endif -%}
-{%- if diff_date -%}
-  {# Output start date if end_date is different #}
-  {{ formatters::date(date=start_date) }}
-{%- endif -%}
-
-{# Output dash if necessary #}
-{%- if diff_time or diff_date -%}{{ " - " }}{%- endif -%}
-{# Output end time & date if different #}
-{%- if diff_time -%}
-  {{ formatters::time(time=end_date) }}
-{%- endif -%}
-{{ " " }}
-{%- if diff_date -%}
-  {{ formatters::date(date=end_date) }}
-{%- elif e.extra.display_date -%}
-  {{ e.extra.display_date }}
-{%- else -%}
-  {{ formatters::date(date=start_date) }}
-{%- endif -%}
-{%- endmacro event_time -%}
-
-
-{%- macro event_start_date(e) -%}
-{{ e.date }}
-{%- endmacro event_time -%}
-
-
-{%- macro event_end_date(e) -%}
-{%- if e.extra.end_time -%}
-  {{ e.extra.end_time | parse_date(base=e.date) }}
-{%- else -%} 
-{{ "1 hour" | parse_date(base=e.date) }}
-{%- endif -%}
-{%- endmacro event_time -%}
-
 {%- macro to_epoch(time) -%}
 {{ time | date(format="%s") | int }}
 {%- endmacro -%}
+
 
 {%- macro to_ical(time) -%}
 {%- set utc = self::to_epoch(time=time) | int -%}
 {{ utc | date(format="%Y%m%dT%H%M%SZ") }}
 {%- endmacro -%}
+
 
 {%- macro colour(colour) -%}
 {%- if colour is starting_with("#") -%}{{ colour }}
@@ -95,16 +38,6 @@
   {%- set colmap = load_data(path="themes/uwcs/templates/macros/colours.json", format="json") -%}
   {{ colmap[colour] | default(value=colour) }}
 {%- endif -%}
-{%- endmacro -%}
-
-{%- macro event_location(resource, icon=true, link=false) -%}
-{% if resource.extra.location %}
-  {% if icon %}{{ shortcodes::icon(icon="ph-map-pin") }}{% endif %}
-  {% if link and resource.extra.location_url %}<a target="_blank" rel="noopener" href="{{ resource.extra.location_url }}" aria-label="Location for {{ resource.title }}">{{ resource.extra.location }}</a>
-  {% elif not link or resource.components is containing("archive") %}  {{ resource.extra.location }}
-  {% else %} {{ rooms::room_link(name=resource.extra.location) }}
-  {% endif %}
-{% endif %}
 {%- endmacro -%}
 
 
