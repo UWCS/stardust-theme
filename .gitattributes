@@ -1,1 +1,3 @@
 *.ical text eol=crlf
+
+repeat_list.json text eol=lf
