@@ -1,0 +1,74 @@
+{% import "macros/formatters.html" as formatters %}
+{% import "events/macros/event_format.html" as event_format %}
+{% import "macros/shortcodes.html" as shortcodes %}
+
+{% macro event_circle(e) %}
+<a href="{{ e.permalink }}" class="text-decoration-none event-hover" aria-label="See event {{ e.title }}">
+  <div class="event-circle mt-0" style="background-color: {{ formatters::colour(colour=e.extra.colour) }}" data-bs-theme="dark">
+    {% if e.extra.icon %}<span class="event-icon">{{ shortcodes::icon(icon=e.extra.icon) }}</span> {% endif -%}
+    <b class="event-title">{{ e.title }}</b>
+    <span class="event-extras">
+      {{ event_format::event_location(resource=e, icon=false, link=false) }}<br>
+      {{ event_format::event_time(e=e) }}
+    </span>
+  </div>
+</a>
+{% endmacro %}
+
+
+{% macro event_info(resource, large, page=true) %}
+{% if page -%}
+<a href="{{resource.permalink}}" class="my-2 text-decoration-none text-white card-hover d-block" 
+  {%- if resource.extra.colour %} data-event-colour="{{ resource.extra.colour }}" {% endif -%} 
+  {% if resource.taxonomies.tags-%} data-event-tags="{{ resource.taxonomies.tags }}" {%- endif %}>
+{% endif -%}
+
+  <div class="card text-body-emphasis" {% if resource.extra.colour -%}
+    style="background-color: {{ formatters::colour(colour=resource.extra.colour) }}80 !important" {%- endif -%}>
+    <div class="card-body">
+      <{% if large %}h1{% else %}h4{% endif %} class="card-title two-line-clamp {% if not large %}d-inline{% endif %}">
+        {%- if resource.extra.icon %}{{ shortcodes::icon(icon=resource.extra.icon, baseline=true) }} {% endif -%}
+        {%- if resource.extra.emoji %}{{resource.extra.emoji}}{% endif -%}
+        <span>{{ resource.title }}</span>
+        {%- if resource.extra.emoji %}{{resource.extra.emoji}}{% endif -%}
+      </{%- if large -%}h1{%- else -%}h4{%- endif -%}>
+
+      {% if large -%}
+        {% if resource.taxonomies -%}
+          {% for tax, terms in resource.taxonomies -%}
+            {% for term in terms -%}
+            <a class="badge bg-secondary text-decoration-none ms-1 mb-3" {% set t=get_taxonomy_term(kind=tax, term=term) %}
+              href="{{ t.permalink }}" aria-label="View all events tagged with {{ term }}">
+              {{ term }}
+            </a>
+            {% endfor %}
+          {% endfor -%}
+        {% endif -%}
+      {% endif %}
+
+      <{% if large %}h4{% else %}p{% endif %}>
+        {% set repeat = resource.permalink is containing("repeat") -%}
+        {{ shortcodes::icon(icon="ph-clock") }}
+        {{ event_format::event_date_range(e=resource, day=repeat) }}
+        {% if large and repeat -%}
+          <span class="fs-6 opacity-50">
+            {% if resource.extra.weeks -%}
+              in weeks {{ resource.extra.weeks | join(sep=", ") }}
+            {% else -%}
+              every week
+            {% endif -%}
+          </span>
+        {% endif -%}
+        {% if large -%}
+          </h4>
+          <h4>
+        {% endif %}
+        {{ event_format::event_location(resource=resource, link=not page) }}
+      </{% if large %}h4{% else %}p{% endif %}>
+
+    </div>
+  </div>
+{% if page -%}
+</a>
+{% endif -%}
+{% endmacro %}

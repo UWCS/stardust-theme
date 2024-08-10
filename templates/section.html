@@ -41,6 +41,7 @@
   {% if resource.extra.reverse_pages %}{% set pages = pages | reverse %}{% endif %}
   {# Main pages #}
   {% for page in pages %}
+    {% if page.extra.hide %}{% continue %}{% endif %}
     {{ cards::news_card(page=page, sum_len=250) }}
   {% endfor %}
 {%endif%}
