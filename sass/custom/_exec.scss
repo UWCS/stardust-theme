@@ -1,24 +1,29 @@
-@include media-breakpoint-down(sm) {
-    .exec-table thead {
-        display: none;
-    }
+.role-header {
+    background-color: var(--bs-border-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
 
-    .exec-table tr>* {
-        display: block;
-        border-color: var(--bs-table-border-color);
-    }
+.role-header>* {
+    width: 50%;
+    margin: 1vh 0;
+}
 
-    .exec-table tr {
-        display: block;
-        border-bottom: none;
-        margin-top: 4vh;
-    }
+.exec-title img {
+    margin: 0 1vw;
+    transform: scale(1.5);
+}
 
-    .exec-table tr>*:first-of-type {
-        border-top-width: var(--bs-border-width);
-    }
+.exec-title h3 {
+    margin: 0;
+}
 
-    .exec-table tr:first-of-type {
-        margin-top: 0;
-    }
+.exec-cards {
+    width: 100%;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    margin: 1rem 0;
+    justify-content: center;
 }
