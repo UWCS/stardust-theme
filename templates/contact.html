@@ -13,26 +13,33 @@
 {{ resource.content | safe}}
 
 {% for role in section.pages %}
-  <div class="role-header rounded">
+  <div class="role">
     <div class="fs-4 icon baseline exec-title">
       <img src="{{ get_url(path='assets/exec-icons/' ~ role.slug ~ '.svg') }}" alt="{{ role.title }}">
-      <h3>{{ role.title }}<h3>
+      {% if role.extra.people | length > 1 %}
+        <h3>{{ role.extra.plural }}<h3>
+      {% else %}
+        <h3>{{ role.title }}<h3>
+      {% endif %}
     </div>
     <a href="mailto:{{role.extra.email}}" aria-label="Email our {{role.title}}">{{role.extra.email}}</a>
   </div>
-  <div class="exec-cards">
-    {% for exec in role.extra.people %}
-      <div class="card exec-card">
-        {% set path = "assets/exec-pics/" ~ exec | replace(from=" ",to="") %}
-        {% set path = path ~ ".png" %}
-        <!-- the linting on this line is some of the worst i have ever seen -->
-        <img src="{{ get_url(path=path) }}" alt="{{ exec }}" class="card-image-top" onerror="this.src='{{get_url(path='assets/exec-pics/default.png')}}';">
-        <div class="card-body">
-          <h3 class="card-title">{{ exec }}</h3>
-        </div>
-      </div>
-    {% endfor %}
-  </div>
 {% endfor %}
+<div class="exec-cards">
+{% for role in section.pages %}
+  {% for person in role.extra.people %}
+    <div class="card exec-card">
+      {% set path = "assets/exec-pics/" ~ person | replace(from=" ",to="") %}
+      {% set path = path ~ ".png" %}
+      {# the linting on this line is some of the worst i have ever seen #}
+      <img src="{{ get_url(path=path) }}" alt="{{ person }}" class="card-image-top" onerror="this.src='{{get_url(path='assets/exec-pics/default.png')}}';">
+      <div class="card-body">
+        <h4 class="card-title">{{ person }}</h4>
+        <p class="card-text">{{ role.title }}</p>
+      </div>
+    </div>
+  {% endfor %}
+{% endfor %}
+</div>
 
 {% endblock content%}

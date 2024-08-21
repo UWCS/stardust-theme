@@ -1,13 +1,14 @@
-.role-header {
-    background-color: var(--bs-border-color);
+.role {
     display: flex;
-    justify-content: space-around;
     align-items: center;
 }
 
-.role-header>* {
-    width: 50%;
+.role>* {
     margin: 1vh 0;
+}
+
+.role a {
+    margin-left: 0.5vw;
 }
 
 .exec-title img {
@@ -23,7 +24,6 @@
     width: 100%;
     display: grid;
     gap: 1rem;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     margin: 1rem 0;
-    justify-content: center;
 }
