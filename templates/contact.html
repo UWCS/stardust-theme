@@ -26,16 +26,21 @@
   </div>
 {% endfor %}
 <div class="exec-cards">
+{% set harmony = true %}
 {% for role in section.pages %}
   {% for person in role.extra.people %}
+    {# because Harmony just has to be special they have 2 roles #}
+    {% if person == "Harmony Bouabid" and harmony %}{% set_global harmony = false %}{% continue %}{% endif %}
     <div class="card exec-card">
-      {% set path = "assets/exec-pics/" ~ person | replace(from=" ",to="") %}
-      {% set path = path ~ ".png" %}
+      {# for some godforsaken reason, you cannot concatonate more than 3 strings in zola #}
+      {% set path = "assets/exec-pics/" ~ person | replace(from=" ",to="") | lower %}
+      {% set path = path ~ ".jpg" %}
       {# the linting on this line is some of the worst i have ever seen #}
       <img src="{{ get_url(path=path) }}" alt="{{ person }}" class="card-image-top" onerror="this.src='{{get_url(path='assets/exec-pics/default.png')}}';">
       <div class="card-body">
         <h4 class="card-title">{{ person }}</h4>
         <p class="card-text">{{ role.title }}</p>
+        {% if person == "Harmony Bouabid" %}<p class="card-text">Inclusivity Officer</p>{% endif %}
       </div>
     </div>
   {% endfor %}
