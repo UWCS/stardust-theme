@@ -1,47 +1,11 @@
-.role {
-    display: flex;
-    align-items: center;
-}
-
-.role>* {
-    margin: 1vh 0;
-}
-
-.role a {
-    margin-left: 0.5vw;
-}
-
-.exec-title img {
-    margin: 0 1vw;
-    transform: scale(1.5);
-}
-
-.exec-title h3 {
-    margin: 0;
-}
-
-@include media-breakpoint-down(sm) {
-    .role {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .exec-title img {
-        transform: scale(1);
-    }
-
-    .exec-title h3 {
-        font-size: 1rem;
-        margin-left: 1vw;
-    }
+.exec-icon {
+    font-size: 1.5em;
 }
 
 .exec-cards {
     width: 100%;
     display: grid;
-    gap: 1rem;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    margin: 1rem 0;
 }
 
 .exec-card {

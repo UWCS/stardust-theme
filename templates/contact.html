@@ -13,37 +13,49 @@
 {{ resource.content | safe}}
 
 {% for role in section.pages %}
-  <div class="role">
-    <div class="fs-4 icon baseline exec-title">
-      <img src="{{ get_url(path='assets/exec-icons/' ~ role.slug ~ '.svg') }}" alt="{{ role.title }}">
-      {% if role.extra.people | length > 1 %}
-        <h3>{{ role.extra.plural }}<h3>
-      {% else %}
-        <h3>{{ role.title }}<h3>
-      {% endif %}
+  <div class="d-flex align-items-center justify-content-sm-between justify-content-md-start">
+    <div class="fs-4 icon baseline">
+      <img class="exec-icon" src="{{ get_url(path='assets/exec-icons/' ~ role.slug ~ '.svg') }}" alt="{{ role.title }}">
+      <h3 class="my-0 mx-3">{% if role.extra.people | length > 1 %}{{ role.extra.plural }}{% else %}{{ role.title }}{% endif %}<h3>
     </div>
-    <a href="mailto:{{role.extra.email}}" aria-label="Email our {{role.title}}">{{role.extra.email}}</a>
+    <a href="mailto:{{role.extra.email}}" aria-label="Email our {{role.title}}" class="my-3 ml-2">{{role.extra.email}}</a>
   </div>
 {% endfor %}
-<div class="exec-cards">
-{% set harmony = true %}
+<div class="exec-cards gap-3">
 {% for role in section.pages %}
   {% for person in role.extra.people %}
-    {# because Harmony just has to be special they have 2 roles #}
-    {% if person == "Harmony Bouabid" and harmony %}{% set_global harmony = false %}{% continue %}{% endif %}
     <div class="card exec-card">
-      {# for some godforsaken reason, you cannot concatonate more than 3 strings in zola #}
-      {% set path = "assets/exec-pics/" ~ person | replace(from=" ",to="") | lower %}
+      {% set path = "/images/exec-pics/" ~ person | replace(from=" ",to="") | lower %}
       {% set path = path ~ ".jpg" %}
       {# the linting on this line is some of the worst i have ever seen #}
-      <img src="{{ get_url(path=path) }}" alt="{{ person }}" class="card-image-top" onerror="this.src='{{get_url(path='assets/exec-pics/default.png')}}';">
+      <img src="{{ get_url(path=path) }}" alt="{{ person }}" class="card-image-top" onerror="this.src='{{get_url(path='assets/exec-icons/default.png')}}';">
       <div class="card-body">
         <h4 class="card-title">{{ person }}</h4>
-        <p class="card-text">{{ role.title }}</p>
-        {% if person == "Harmony Bouabid" %}<p class="card-text">Inclusivity Officer</p>{% endif %}
+        <div class="fs-5 icon baseline">
+          <img class="exec-icon" src="{{ get_url(path='assets/exec-icons/' ~ role.slug ~ '.svg') }}" alt="{{ role.title }}">
+          <p class="card-text ms-1">{{ role.title }}</p>
+        </div>
       </div>
     </div>
   {% endfor %}
+{% endfor %}
+{% for person, roles in resource.extra.multiple_roles %}
+<div class="card exec-card">
+  {% set path = "/images/exec-pics/" ~ person | replace(from=" ",to="") | lower %}
+  {% set path = path ~ ".jpg" %}
+  <img src="{{ get_url(path=path) }}" alt="{{ person }}" class="card-image-top" onerror="this.src='{{get_url(path='assets/exec-icons/default.png')}}';">
+  <div class="card-body">
+    <h4 class="card-title">{{ person }}</h4>
+    {% set roles = roles | split(pat=",") %}
+    {% for role in roles %}
+      <div class="fs-5 icon baseline">
+        {% set role_icon = role | split(pat=" ") | nth(n=0) | lower %}
+        <img class="exec-icon" src="{{ get_url(path='assets/exec-icons/' ~ role_icon ~ '.svg') }}" alt="{{ role }}">
+        <p class="card-text ms-1">{{ role }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</div>
 {% endfor %}
 </div>
 
