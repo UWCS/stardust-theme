@@ -24,6 +24,7 @@
 <div class="exec-cards gap-3">
 {% for role in section.pages %}
   {% for person in role.extra.people %}
+    {% if person in resource.extra.multiple_roles %}{% continue %}{% endif %}
     <div class="card exec-card">
       {% set path = "/images/exec-pics/" ~ person | replace(from=" ",to="") | lower %}
       {% set path = path ~ ".jpg" %}
@@ -40,22 +41,22 @@
   {% endfor %}
 {% endfor %}
 {% for person, roles in resource.extra.multiple_roles %}
-<div class="card exec-card">
-  {% set path = "/images/exec-pics/" ~ person | replace(from=" ",to="") | lower %}
-  {% set path = path ~ ".jpg" %}
-  <img src="{{ get_url(path=path) }}" alt="{{ person }}" class="card-image-top" onerror="this.src='{{get_url(path='assets/exec-icons/default.png')}}';">
-  <div class="card-body">
-    <h4 class="card-title">{{ person }}</h4>
-    {% set roles = roles | split(pat=",") %}
-    {% for role in roles %}
-      <div class="fs-5 icon baseline">
-        {% set role_icon = role | split(pat=" ") | nth(n=0) | lower %}
-        <img class="exec-icon" src="{{ get_url(path='assets/exec-icons/' ~ role_icon ~ '.svg') }}" alt="{{ role }}">
-        <p class="card-text ms-1">{{ role }}</p>
-      </div>
-    {% endfor %}
+  <div class="card exec-card">
+    {% set path = "/images/exec-pics/" ~ person | replace(from=" ",to="") | lower %}
+    {% set path = path ~ ".jpg" %}
+    <img src="{{ get_url(path=path) }}" alt="{{ person }}" class="card-image-top" onerror="this.src='{{get_url(path='assets/exec-icons/default.png')}}';">
+    <div class="card-body">
+      <h4 class="card-title">{{ person }}</h4>
+      {% set roles = roles | split(pat=",") %}
+      {% for role in roles %}
+        <div class="fs-5 icon baseline">
+          {% set role_icon = role | split(pat=" ") | nth(n=0) | lower %}
+          <img class="exec-icon" src="{{ get_url(path='assets/exec-icons/' ~ role_icon ~ '.svg') }}" alt="{{ role }}">
+          <p class="card-text ms-1">{{ role }}</p>
+        </div>
+      {% endfor %}
+    </div>
   </div>
-</div>
 {% endfor %}
 </div>
 
