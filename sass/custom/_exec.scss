@@ -1,24 +1,18 @@
-@include media-breakpoint-down(sm) {
-    .exec-table thead {
-        display: none;
-    }
+.role {
+    background-color: rgba(var(--bs-secondary-bg-rgb), var(--bs-bg-opacity));
+    border-radius: 1rem;
+}
 
-    .exec-table tr>* {
-        display: block;
-        border-color: var(--bs-table-border-color);
-    }
+.exec-icon {
+    font-size: 1.5em;
+}
 
-    .exec-table tr {
-        display: block;
-        border-bottom: none;
-        margin-top: 4vh;
-    }
+.exec-cards {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
 
-    .exec-table tr>*:first-of-type {
-        border-top-width: var(--bs-border-width);
-    }
-
-    .exec-table tr:first-of-type {
-        margin-top: 0;
-    }
+.exec-card {
+    overflow: hidden;
 }
