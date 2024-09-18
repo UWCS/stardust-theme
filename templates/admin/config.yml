@@ -94,3 +94,79 @@ collections:
       - {label: "Body", name: "body", widget: "markdown"}
   {% endfor %}
 {% endfor %}
+
+  - name: "about"
+    label: "About"
+    folder: "content/about"
+    preview_path: {% raw %}about/{{slug}} {% endraw %}
+    create: true
+    nested:
+      depth: 100
+      summary: '{% raw %}{{title}} ({{dirname}}/{{filename}}.{{extension}}){% endraw %}'
+    summary: '{% raw %}{{title}} ({{dirname}}/{{filename}}.{{extension}}){% endraw %}'
+    slug: {% raw %}"{{slug}}" {% endraw %}
+    format: toml-frontmatter
+    media_folder: ""
+    public_folder: ""
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Weight", name: "weight", widget: "number", min: 0, default: 40}
+
+      - {label: "Draft", name: "draft", widget: "boolean", required: false, default: {% if config.base_url is containing('draft') %}true{% else %}false{% endif %}}
+
+      - {label: "Body", name: "body", widget: "markdown"}
+    meta: { path: { widget: string, label: 'File Path', index_file: 'index' } }
+
+  - name: "resources"
+    label: "Resources"
+    folder: "content/resources"
+    preview_path: {% raw %}resources/{{slug}} {% endraw %}
+    create: true
+    nested:
+      depth: 100
+      summary: '{% raw %}{{title}} ({{dirname}}/{{filename}}.{{extension}}){% endraw %}'
+    summary: '{% raw %}{{title}} ({{dirname}}/{{filename}}.{{extension}}){% endraw %}'
+    slug: {% raw %}"{{slug}}" {% endraw %}
+    format: toml-frontmatter
+    media_folder: ""
+    public_folder: ""
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime", date_format: YYYY-MM-DD, picker_utc: true, required: false }
+
+      - {label: "Draft", name: "draft", widget: "boolean", required: false, default: {% if config.base_url is containing('draft') %}true{% else %}false{% endif %}}
+
+      - {label: "Body", name: "body", widget: "markdown"}
+    meta: { path: { widget: string, label: 'File Path', index_file: 'index' } }
+    
+  - name: "exec"
+    label: "Exec"
+    folder: "content/exec"
+    preview_path: {% raw %}exec/{{slug}} {% endraw %}
+    create: true
+    nested:
+      depth: 100
+      summary: '{% raw %}{{title}} ({{dirname}}/{{filename}}.{{extension}}){% endraw %}'
+    summary: '{% raw %}{{title}} ({{dirname}}/{{filename}}.{{extension}}){% endraw %}'
+    slug: {% raw %}"{{slug}}" {% endraw %}
+    format: toml-frontmatter
+    media_folder: ""
+    public_folder: ""
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Weight", name: "weight", widget: "number", min: 0, default: 4}
+
+      - {label: "Date", name: "date", widget: "hidden", default: "1970-01-01" }
+
+      - {label: "Draft", name: "draft", widget: "boolean", required: false, default: {% if config.base_url is containing('draft') %}true{% else %}false{% endif %}}
+      
+      - label: Extra
+        name: extra
+        widget: "object"
+        fields:
+          - {label: "Plural", name: "plural", widget: "string", required: true}
+          - {label: "People", name: "people", widget: "list", required: false}
+          - {label: "Email", name: "email", widget: "string", required: true}
+
+      - {label: "Body", name: "body", widget: "markdown"}
+    meta: { path: { widget: string, label: 'File Path', index_file: 'index' } }
