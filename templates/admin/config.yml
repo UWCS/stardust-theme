@@ -19,6 +19,8 @@ collections:
     create: true
     slug: {% raw %}"{{year}}-{{month}}-{{day}}-{{slug}}" {% endraw %}
     format: toml-frontmatter
+    media_folder: ""
+    public_folder: ""
     fields:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "News Date", name: "date", widget: "datetime", date_format: YYYY-MM-DD, picker_utc: true }
@@ -59,17 +61,20 @@ collections:
     folder: "content/{{ week.components | join(sep="/") }}"
     create: true
     format: toml-frontmatter
-
-    filter:
-      pattern: '^.*[^i][^n][^d][^e][^x].md$'
+    media_folder: ""
+    public_folder: ""
 
     fields:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Event Time & Date", name: "date", widget: "string", default: ""}
+      - {label: "Draft", name: "draft", widget: "boolean", required: false, default: {% if config.base_url is containing('draft') %}true{% else %}false{% endif %}}
       - label: Extra
         name: extra
         widget: "object"
         fields:
+          {%- if week.permalink is containing("/repeat") %}
+          - {label: "Weeks", name: "weeks", widget: "select", required: false, multiple: true, options: [{% for week in weeks %}{% if week.permalink is containing("/repeat") %}{% continue %}{% endif %}"{{ week.components | last }}", {% endfor %}] }
+          {% endif %}
           - {label: "End Time", name: "end_time", widget: "string", required: false}
           - {label: "Location", name: "location", widget: "string", required: false}
           - {label: "Location URL", name: "location_url", widget: "string", required: false}
