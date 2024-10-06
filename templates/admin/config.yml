@@ -67,7 +67,7 @@ collections:
     fields:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Event Time & Date", name: "date", widget: "string", default: ""}
-      - {label: "Draft", name: "draft", widget: "boolean", required: false, default: {% if config.base_url is containing('draft') %}true{% else %}false{% endif %}}
+      - {label: "Draft", name: "draft", widget: "boolean", required: false, default: {% if config.base_url is containing(['draft', 'sponsors']) %}true{% else %}false{% endif %}}
       - label: Extra
         name: extra
         widget: "object"
