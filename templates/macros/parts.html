@@ -150,7 +150,7 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
 
 
 {% macro nav() %}
-<nav id="nav" class="navbar navbar-expand-lg" {% if config.base_url is containing('draft')%}style="border-color: var(--bs-danger) !important" {% endif %}>
+<nav id="nav" class="navbar navbar-expand-lg" {% if config.base_url is containing('draft')%}style="border-color: var(--bs-danger) !important" {% elif config.base_url is containing('sponsor') %} style="border-color: var(--bs-warning) !important" {% endif %}>
   <div class="container-lg align-items-center">
 
     <!-- UWCS Logo -->
