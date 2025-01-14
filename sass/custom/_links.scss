@@ -1,3 +1,4 @@
+/*! purgecss start ignore */
 a[href^="https://"]:not([href*="uwcs.co.uk"], [href*="uwcs.uk"], :has(i, img, svg, div))::after,
 a.ext::after {
     content: "";
@@ -11,6 +12,7 @@ a.ext::after {
     display: inline-block;
     background-color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1));
 }
+/*! purgecss end ignore */
 
 a.int::after {
     display: none !important;
