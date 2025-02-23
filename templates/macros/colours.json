@@ -7,6 +7,7 @@
     "president": "#FDD835",
     "gaming": "#3D53FF",
     "treasurer": "#FD6035",
+    "welfare": "#4F33DB",
     "gaming2": "#8135FD",
     "academic": "#EE4F4F",
     "tech": "#0EAD57",
@@ -14,6 +15,8 @@
     "social": "#B53DFF",
     "inclusivity": "#24D09D",
     "publicity": "#EF8A2C",
+    "events": "#1DC9FF",
+    "sports": "#B53DFF",
     "compcafe": "#358A4D",
     "milk": "#4BB3FF"
 }
