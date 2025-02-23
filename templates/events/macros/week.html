@@ -39,7 +39,7 @@
 {% set prev_day = "" -%}
 {% set days_events = [] -%}
 {# Week formatting preamble #}
-<div {% if grid -%} class="week w-100 text-center" {% endif %}>
+<div {% if grid -%} class="{% if front %}front-{% endif %}week w-100 text-center my-4" data-event-total={{ events | length }} {% endif %}>
   {%- if title %}
     <h2>
       <a class="link-body-emphasis text-decoration-none" href="{{ w.permalink | safe }}"

@@ -22,7 +22,7 @@
         aria-label="See events in {{ title }}">{{ title }}</a>
     </h1>
   {% endif %}
-  <div class="weeks w-100 {% if archive %}reverse{% endif %}">
+  <div class="weeks w-100 align-items-center {% if archive %}reverse{% endif %}">
 {% endif %}
     {% for week in weeks %}
       {% if week.permalink is containing("/repeat") %}{% continue %}{% endif %}
@@ -36,9 +36,7 @@
       {% elif week_no > 0 and e_week_no > week_no %}{% continue %}{% endif %}
 
       {% set_global added_event = true %}
-      {% if grid %}<div class="my-4">{% endif %}
       {{ week::week(w=week, title=week.title, grid=grid) }}
-      {% if grid %}</div>{% endif %}
     {% endfor %}
       {% if not added_event %}
       <h2 class="text-center">No events {% if archive %}finished{% endif %} yet, please check back soon™</h2>

@@ -77,6 +77,28 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
 
 .week {
     container-type: inline-size;
+
+
+    // Reduce columns if only one column
+    &[data-event-total="1"] {
+        --ecols: 1;
+        width: day-width(1) !important;
+    }
+
+    // Reduce columns if only two columns needed
+    &[data-event-total="2"],
+    &[data-event-total="4"]:not(:has(.event-outer[data-event-count="3"])) {
+        --ecols: 2;
+        width: day-width(2) !important;
+
+        & .day-3-show {
+            display: none !important;
+        }
+
+        & .day-2-show {
+            display: flex !important;
+        }
+    }
 }
 
 .day {
@@ -121,12 +143,12 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
     --bs-btn-border-color: transparent;
 }
 
-.front-events > .week {
+.front-week {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
-    
+
     gap: $circle-gap;
 
     font-size: 0.9em;
@@ -142,25 +164,6 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
     display: grid;
     gap: $circle-gap;
     grid-template-columns: repeat(var(--ecols), day-width(1));
-
-    // Reduce columns if only one column
-    &[data-event-total="1"] {
-        --ecols: 1;
-    }
-
-    // Reduce columns if only two columns needed
-    &[data-event-total="2"],
-    &[data-event-total="4"]:not(:has(> div[data-event-count="3"])) {
-        --ecols: 2;
-
-        & .day-3-show {
-            display: none !important;
-        }
-
-        & .day-2-show {
-            display: flex !important;
-        }
-    }
 }
 
 // Day with two elements
