@@ -121,6 +121,22 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
     --bs-btn-border-color: transparent;
 }
 
+.front-events > .week {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    
+    gap: $circle-gap;
+
+    font-size: 0.9em;
+    --bs-body-bg-rgb: var(--bs-secondary-bg-rgb);
+
+    & h3 {
+        font-size: 1.75em;
+    }
+}
+
 .events {
     --ecols: 3;
     display: grid;

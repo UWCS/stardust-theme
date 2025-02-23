@@ -3,6 +3,7 @@
 {% import "macros/sponsors.html" as sponsors %}
 {% import "macros/cards.html" as cards %}
 {% import "macros/socials.html" as socials %}
+{% import "events/macros/week.html" as week %}
 
 {% block head %}
 <link rel="preload" as="font" type="font/woff2" href="/fonts/montserrat-600-universityofwarwick-only.woff2" crossorigin />
@@ -65,6 +66,39 @@
 
 
   <div class="blue-top">
+    {# Events #}
+    
+    {% set now = now() %}
+    {% set this_year = now | date(format="%Y") | int %}
+    {% set this_week = now | date(format="%W") | int %}
+    {% set week_no = this_week + 54 * this_year %}
+
+    {%- set events = get_section(path="events/_index.md") -%}
+    {% for t in events.subsections -%}
+      {% if t is containing("archive") -%}{%- continue -%}{%- endif -%}
+      {% set term = get_section(path=t) -%}
+      {% for ss in term.subsections | sort -%}
+        {% if ss is containing("repeat") -%}{%- continue -%}{%- endif -%}
+        {% set week = get_section(path=ss) -%}
+
+        {% set e_year = week.extra.base_date | date(format="%Y") | int %}
+        {% set e_week = week.extra.base_date | date(format="%W") | int %}
+        {% set e_week_no = e_week + 54 * e_year %}
+
+        {% if e_week_no == week_no %}
+          <div class="w-100 mb-4">
+            <a href="{{ get_url(path='events') }}" class="link-body-emphasis text-decoration-none" aria-label="View all events">
+              <h1 class="text-center">Events This Week</h1>
+            </a>
+            <div class="front-events">
+              {{ week::week(w=week, title="", grid=true, front=true) }}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+
+
 
     {# News #}
     {% set news_sec = get_section(path="news/_index.md") %}
@@ -74,14 +108,13 @@
       <h1>Latest News</h1>
     </a>
 
-    <div class="posts pt-2 row gap-3 m-3">
+    <div class="posts pt-2 row gap-3 m-3 mt-0">
       {% for page in pages %}
       {% if loop.index > 3 %} {% break %} {% endif %}
       <!-- Card for each page -->
       {{ cards::news_card(page=page) }}
       {% endfor %}
 
-      {# Events #}
     </div>
 
     {%endif%}

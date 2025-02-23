@@ -1,6 +1,6 @@
 {% import "events/macros/event.html" as event %}
 
-{% macro week(w, title="", grid=true) -%}
+{% macro week(w, title="", grid=true, front=false) -%}
 {# MIRROR ANY CHANGES HERE TO uwcs.ical fetching #}
 {# Because Tera is annoying, lists get cast to string when passing through macros, so we have to duplicate #}
 
@@ -47,7 +47,7 @@
       <span class="fs-5">(w/b {{ w.extra.base_date | date(format="%d %b") }})</span>
     </h2> 
   {% endif -%}
-  {% if grid -%}
+  {% if grid and not front -%}
     <div class="events d-grid justify-content-center" data-event-total={{ events | length }}>
   {% endif -%}
 
@@ -91,7 +91,7 @@
     {% if days_events -%}
       {{ week::day(events=days_events, grid=grid) }}
     {% endif -%}
-    {% if grid -%}
+    {% if grid and not front -%}
   </div>
   {% endif -%}
 </div>
