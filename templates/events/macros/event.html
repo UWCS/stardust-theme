@@ -8,7 +8,8 @@
     {% if e.extra.icon %}<span class="event-icon">{{ shortcodes::icon(icon=e.extra.icon) }}</span> {% endif -%}
     <b class="event-title">{{ e.title }}</b>
     <span class="event-extras">
-      {{ event_format::event_location(resource=e, icon=false, link=false) }}<br>
+      {{ event_format::event_location(resource=e, icon=false, link=false) }}
+      {% if resource.extra.location %}<br />{%endif%}
       {{ event_format::event_time(e=e) }}
     </span>
   </div>
