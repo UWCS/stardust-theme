@@ -159,35 +159,33 @@
 {% endmacro %}
 
 {% macro filter_controls() %}
-<div class="vstack d-none" id="filter-controls">
-  <h2>Filter Events</h2>
-  <h4  id="category-title" class="d-none">Category</h4>
-  <div id="category-filters" class="d-none"></div>
-  <h4  id="tag-title" class="d-none mt-2">Tags</h4>
-  <div id="tag-filters" class="d-none"></div>
+<div class="d-none" id="filter-controls">
+  <span class="h4" style="display: inline-block; transform: translateY(0.25em);">Filter Events: </span>
+  <span id="category-filters" class="d-none"></span>
+  <span id="tag-filters" class="d-none"></span>
   <hr>
 </div>
 {% endmacro %}
 
 {% macro filter_script() %}
+{%- set colmap = load_data(path="themes/uwcs/templates/macros/colours.json", format="json") -%}
+
 <script>
   // these 'categories' are actually specified by the 'colour'
   // property, but they fit well enough to categorise events
   // and are probably more useful than the tags
-  // taken from colours.json
   const ALLOWED_CATEGORIES = [
       "gaming", "academic", "tech", "social", "inclusivity",
       "milk", "other"
   ];
+
   const CATEGORY_COLOURS = {
-      "academic":   '{{- formatters::colour(colour="academic")    -}}',
-      "gaming":     '{{- formatters::colour(colour="gaming")      -}}',
-      "social":     '{{- formatters::colour(colour="social")      -}}',
-      "tech":       '{{- formatters::colour(colour="tech")        -}}',
-      "milk":       '{{- formatters::colour(colour="milk")        -}}',
-      "inclusivity":'{{- formatters::colour(colour="inclusivity") -}}',
-      "other":      '{{- formatters::colour(colour="secretary")   -}}',
+    {% for name, col in colmap %}
+      "{{ name }}": "{{ col }}",
+    {% endfor %}
+      "other":      "{{ colmap["secretary"] }}"
   };
+
   const CATEGORY_DISPLAY_NAMES = {
       "gaming":     'Gaming',
       "academic":   'Academic',
@@ -237,9 +235,7 @@
   const event_elms = event_holder.querySelectorAll("a.card-hover");
   const events = Array.from(event_elms).map(load_single_event_data);
 
-  const category_title = document.getElementById("category-title");
   const category_filter_holder = document.getElementById("category-filters");
-  const tag_title = document.getElementById("tag-title");
   const tag_filter_holder = document.getElementById("tag-filters");
 
   // Unhide the filter controls if we have categories or tags to filter by
@@ -247,11 +243,9 @@
       document.getElementById("filter-controls").classList.remove("d-none");
   }
   if (used_categories.size > 0) {
-      category_title.classList.remove("d-none");
       category_filter_holder.classList.remove("d-none");
   }
   if (used_tags.size > 0) {
-      tag_title.classList.remove("d-none");
       tag_filter_holder.classList.remove("d-none");
   }
 
