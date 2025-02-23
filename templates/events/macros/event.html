@@ -17,6 +17,8 @@
 
 
 {% macro event_info(resource, large, page=true) %}
+{% set repeat = resource.permalink is containing("repeat") -%}
+
 {% if page -%}
 <a href="{{resource.permalink}}" class="my-2 text-decoration-none text-white card-hover d-block" 
   {%- if resource.extra.colour %} data-event-colour="{{ resource.extra.colour }}" {% endif -%} 
@@ -24,8 +26,8 @@
 {% endif -%}
 
   <div class="card text-body-emphasis" {% if resource.extra.colour -%}
-    style="background-color: {{ formatters::colour(colour=resource.extra.colour) }}80 !important" {%- endif -%}>
-    <div class="card-body">
+    style="{% if repeat and page -%} border: 5px solid {% else -%} background-color: {% endif %} {{ formatters::colour(colour=resource.extra.colour) }}80 !important" {%- endif -%}>
+    <div class="card-body" {% if repeat and page -%} style="margin: -5px" {%- endif %}>
       <{% if large %}h1{% else %}h4{% endif %} class="card-title two-line-clamp {% if not large %}d-inline{% endif %}">
         {%- if resource.extra.icon %}{{ shortcodes::icon(icon=resource.extra.icon, baseline=true) }} {% endif -%}
         {%- if resource.extra.emoji %}{{resource.extra.emoji}}{% endif -%}
@@ -47,7 +49,6 @@
       {% endif %}
 
       <{% if large %}h4{% else %}p{% endif %}>
-        {% set repeat = resource.permalink is containing("repeat") -%}
         {{ shortcodes::icon(icon="ph-clock") }}
         {{ event_format::event_date_range(e=resource, day=repeat) }}
         {% if large and repeat -%}
