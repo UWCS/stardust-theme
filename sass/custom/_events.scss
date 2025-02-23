@@ -82,7 +82,7 @@ $dist-circles: $circle-pad + $circle-gap + $circle-pad;
     // Reduce columns if only one column
     &[data-event-total="1"] {
         --ecols: 1;
-        width: day-width(1) !important;
+        width: day-width(1.75) !important;  // Wide enough to fit week title, but not add filler item
     }
 
     // Reduce columns if only two columns needed
