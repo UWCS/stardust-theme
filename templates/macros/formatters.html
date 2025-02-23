@@ -54,7 +54,7 @@
 {% endif %}
 
 {% if limit > 0 and summ | length > limit %}
-    {% set summ = summ | truncate(length=limit) %}
+    {% set summ = summ | striptags | truncate(length=limit) %}
 {% endif %}
 
 {{ summ | safe }}
