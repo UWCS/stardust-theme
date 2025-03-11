@@ -4,7 +4,7 @@ backend:
   repo: {{ config.extra.repo | safe }}
   base_url: {{ config.extra.cms_auth_url | safe }}
 local_backend: 
-  url: http://172.18.156.44:8081/api/v1
+  url: http://localhost:8081/api/v1
 
 media_folder: "static/images"
 public_folder: "/images"
