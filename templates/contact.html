@@ -50,7 +50,7 @@
       {# the linting on this line is some of the worst i have ever seen #}
       <img src="{{ get_url(path=path) }}" alt="{{ person }}" class="card-image-top" onerror="this.src='{{get_url(path='assets/exec-icons/default.png')}}';">
       <div class="card-body">
-        <h4 class="card-title">{{ person }}</h4>
+        <h4 class="card-title" style="font-size: 1.3rem;">{{ person }}</h4>
         
         {# Insert multiple roles if in multiple roles list #}
         {% if person in resource.extra.multiple_roles %}
