@@ -16,3 +16,15 @@
 .exec-card {
     overflow: hidden;
 }
+
+// hacky way to stop weird breaking of names and role names exceeding card boundary
+// probably a better way of doing this, someone with more sanity can perhaps look at this
+// may also need adjusting slightly in the future depending on how cursed the names are
+// similar approach could be taken for .role, flows outside div width on very small widths
+.person {
+    font-size: clamp(17px, 2.1vw, 19px);
+}
+
+.role-name {
+    font-size: clamp(16px,1.2vw,19px);
+}
