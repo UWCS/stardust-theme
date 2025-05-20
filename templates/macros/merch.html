@@ -5,14 +5,14 @@
 
 <div class="accordion-item">
   <h2 class="accordion-header">
-      <button class="accordion-button fs-2 fw-semibold {% if not first %}collapsed{% endif %}" type="button"
+      <button class="accordion-button fs-2 fw-semibold" type="button"
           data-bs-toggle="collapse" data-bs-target="#collapse-{{ id }}"
-          aria-expanded="{% if first %}true{% else %}false{% endif %}"
+          aria-expanded="true"
           aria-controls="collapse-{{ id }}">
           {{ section.title }}
       </button>
   </h2>
-  <div id="collapse-{{ id }}" class="accordion-collapse collapse {% if first %}show{% endif %}">
+  <div id="collapse-{{ id }}" class="accordion-collapse show">
       <div class="accordion-body p-0">
         {% for page in section.pages %}
           {{ self::merch_item(page=page, preview=preview) }}
@@ -26,32 +26,35 @@
 
 {% macro merch_item(page, preview=false, full=false) %}
 {# Single merch item card #}
-<div class="card p-0 m-3">
-  <div class="d-flex flex-column flex-sm-row">
-    {% if page.assets | length > 0 %}
-    {{ self::carousel(page=page) }}
+{% if not page.extra.hidden | default(value=false) %}  <!-- do not show hidden items - didn't want to yeet the old items not being currently sold so they don't have to be recreated from scratch-->
+  <div class="card p-0 m-3">
+    <div class="d-flex flex-column flex-sm-row">
+      {% if page.assets | length > 0 %}
+      {{ self::carousel(page=page) }}
+      
+      <div class="col-sm-8">
+      {% else %}
+      <div class="col-12">
+      {% endif %}
+        <div class="card-body p-4 d-flex flex-column h-100 justify-content-between">
+          <div class="d-flex align-items-center">
+            <a class="link-body-emphasis text-decoration-none" href="{{ page.permalink }}"><h5 class="card-title fs-1">{{ page.title }}</h5></a>
 
-    <div class="col-sm-8">
-    {% else %}
-    <div class="col-12">
-    {% endif %}
-      <div class="card-body p-4 d-flex flex-column h-100 justify-content-between">
-        <div class="d-flex align-items-center">
-          <a class="link-body-emphasis text-decoration-none" href="{{ page.permalink }}"><h5 class="card-title fs-1">{{ page.title }}</h5></a>
-          <span class="badge rounded-pill text-bg-primary fs-4 ms-auto">£{{ page.extra.price }}</span>
+            <span class="badge rounded-pill text-bg-primary fs-4 ms-auto">£{{ page.extra.price }}</span>
+          </div>
+          <div class="card-text flex-grow-1 fs-5">
+            {{ formatters::summarize(summary=page.summary, content=page.content, full=full, link=page.permalink) }}
+          </div>
+          {% if not preview %}
+            <a class="btn btn-primary btn-lg fs-4 mt-3" href="{{ page.extra.link }}" target="_blank" rel="noopener noreferrer">
+              <i class="bi-cart-fill"></i> Buy via Warwick SU
+            </a>
+          {% endif %}
         </div>
-        <div class="card-text flex-grow-1 fs-5">
-          {{ formatters::summarize(summary=page.summary, content=page.content, full=full, link=page.permalink) }}
-        </div>
-        {% if not preview %}
-          <a class="btn btn-primary btn-lg fs-4 mt-3" href="{{ page.extra.link }}" target="_blank" rel="noopener noreferrer">
-            <i class="bi-cart-fill"></i> Buy for £{{ page.extra.price }} @ Warwick SU
-          </a>
-        {% endif %}
       </div>
     </div>
   </div>
-</div>
+{% endif %}
 
 {% endmacro %}
 

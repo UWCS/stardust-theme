@@ -67,7 +67,7 @@ const countdown = function () {
         if (days >= 7) time_rem_str = daysText;
 
         for (let cd of cds) {
-            const prompt = now <= startDate ? "Opening" : "Closing"
+            const prompt = now <= startDate ? "This shop is opening" : "This shop is closing"
             cd.innerHTML = `${prompt} in ${time_rem_str}`;
         }
 
