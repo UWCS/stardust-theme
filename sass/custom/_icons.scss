@@ -5,7 +5,8 @@
     position: relative;
     box-sizing: content-box;
     line-height: 1;
-    align-items: center;
+    vertical-align: middle;
+    top: -0.1em;
 }
 
 .icon svg,
