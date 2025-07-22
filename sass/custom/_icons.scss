@@ -4,14 +4,13 @@
     min-width: 1em;
     position: relative;
     box-sizing: content-box;
-    line-height: 1;
-    align-items: center;
+    vertical-align: middle;
+    top: -0.1em;
 }
 
 .icon svg,
 .icon img,
 .icon i {
-    height: 1em;
     width: 1em;
     box-sizing: content-box;
     fill: currentColor;
