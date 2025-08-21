@@ -1,9 +1,16 @@
 {% macro tier(tier, sponsors, area=22500) -%}
 <div id="{{ tier | lower }}" class="sponsors">
   {% for sponsor in sponsors -%}
-    <a href="{{ sponsor.permalink }}" aria-label="More info about {{ sponsor.title }}">
-      {{ sponsors::single(sponsor=sponsor, area=area) }}
-    </a>
+
+    {% set tier_sec = get_section(path=sponsor.ancestors | last) %}
+
+
+    {% if tier_sec.title != "Bronze Sponsors" or sponsor.extra.frontpage %}
+      <a href="{{ sponsor.permalink }}" aria-label="More info about {{ sponsor.title }}">
+        {{ sponsors::single(sponsor=sponsor, area=area) }}
+      </a>
+    {% endif %}
+
   {% endfor -%}
 </div>
 {% endmacro tier %}
