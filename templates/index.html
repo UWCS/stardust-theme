@@ -61,6 +61,9 @@
       {{ sponsors::tier(tier="Gold", sponsors=gold_spon_sec.pages, area=22500) }}
       {% set silver_spon_sec = get_section(path="sponsors/silver/_index.md") %}
       {{ sponsors::tier(tier="Silver", sponsors=silver_spon_sec.pages, area=15000) }}
+      {% set bronze_spon_sec = get_section(path="sponsors/bronze/_index.md") %}
+      {{ sponsors::tier(tier="Bronze", sponsors=bronze_spon_sec.pages, area=15000) }}
+      
     </div>
   </div>
 
