@@ -23,7 +23,7 @@
 <div class="d-flex flex-column flex-sm-row align-items-center ps-3 pt-3 pt-sm-0 mb-3 role">
   <div class="fs-4 icon baseline">
     <img class="exec-icon" src="{{ get_url(path='assets/exec-icons/all.svg') }}" alt="all exec">
-    <h3 class="my-3 mx-3">All exec<h3>
+    <h3 class="my-3 mx-3">All exec</h3>
   </div>
   <a href="mailto:exec@uwcs.co.uk" aria-label="Email all our exec" class="my-3 ml-2">exec@uwcs.co.uk</a>
 </div>
@@ -31,7 +31,7 @@
   <div class="d-flex flex-column flex-sm-row align-items-center ps-3 pt-3 pt-sm-0 mb-3 role">
     <div class="fs-4 icon baseline">
       <img class="exec-icon" src="{{ get_url(path='assets/exec-icons/' ~ role.slug ~ '.svg') }}" alt="{{ role.title }}">
-      <h3 class="my-3 mx-3">{% if role.extra.people | length > 1 %}{{ role.extra.plural }}{% else %}{{ role.title }}{% endif %}<h3>
+      <h3 class="my-3 mx-3">{% if role.extra.people | length > 1 %}{{ role.extra.plural }}{% else %}{{ role.title }}{% endif %}</h3>
     </div>
     <a href="mailto:{{role.extra.email}}" aria-label="Email our {{role.title}}" class="my-3 ml-2">{{role.extra.email}}</a>
   </div>

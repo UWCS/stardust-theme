@@ -28,7 +28,7 @@
         "title": "{{ page.title | striptags }}",
       {# THIS FILE MUST BE SAVED WITH LF ENDINGS ONLY, NO CRLF FOR YOU -#}
       {% set description = page.content | striptags | replace(from="
-", to="\n\n") %}
+", to="\n\n") -%}
         "desc": "{{ description }}",
         "location": "{% if page.extra.location %}{{ page.extra.location }}{% endif %}",
         "url": "{{ page.permalink }}",

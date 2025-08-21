@@ -131,8 +131,8 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
   {% if resource.extra.location -%}
     {% set description = description ~ resource.extra.location -%}
   {% endif -%}
-  <meta name="description" content="{{ description }}" />
-  <meta property="og:description" content="{{ description }}" />
+  <meta name="description" content="{{ description | trim }}" />
+  <meta property="og:description" content="{{ description | trim }}" />
   <meta property="og:url" content="{{current_url | safe }}" />
   <meta property="og:image" content="{{ get_url(path="bg-16-9.png")}}" />
   <meta property="og:locale" content="en_GB" />
