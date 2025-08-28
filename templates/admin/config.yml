@@ -1,4 +1,3 @@
-# Yes, this should be config.yml, yes, it is a html template, no, i'm not sorry
 backend:
   name: github
   repo: {{ config.extra.repo | safe }}
@@ -37,60 +36,3 @@ collections:
             default: ["Newsletter"]
 
       - {label: "Body", name: "body", widget: "markdown"}
-
-{% set events = get_section(path="events/_index.md") %}
-{% set terms = [] %}
-{% for t in events.subsections %}
-  {% if t is containing("archive") %}{% continue %}{% endif %}
-  {% set term = get_section(path=t) %}
-  {% set_global terms = terms | concat(with=term) %}
-{% endfor %}
-
-{% set terms = terms | sort(attribute="path") %}
-{% for term in terms %}
-  {% set_global weeks = [] %}
-  {% for w in term.subsections %}
-    {% set week = get_section(path=w) %}
-    {% set_global weeks = weeks | concat(with=week) %}
-  {% endfor %}
-
-  {% set weeks = weeks | sort(attribute="path") %}
-  {% for week in weeks %}
-  - name: "{{ week.components | join(sep="-") }}"
-    label: "{{ term.title }} {{ week.title }}"
-    folder: "content/{{ week.components | join(sep="/") }}"
-    create: true
-    format: toml-frontmatter
-    media_folder: ""
-    public_folder: ""
-
-    fields:
-      - {label: "Title", name: "title", widget: "string"}
-      - {label: "Event Time & Date", name: "date", widget: "string", default: ""}
-      - {label: "Draft", name: "draft", widget: "boolean", required: false, default: {% if config.base_url is containing('draft') or config.base_url is containing('sponsors') %}true{% else %}false{% endif %}}
-      - label: Extra
-        name: extra
-        widget: "object"
-        fields:
-          {%- if week.permalink is containing("/repeat") %}
-          - {label: "Weeks", name: "weeks", widget: "select", required: false, multiple: true, options: [{% for week in weeks %}{% if week.permalink is containing("/repeat") %}{% continue %}{% endif %}"{{ week.components | last }}", {% endfor %}] }
-          {% endif %}
-          - {label: "End Time", name: "end_time", widget: "string", required: false}
-          - {label: "Location", name: "location", widget: "string", required: false}
-          - {label: "Location URL", name: "location_url", widget: "string", required: false}
-          - {label: "Icon", name: "icon", widget: "string", required: false}
-          - {label: "Colour", name: "colour", widget: "string", required: true}
-          - {label: "Emoji", name: "emoji", widget: "string", required: false}
-
-      - label: "Taxonomies"
-        name: "taxonomies"
-        widget: "object"
-        fields:
-          - label: "Tags"
-            name: "tags"
-            widget: "list"
-            deafult: []
-        
-      - {label: "Body", name: "body", widget: "markdown"}
-  {% endfor %}
-{% endfor %}
