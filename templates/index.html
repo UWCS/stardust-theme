@@ -67,7 +67,18 @@
   <div class="blue-top">
     {# Events #}
 
+    <a href="https://events.uwcs.co.uk" class="link-body-emphasis text-decoration-none mb-4" aria-label="View all upcoming events" target="_blank">
+      <h1>Events this week</h1>
+    </a>
+    <iframe src="https://events.uwcs.co.uk/stardust/front/" style="border: 0" width="50%" frameborder="0" class="mb-4 rounded-4"></iframe>
 
+    <script>
+      window.addEventListener("message", function(event) {
+        if (event.data.type === "setHeight") {
+          document.querySelector("iframe").style.height = event.data.height + "px";
+        }
+      });
+    </script>
 
     {# News #}
     {% set news_sec = get_section(path="news/_index.md") %}
