@@ -1,6 +1,5 @@
 {% import "macros/logos.html" as logos %}
 {% import "macros/formatters.html" as formatters %}
-{% import "events/macros/event_format.html" as event_format %}
 {% import "macros/shortcodes.html" as shortcodes %}
 
 {% macro preview_styles() %}
@@ -124,26 +123,12 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
     ) | striptags | safe -%}
   {% endif -%}
 
-  {% if resource.date -%}
-    {% set date = event_format::event_date_range(e=resource) -%}
-    {% set description = description ~ " " ~ date ~ ". " -%}
-  {% endif -%}
-  {% if resource.extra.location -%}
-    {% set description = description ~ resource.extra.location -%}
-  {% endif -%}
   <meta name="description" content="{{ description | trim }}" />
   <meta property="og:description" content="{{ description | trim }}" />
   <meta property="og:url" content="{{current_url | safe }}" />
   <meta property="og:image" content="{{ get_url(path="bg-16-9.png")}}" />
   <meta property="og:locale" content="en_GB" />
-  <meta name="keywords" content="UWCS, Computing, University, Computer Science, Warwick, University of Warwick Computing Society, Programming, Gaming, Coding 
-{%- if resource.taxonomies -%}
-  {%- for _,terms in resource.taxonomies -%}
-    {%- for term in terms -%}
-      , {{ term }}
-    {%- endfor -%}
-  {%- endfor -%}
-{%- endif -%}">
+  <meta name="keywords" content="UWCS, Computing, University, Computer Science, Warwick, University of Warwick Computing Society, Programming, Gaming, Coding" />
 
 {% endmacro %}
 
