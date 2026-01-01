@@ -1,0 +1,82 @@
+{%- macro weight_order(data, wkey="weight") -%}
+    {%- set_global cats = [] -%}
+    {%- for key, ca in data -%}
+        {%- set weight = ca | get(key=wkey, default=999) -%}
+        {%- set entry = '{"key":"' ~ key ~ '","' ~ wkey ~ '":' ~ weight ~ '}' -%}
+        {%- set_global cats = cats | concat(with=entry) -%}
+    {%- endfor -%}
+    {%- set jcats = cats | join(sep=",") -%}
+    {{- "[" ~ jcats ~ "]" -}}
+{%- endmacro -%}
+
+{%- macro map_people_to_roles(roles_data) -%}
+    {%- set socats_str = roles::weight_order(data=roles_data) -%}
+    {# blame Tera limitations for this one #}
+    {%- set socats = load_data(literal=socats_str, format="json") | sort(attribute="weight") -%}
+
+    {%- set_global names = [] -%}
+    {%- for socat in socats -%}
+        {%- set cat = roles_data | get(key=socat.key) -%}
+        {%- for _, role in cat.roles -%}
+            {%- for person in role.people -%}
+                {%- if person not in names -%}
+                    {%- set_global names = names | concat(with=person) -%}
+                {%- endif -%}
+            {%- endfor -%}
+        {%- endfor -%}
+    {%- endfor -%}
+
+    {%- set_global entries = [] -%}
+    
+    {%- for name in names -%}
+        {%- set_global role_list = [] -%}
+        
+        {%- for socat in socats -%}
+            {%- set cat = roles_data[socat.key] -%}
+            {%- for role_key, role in cat.roles -%}
+                {%- if name in role.people -%}
+                    {%- set_global role_entry = '{"cat": "' ~ socat.key ~ '", "child": "' ~ role_key ~ '"}' -%}
+                    {%- set_global role_list = role_list | concat(with=role_entry) -%}
+                {%- endif -%}
+            {%- endfor -%}
+        {%- endfor -%}
+
+        {%- set roles = role_list | join(sep=",") -%}
+
+        {%- set entry = '{"name": "' ~ name ~ '", "roles": [' ~ roles ~ ']}' -%}
+
+        {%- set_global entries = entries | concat(with=entry) -%}
+    {%- endfor -%}
+
+    {%- set out = entries | join(sep=",") -%}
+    {{- "[" ~ out ~ "]" -}}
+{%- endmacro -%}
+
+{%- macro icon_path(name) -%}
+  {{- get_url(path='/assets/exec-icons/' ~ name ~ '.svg') -}}
+{%- endmacro -%}
+
+{%- macro decide_plural(drole) -%}
+  {%- if drole.people | length > 1 -%}
+    {{ drole.plural }}
+  {%- else -%}
+    {{ drole.title }}
+  {%- endif -%}
+{%- endmacro -%}
+
+{%- macro multiple_sep(list) -%}
+  {%- set n = list | length -%}
+  {%- if n==0 -%}
+   {{ "" }}
+  {%- elif n==1 -%}
+    {{ list | nth(n=0) }}
+  {%- elif n==2 -%}
+    {%- set a = list | nth(n=0) -%}
+    {%- set b = list | nth(n=1) -%}
+    {{ a ~ " & " ~ b }}
+  {%- else -%}
+    {%- set l = list | slice(end=n-1) | join(sep=", ") -%}
+    {%- set c = list | nth(n=n-1) -%}
+    {{ l ~ " & " ~ c }}
+  {%- endif -%}
+{%- endmacro -%}

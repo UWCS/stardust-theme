@@ -9,6 +9,8 @@
 {% elif taxonomy %} {% set resource = taxonomy %}
 {% endif %}
 
+{% set_global roles_data = load_data(path="data/roles.toml") %}
+
 <!DOCTYPE html>
 <html lang="en"  style="background-color: {{ formatters::colour(colour="grey") }}">
 

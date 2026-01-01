@@ -7,10 +7,14 @@
     font-size: 1.5em;
 }
 
+.icon.exec-icon {
+    margin-bottom: 1em;
+}
+
 .exec-cards {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 2.5fr));
 }
 
 .exec-card {
