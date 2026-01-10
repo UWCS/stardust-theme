@@ -163,6 +163,9 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
         {% set subsect = get_section(path=sub) %}
         {% if subsect.extra.hide or subsect.title == "Merch" %}{% continue %}{% endif %}
         <li><a class="nav-link" href="{{ subsect.permalink | safe }}" aria-label="Visit {{ subsect.title }}">{{ subsect.title }}</a></li>
+        {% if subsect.title == "News" %}
+          <li><a class="nav-link" href="{{ get_taxonomy_url(kind="categories", name="Meeting Minutes") }}" aria-label="Visit Meeting Minutes">Meeting Minutes</a></li>
+        {% endif %}
       {% endfor %}
 
       <li class="me-lg-2 nav-item dropdown">
