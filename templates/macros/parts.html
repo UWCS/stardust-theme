@@ -28,6 +28,14 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
   <link rel="stylesheet" type="text/css" href="{{ get_url(path='syntax-theme-light.css') }}" defer />
 {% endif %}
 
+<script>
+  document.addEventListener("DOMContentLoaded", (event) => {
+      const myModalElement = document.querySelector("#announcementModal");
+      const modal = new bootstrap.Modal(myModalElement);
+      modal.show();
+  });
+</script>
+
 <script src="{{ get_url(path='scripts/elasticlunr.min.js') }}" defer></script>
 <script src="{{ get_url(path='scripts/search.js') }}" defer></script>
 
