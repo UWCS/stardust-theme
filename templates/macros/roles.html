@@ -1,5 +1,6 @@
 {%- macro weight_order(data, wkey="weight") -%}
     {%- set_global cats = [] -%}
+
     {%- for key, ca in data -%}
         {%- set weight = ca | get(key=wkey, default=999) -%}
         {%- set entry = '{"key":"' ~ key ~ '","' ~ wkey ~ '":' ~ weight ~ '}' -%}
@@ -53,30 +54,30 @@
 {%- endmacro -%}
 
 {%- macro icon_path(name) -%}
-  {{- get_url(path='/assets/exec-icons/' ~ name ~ '.svg') -}}
+    {{- get_url(path='/assets/exec-icons/' ~ name ~ '.svg') -}}
 {%- endmacro -%}
 
 {%- macro decide_plural(drole) -%}
-  {%- if drole.people | length > 1 -%}
-    {{ drole.plural }}
-  {%- else -%}
-    {{ drole.title }}
-  {%- endif -%}
+    {%- if drole.people | length > 1 -%}
+        {{ drole.plural }}
+    {%- else -%}
+        {{ drole.title }}
+    {%- endif -%}
 {%- endmacro -%}
 
 {%- macro multiple_sep(list) -%}
-  {%- set n = list | length -%}
-  {%- if n==0 -%}
-   {{ "" }}
-  {%- elif n==1 -%}
-    {{ list | nth(n=0) }}
-  {%- elif n==2 -%}
-    {%- set a = list | nth(n=0) -%}
-    {%- set b = list | nth(n=1) -%}
-    {{ a ~ " & " ~ b }}
-  {%- else -%}
-    {%- set l = list | slice(end=n-1) | join(sep=", ") -%}
-    {%- set c = list | nth(n=n-1) -%}
-    {{ l ~ " & " ~ c }}
-  {%- endif -%}
+    {%- set n = list | length -%}
+    {%- if n==0 -%}
+        {{ "" }}
+    {%- elif n==1 -%}
+        {{ list | nth(n=0) }}
+    {%- elif n==2 -%}
+        {%- set a = list | nth(n=0) -%}
+        {%- set b = list | nth(n=1) -%}
+        {{ a ~ " & " ~ b }}
+    {%- else -%}
+        {%- set l = list | slice(end=n-1) | join(sep=", ") -%}
+        {%- set c = list | nth(n=n-1) -%}
+        {{ l ~ " & " ~ c }}
+    {%- endif -%}
 {%- endmacro -%}
