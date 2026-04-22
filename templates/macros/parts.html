@@ -287,7 +287,7 @@ CMS.registerPreviewStyle("{{ get_url(path="uwcs-bootstrap.css", cachebust=true) 
     {% endfor %}
   </ul>
   <p class="text-{% if index %}white{% else %}muted{% endif %}">
-    Last built: {{ now() | date(format="%Y-%m-%d %H:%M:%S") }}
+    Last built: {{ now() | date(format="%Y-%m-%d %H:%M:%S", timezone="Europe/London") }}
   </p>
 </footer>
 {% endmacro footer %}

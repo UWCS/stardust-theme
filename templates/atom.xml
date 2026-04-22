@@ -24,16 +24,16 @@
     "/>
     <generator uri="https://www.getzola.org/">Zola</generator>
     {% if last_updated is defined %}
-      <updated>{{ last_updated | date(format="%+") }}</updated>
+      <updated>{{ last_updated | date(format="%+", timezone="Europe/London") }}</updated>
     {% else %}
-      <updated>{{ now() | date(format="%+") }} </updated>
+      <updated>{{ now() | date(format="%+", timezone="Europe/London") }} </updated>
     {% endif %}
     <id>{{ feed_url | safe }}</id>
     {%- for page in pages %}
     <entry xml:lang="{{ page.lang }}">
         <title>{{ page.title }}</title>
-        <published>{{ page.date | date(format="%+") }}</published>
-        <updated>{{ page.updated | default(value=page.date) | date(format="%+") }}</updated>
+        <published>{{ page.date | date(format="%+", timezone="Europe/London") }}</published>
+        <updated>{{ page.updated | default(value=page.date) | date(format="%+", timezone="Europe/London") }}</updated>
         <author>
           <name>
             {%- if page.authors -%}

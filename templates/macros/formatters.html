@@ -4,19 +4,19 @@
 {% set format = "%a" -%}
 {% if not day -%}
   {% set format = format ~ " %d %h" -%}
-  {% if date | date(format="%Y") != now() | date(format="%Y") -%}
+  {% if date | date(format="%Y", timezone="Europe/London") != now() | date(format="%Y", timezone="Europe/London") -%}
     {% set format = format ~ " %Y" -%}
   {% endif -%}
 {% endif -%}
 
-{{ date | date(format=format) }}
+{{ date | date(format=format, timezone="Europe/London") }}
 {%- endmacro date -%}
 
 
 {%- macro time(time) -%}
-{%- if time | date(format="%H:%M") == "00:00" -%} 
-{%- elif time | date(format="%M") == "00" -%} {{ time | date(format="%l%P") }}
-{%- else -%} {{ time | date(format="%l:%M%P") }}
+{%- if time | date(format="%H:%M", timezone="Europe/London") == "00:00" -%} 
+{%- elif time | date(format="%M", timezone="Europe/London") == "00" -%} {{ time | date(format="%l%P", timezone="Europe/London") }}
+{%- else -%} {{ time | date(format="%l:%M%P", timezone="Europe/London") }}
 {%- endif -%}
 {%- endmacro time -%}
 
