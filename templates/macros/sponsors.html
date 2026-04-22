@@ -22,8 +22,8 @@
   {% set size = sponsors::equiv_vis_size(img_path=path, area=area) -%}
 
   <img {% if white %}class="white-hover"{% endif %} 
-    src="{{ path }}" {{ size }} 
-    style="max-width: 100%; object-fit: contain" 
+    src="{{ path }}" 
+    style="{{ size }} max-width: 100%; object-fit: contain;" 
     alt="Logo for {{ sponsor.title }}" loading="lazy" 
   >
 {% endmacro %}
@@ -31,9 +31,6 @@
 
 {% macro equiv_vis_size(img_path, area) -%}
   {% set meta = get_image_metadata(path=img_path) -%}
-  {% set currarea = meta.width * meta.height -%}
-  {% set sqh = meta.height * meta.height * area / currarea -%}
-  {% set height = sqh | sqrt -%}
-  {% set width = currarea * height / (meta.height * meta.height) | int -%}
-  width={{ width }} height={{ height }}
+  {% set ratio = meta.width / meta.height -%}
+  width: calc(sqrt({{ area * ratio }}) * 1px); height: calc(sqrt({{ area / ratio }}) * 1px);
 {%- endmacro %}
