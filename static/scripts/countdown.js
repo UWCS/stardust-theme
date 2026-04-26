@@ -68,7 +68,7 @@ const countdown = function () {
 
         for (let cd of cds) {
             const prompt = now <= startDate ? "Opening" : "Closing"
-            cd.innerHTML = `${prompt} in ${time_rem_str}`;
+            cd.innerHTML = `${prompt} in: ${time_rem_str}!`;
         }
 
         // Set update time
