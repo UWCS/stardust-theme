@@ -96,21 +96,23 @@
                                 <p class="card-text role-name ms-2 mb-0">{{ r.title }}</p>
                             </div>
                         {% endfor %}
+                        
+                        {% if person.name != "Potentially You" %}
+                            {% for ro in person.roles %}
+                                {% if ro.cat == socat.key %}
+                                    {% continue %}
+                                {% endif %}
 
-                        {% for ro in person.roles %}
-                            {% if ro.cat == socat.key %}
-                                {% continue %}
-                            {% endif %}
+                                {% set r = roles_data[ro.cat].roles[ro.child] %}
 
-                            {% set r = roles_data[ro.cat].roles[ro.child] %}
-
-                            <div class="icon exec-icon baseline mt-2">
-                                <img class="fs-2"
-                                    src="{{ roles::icon_path(name=ro.cat) }}" alt="{{ r.title }}"
-                                    onerror="this.src='{{ roles::icon_path(name='all') }}';">
-                                <p class="card-text role-name ms-2 mb-0">{{ r.title }}</p>
-                            </div>
-                        {% endfor %}
+                                <div class="icon exec-icon baseline mt-2">
+                                    <img class="fs-2"
+                                        src="{{ roles::icon_path(name=ro.cat) }}" alt="{{ r.title }}"
+                                        onerror="this.src='{{ roles::icon_path(name='all') }}';">
+                                    <p class="card-text role-name ms-2 mb-0">{{ r.title }}</p>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}
