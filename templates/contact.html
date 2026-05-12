@@ -35,14 +35,14 @@
 
     {% for srole in sroles %}
         {% set role = cat.roles | get(key=srole.key) %}
-        {% if role.people | length > 0  or socat.key == "all" %}
+        {% if role.people | length >= 0  or socat.key == "all" %}
             {% set_global crole_title = roles::decide_plural(drole=role) %}
             {% set_global crole_titles = crole_titles | concat(with=crole_title) %}
             {% set_global cpeople = cpeople | concat(with=role.people) %}
         {% endif %}
     {% endfor %}
 
-    {% if cpeople | length > 0 or socat.key == "all" %}
+    {% if cpeople | length >= 0 or socat.key == "all" %}
         {% set stroles = roles::multiple_sep(list=crole_titles) %}
         {% set stpeople = roles::multiple_sep(list=cpeople) %}
         <h3>
@@ -78,7 +78,7 @@
                     {% set path = "/images/exec-pics/" ~ bname ~ ".jpg" %}
                     <img class="card-image-top"
                         src="{{ get_url(path=path) }}" alt="{{ person.name }}"
-                        onerror="this.src='{{ get_url(path='/assets/exec-icons/default.png') }}';">
+                        onerror="this.src='{{ get_url(path='/images/exec-pics/potentiallyyou.png') }}';">
 
                     <div class="card-body">
                         <h4 class="card-title person">{{ person.name }}</h4>
