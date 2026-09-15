@@ -86,10 +86,10 @@
 
       {% set gold_spon_sec = get_section(path="sponsors/gold/_index.md") %}
       {{ sponsors::tier(tier="Gold", sponsors=gold_spon_sec.pages, area=27250) }}
-      <hr class="sponsor-divider my-2">
+      <hr class="sponsor-divider my-4">
       {% set silver_spon_sec = get_section(path="sponsors/silver/_index.md") %}
       {{ sponsors::tier(tier="Silver", sponsors=silver_spon_sec.pages, area=17500) }}
-      <hr class="sponsor-divider my-2">
+      <hr class="sponsor-divider my-4">
       {% set bronze_spon_sec = get_section(path="sponsors/bronze/_index.md") %}
       {{ sponsors::tier(tier="Bronze", sponsors=bronze_spon_sec.pages, area=15000) }}
       
